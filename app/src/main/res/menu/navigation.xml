@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/export"
+        android:icon="@drawable/baseline_share_24"
+        android:title="Export" />
+    <item
+        android:id="@+id/schedule"
+        android:icon="@drawable/baseline_calendar_view_day_24"
+        android:title="Schedule" />
+    <item
+        android:id="@+id/settings"
+        android:icon="@drawable/baseline_settings_24"
+        android:title="Settings" />
+</menu>

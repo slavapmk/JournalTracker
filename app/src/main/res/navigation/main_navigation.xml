@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/schedule">
+    <fragment
+        android:id="@+id/schedule"
+        android:name="ru.slavapmk.journaltracker.ui.ScheduleFragment"
+        android:label="Schedule"
+        tools:layout="@layout/fragment_schedule">
+        <action
+            android:id="@+id/action_schedule_to_lesson"
+            app:destination="@id/lesson" />
+        <action
+            android:id="@+id/action_schedule_to_calendar"
+            app:destination="@id/calendar" />
+    </fragment>
+    <fragment
+        android:id="@+id/lesson"
+        android:name="ru.slavapmk.journaltracker.ui.LessonFragment"
+        android:label="Lesson"
+        tools:layout="@layout/fragment_lesson" />
+    <fragment
+        android:id="@+id/calendar"
+        android:name="ru.slavapmk.journaltracker.ui.CalendarFragment"
+        android:label="Calendar"
+        tools:layout="@layout/fragment_calendar" />
+    <fragment
+        android:id="@+id/export"
+        android:name="ru.slavapmk.journaltracker.ui.ExportFragment"
+        android:label="Export"
+        tools:layout="@layout/fragment_export" >
+<!--        <action-->
+<!--            android:id="@+id/action_export_to_export_day"-->
+<!--            app:destination="@id/export_day" />-->
+<!--        <action-->
+<!--            android:id="@+id/action_export_to_export_week"-->
+<!--            app:destination="@id/export_week" />-->
+<!--        <action-->
+<!--            android:id="@+id/action_export_to_export_summary"-->
+<!--            app:destination="@id/export_summary" />-->
+    </fragment>
+<!--    <fragment-->
+<!--        android:id="@+id/export_day"-->
+<!--        android:name="ru.slavapmk.journaltracker.ui.ExportDayFragment"-->
+<!--        android:label="Export Day"-->
+<!--        tools:layout="@layout/fragment_export_day" />-->
+<!--    <fragment-->
+<!--        android:id="@+id/export_week"-->
+<!--        android:name="ru.slavapmk.journaltracker.ui.ExportWeekFragment"-->
+<!--        android:label="Export Week"-->
+<!--        tools:layout="@layout/fragment_export_week" />-->
+<!--    <fragment-->
+<!--        android:id="@+id/export_summary"-->
+<!--        android:name="ru.slavapmk.journaltracker.ui.ExportSummaryFragment"-->
+<!--        android:label="Export Summary"-->
+<!--        tools:layout="@layout/fragment_export_summary" />-->
+    <fragment
+        android:id="@+id/settings"
+        android:name="ru.slavapmk.journaltracker.ui.SettingsFragment"
+        android:label="Settings"
+        tools:layout="@layout/fragment_settings" />
+</navigation>
