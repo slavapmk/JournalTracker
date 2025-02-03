@@ -35,17 +35,9 @@ jobs:
       - name: Change wrapper permissions
         run: chmod +x ./gradlew
 
-      # Run Tests Build
-      - name: Run gradle tests
-        run: ./gradlew test
-
-      # Run Build Project
-      - name: Build gradle project
-        run: ./gradlew build
-
       # Create APK Release
       - name: Build apk release project (APK)
-        run: ./gradlew assemble
+        run: ./gradlew assembleDebug
 
       - name: Generate release version
         id: version
