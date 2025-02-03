@@ -1,0 +1,85 @@
+name: Generation APK
+
+env:
+  main_project_module: app
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # Set Current Date As Env Variable
+      - name: Set current date as env variable
+        run: echo "date_today=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+
+      # Set Repository Name As Env Variable
+      - name: Set repository name as env variable
+        run: echo "repository_name=$(echo '${{ github.repository }}' | awk -F '/' '{print $2}')" >> $GITHUB_ENV
+
+      - name: Set Up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu' # See 'Supported distributions' for available options
+          java-version: '17'
+          cache: 'gradle'
+
+      - name: Change wrapper permissions
+        run: chmod +x ./gradlew
+
+      # Run Tests Build
+      - name: Run gradle tests
+        run: ./gradlew test
+
+      # Run Build Project
+      - name: Build gradle project
+        run: ./gradlew build
+
+      # Create APK Release
+      - name: Build apk release project (APK)
+        run: ./gradlew assemble
+
+      - name: Generate release version
+        id: version
+        run: |
+          ./gradlew generateVersions
+          echo "RELEASE_NAME=$(sed '1!d' ./version.txt)" >> $GITHUB_OUTPUT
+          echo "RELEASE_CODE=$(sed '2!d' ./version.txt)" >> $GITHUB_OUTPUT
+
+      # Noted For Output [main_project_module]/build/outputs/apk/release/
+      - name: Upload APK Release
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.date_today }} - ${{ env.repository_name }}
+          path: ${{ env.main_project_module }}/build/outputs/apk/release/
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.version.outputs.RELEASE_CODE }}
+          release_name: Release v${{ steps.version.outputs.RELEASE_NAME }}
+          body_path: RELEASE.md
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{ env.main_project_module }}/build/outputs/apk/release/app-release-unsigned.apk
+          asset_name: JournalTracker.apk
+          asset_content_type: application/zip

@@ -8,11 +8,11 @@ android {
     compileSdk = 35
 
     defaultConfig {
+        versionCode = 1
+        versionName = "0.1"
         applicationId = "ru.slavapmk.journaltracker"
         minSdk = 29
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -51,4 +51,12 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.viewpager2)
+}
+
+tasks.register("generateVersions") {
+    doLast {
+        file("../version.txt").writeText(
+            android.defaultConfig.versionName + "\n" + android.defaultConfig.versionCode
+        )
+    }
 }
