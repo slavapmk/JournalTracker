@@ -5,32 +5,138 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/pager"
+    <FrameLayout
+        android:id="@+id/stroke"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="120dp"
+        android:layout_marginHorizontal="10dp"
+        android:background="@drawable/item_day_stroke_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <include
-        layout="@layout/item_date_stroke"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@id/pager"
-        app:layout_constraintStart_toStartOf="@id/pager"
-        app:layout_constraintTop_toBottomOf="@id/pager"
-        tools:visibility="visible" />
+
+        <GridLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:columnCount="9"
+            android:orientation="horizontal"
+            android:useDefaultMargins="true"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="45dp"
+                android:layout_height="75dp"
+                android:insetLeft="0dp"
+                android:insetTop="15dp"
+                android:insetRight="0dp"
+                android:insetBottom="15dp"
+                app:icon="@drawable/baseline_arrow_back_24"
+                app:iconGravity="textEnd"
+                app:iconPadding="0dp"
+                app:iconSize="20dp" />
+
+            <include
+                layout="@layout/item_date"
+                android:layout_width="33dp"
+                android:layout_height="75dp" />
+
+            <include
+                layout="@layout/item_date"
+                android:layout_width="33dp"
+                android:layout_height="75dp" />
+
+            <include
+                layout="@layout/item_date"
+                android:layout_width="33dp"
+                android:layout_height="75dp" />
+
+            <include
+                layout="@layout/item_date"
+                android:layout_width="33dp"
+                android:layout_height="75dp" />
+
+            <include
+                layout="@layout/item_date"
+                android:layout_width="33dp"
+                android:layout_height="75dp" />
+
+            <include
+                layout="@layout/item_date"
+                android:layout_width="33dp"
+                android:layout_height="75dp" />
+
+            <include
+                layout="@layout/item_date"
+                android:layout_width="33dp"
+                android:layout_height="75dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="45dp"
+                android:layout_height="75dp"
+                android:insetLeft="0dp"
+                android:insetTop="15dp"
+                android:insetRight="0dp"
+                android:insetBottom="15dp"
+                app:icon="@drawable/baseline_arrow_forward_24"
+                app:iconGravity="textEnd"
+                app:iconPadding="0dp"
+                app:iconSize="20dp" />
+
+        </GridLayout>
+    </FrameLayout>
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/select_week"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="10dp"
+        android:insetLeft="0dp"
+        android:insetTop="0dp"
+        android:insetRight="0dp"
+        android:insetBottom="0dp"
+        android:text="Select week"
+        app:icon="@drawable/baseline_view_timeline_24"
+        app:iconSize="30dp"
+        app:layout_constraintEnd_toStartOf="@id/current_day"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/stroke" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/current_day"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="20dp"
+        android:insetLeft="0dp"
+        android:insetTop="0dp"
+        android:insetRight="0dp"
+        android:insetBottom="0dp"
+        android:text="Current date"
+        app:icon="@drawable/baseline_today_24"
+        app:iconSize="30dp"
+        app:layout_constraintBottom_toBottomOf="@id/select_week"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/select_week"
+        app:layout_constraintTop_toTopOf="@id/select_week" />
+
 
     <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="15dp"
         android:id="@+id/lessons"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/select_week"
         tools:listitem="@layout/item_lesson" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
