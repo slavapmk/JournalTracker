@@ -9,7 +9,7 @@
     android:clickable="true">
 
     <TextView
-        android:id="@+id/order"
+        android:id="@+id/orderField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="23dp"
@@ -29,8 +29,8 @@
         android:text="9:30-11:00"
         android:textColor="@color/item_text"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@id/order"
-        app:layout_constraintStart_toEndOf="@id/order" />
+        app:layout_constraintBottom_toBottomOf="@id/orderField"
+        app:layout_constraintStart_toEndOf="@id/orderField" />
 
     <TextView
         android:id="@+id/cabinet"
@@ -40,7 +40,7 @@
         android:text="Ауд.: 235 (НО)"
         android:textColor="@color/item_text"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@id/order"
+        app:layout_constraintBottom_toBottomOf="@id/orderField"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
@@ -53,8 +53,8 @@
         android:textSize="25sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@id/order"
-        app:layout_constraintTop_toBottomOf="@id/order"
+        app:layout_constraintStart_toStartOf="@id/orderField"
+        app:layout_constraintTop_toBottomOf="@id/orderField"
         app:layout_constraintVertical_bias="0.224" />
 
     <TextView
