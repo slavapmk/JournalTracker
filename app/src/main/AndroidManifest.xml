@@ -13,6 +13,18 @@
         android:theme="@style/Theme.JournalTracker"
         tools:targetApi="31">
         <activity
+            android:name=".ui.StudentsEditActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.CampusEditActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.TimeEditActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.EditLessonActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.MainActivity"
             android:exported="true">
             <intent-filter>
