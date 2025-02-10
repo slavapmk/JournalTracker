@@ -40,4 +40,7 @@
     <string name="bar_item_schedule">Расписание</string>
     <string name="bar_item_export">Экспорт</string>
     <string name="bar_item_settings">Настройки</string>
+    <string name="export_day">Экспорт дня</string>
+    <string name="export_week">Экспорт недели</string>
+    <string name="export_semester">Экспорт семестра</string>
 </resources>
