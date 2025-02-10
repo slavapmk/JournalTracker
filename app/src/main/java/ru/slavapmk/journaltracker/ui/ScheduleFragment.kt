@@ -25,6 +25,11 @@ class ScheduleFragment : Fragment() {
             activity.startActivity(intent)
         }
 
+        binding.selectWeek.setOnClickListener {
+            val intent = Intent(activity, SelectWeekActivity::class.java)
+            activity.startActivity(intent)
+        }
+
         return binding.root
     }
 }
