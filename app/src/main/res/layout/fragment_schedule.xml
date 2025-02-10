@@ -140,8 +140,9 @@
         tools:listitem="@layout/item_lesson" />
 
     <com.google.android.material.button.MaterialButton
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:id="@+id/add_lesson_button"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
         android:insetLeft="0dp"
         android:insetTop="0dp"
         android:insetRight="0dp"
