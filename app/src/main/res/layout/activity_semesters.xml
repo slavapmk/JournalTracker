@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="40dp"
         android:layout_marginTop="10dp"
-        android:hint="Дата начала"
+        android:hint="@string/edit_semester_date_start"
         app:layout_constraintEnd_toEndOf="@id/footer"
         app:layout_constraintStart_toStartOf="@id/footer"
         app:layout_constraintTop_toTopOf="@id/footer">
@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="40dp"
         android:layout_marginTop="5dp"
-        android:hint="Дата конца"
+        android:hint="@string/edit_semester_date_end"
         app:layout_constraintEnd_toEndOf="@id/footer"
         app:layout_constraintStart_toStartOf="@id/footer"
         app:layout_constraintTop_toBottomOf="@id/startTimeField">
@@ -64,7 +64,7 @@
         app:iconGravity="textStart"
         app:iconPadding="0dp"
         app:iconSize="30dp"
-        android:text="Добавить"
+        android:text="@string/edit_semester_add"
         app:layout_constraintBottom_toBottomOf="@id/footer"
         app:layout_constraintEnd_toEndOf="@id/footer" />
 

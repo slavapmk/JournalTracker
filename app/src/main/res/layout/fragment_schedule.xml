@@ -9,7 +9,7 @@
         android:id="@+id/group_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="БББ2400"
+        android:text="@string/schedule_group"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,7 +23,7 @@
         android:id="@+id/semester"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="2 сем"
+        android:text="@string/schedule_semester"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -43,7 +43,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/group_name">
 
-
         <GridLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -54,7 +53,8 @@
 
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="UselessParent">
 
             <com.google.android.material.button.MaterialButton
                 android:layout_width="45dp"
@@ -130,7 +130,7 @@
         android:insetTop="0dp"
         android:insetRight="0dp"
         android:insetBottom="0dp"
-        android:text="Select week"
+        android:text="@string/schedule_select_week"
         app:icon="@drawable/baseline_view_timeline_24"
         app:iconSize="30dp"
         app:layout_constraintEnd_toStartOf="@id/current_day"
@@ -147,7 +147,7 @@
         android:insetTop="0dp"
         android:insetRight="0dp"
         android:insetBottom="0dp"
-        android:text="Current date"
+        android:text="@string/schedule_current_date"
         app:icon="@drawable/baseline_today_24"
         app:iconSize="30dp"
         app:layout_constraintBottom_toBottomOf="@id/select_week"

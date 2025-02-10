@@ -14,7 +14,7 @@
         android:layout_marginHorizontal="40dp"
         android:layout_marginTop="20dp"
 
-        android:hint="Название предмета"
+        android:hint="@string/edit_lesspon_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="40dp"
         android:layout_marginTop="10dp"
-        android:hint="Преподаватель"
+        android:hint="@string/edit_lesson_teacher"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/lessonField">
@@ -48,11 +48,10 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="40dp"
         android:layout_marginTop="10dp"
-        android:hint="Аудитория"
+        android:hint="@string/edit_lesson_cabinet"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/teacherField">
-
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -66,7 +65,7 @@
 
         android:layout_marginHorizontal="40dp"
         android:layout_marginTop="10dp"
-        android:hint="Корпус"
+        android:hint="@string/edit_lesson_campus"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/roomField">
@@ -84,7 +83,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="40dp"
         android:layout_marginTop="10dp"
-        android:hint="Номер занятия"
+        android:hint="@string/edit_lesson_order"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/campusField">
@@ -101,7 +100,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="40dp"
         android:layout_marginTop="10dp"
-        android:hint="Тип занятия"
+        android:hint="@string/edit_lesson_type"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/orderField">
@@ -122,7 +121,7 @@
         android:insetBottom="0dp"
         android:insetTop="0dp"
         app:iconGravity="textStart"
-        android:text="Добавить"
+        android:text="@string/edit_lesson_add"
         app:icon="@drawable/baseline_add_24"
         app:layout_constraintStart_toStartOf="@id/typeField"
         app:layout_constraintEnd_toEndOf="@id/typeField"

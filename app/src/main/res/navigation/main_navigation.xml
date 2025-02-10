@@ -12,20 +12,12 @@
         <action
             android:id="@+id/action_schedule_to_lesson"
             app:destination="@id/lesson" />
-        <action
-            android:id="@+id/action_schedule_to_calendar"
-            app:destination="@id/calendar" />
     </fragment>
     <fragment
         android:id="@+id/lesson"
         android:name="ru.slavapmk.journaltracker.ui.LessonFragment"
         android:label="Lesson"
         tools:layout="@layout/fragment_lesson" />
-    <fragment
-        android:id="@+id/calendar"
-        android:name="ru.slavapmk.journaltracker.ui.CalendarFragment"
-        android:label="Calendar"
-        tools:layout="@layout/fragment_calendar" />
     <fragment
         android:id="@+id/export"
         android:name="ru.slavapmk.journaltracker.ui.ExportFragment"

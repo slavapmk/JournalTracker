@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="40dp"
         android:layout_marginTop="10dp"
-        android:hint="Время начала"
+        android:hint="@string/edit_times_start"
         app:layout_constraintEnd_toEndOf="@id/footer"
         app:layout_constraintStart_toStartOf="@id/footer"
         app:layout_constraintTop_toTopOf="@id/footer">
@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="40dp"
         android:layout_marginTop="5dp"
-        android:hint="Время конца"
+        android:hint="@string/edit_times_end"
         app:layout_constraintEnd_toEndOf="@id/footer"
         app:layout_constraintStart_toStartOf="@id/footer"
         app:layout_constraintTop_toBottomOf="@id/startTimeField">
@@ -60,7 +60,7 @@
         android:insetTop="0dp"
         android:insetRight="0dp"
         android:insetBottom="0dp"
-        android:text="Добавить"
+        android:text="@string/edit_times_add"
         app:icon="@drawable/baseline_add_24"
         app:iconGravity="textStart"
         app:iconPadding="0dp"

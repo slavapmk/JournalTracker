@@ -9,7 +9,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ВС"
+        android:text="@string/item_date_weekday"
         android:textSize="11sp"
         app:layout_constraintBottom_toTopOf="@id/date"
         app:layout_constraintEnd_toEndOf="@id/date"
@@ -21,7 +21,7 @@
         android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="23"
+        android:text="@string/item_date_date"
         android:textSize="22sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -33,7 +33,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ЯНВ"
+        android:text="@string/item_date_month"
         android:textSize="11sp"
         app:layout_constraintTop_toBottomOf="@id/date"
         app:layout_constraintEnd_toEndOf="@id/date"
