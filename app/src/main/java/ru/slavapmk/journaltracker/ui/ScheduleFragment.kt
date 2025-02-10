@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import ru.slavapmk.journaltracker.databinding.ActivityEditLessonBinding
 import ru.slavapmk.journaltracker.databinding.FragmentScheduleBinding
 
 class ScheduleFragment : Fragment() {
@@ -30,7 +29,7 @@ class ScheduleFragment : Fragment() {
             activity.startActivity(intent)
         }
 
-        binding.semester.setOnClickListener {
+        binding.week.setOnClickListener {
             val intent = Intent(activity, SemestersActivity::class.java)
             activity.startActivity(intent)
         }

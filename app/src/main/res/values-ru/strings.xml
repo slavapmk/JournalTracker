@@ -26,7 +26,7 @@
     <string name="export_share_png">Поделиться PNG</string>
     <string name="export_save_png">Сохранить PNG</string>
     <string name="export_open_png">Открыть PNG</string>
-    <string name="schedule_semester">%d сем</string>
+    <string name="schedule_week">%d сем - %d нед</string>
     <string name="schedule_select_week">Выбрать неделю</string>
     <string name="schedule_current_date">Сегодня</string>
     <string name="settings_group_name">Название группы</string>
