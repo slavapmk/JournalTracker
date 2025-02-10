@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.TimeEditActivity">
+    tools:context=".ui.SemestersActivity">
 
     <View
         android:id="@+id/footer"
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="40dp"
         android:layout_marginTop="10dp"
-        android:hint="Время начала"
+        android:hint="Дата начала"
         app:layout_constraintEnd_toEndOf="@id/footer"
         app:layout_constraintStart_toStartOf="@id/footer"
         app:layout_constraintTop_toTopOf="@id/footer">
@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="40dp"
         android:layout_marginTop="5dp"
-        android:hint="Время конца"
+        android:hint="Дата конца"
         app:layout_constraintEnd_toEndOf="@id/footer"
         app:layout_constraintStart_toStartOf="@id/footer"
         app:layout_constraintTop_toBottomOf="@id/startTimeField">
@@ -60,20 +60,21 @@
         android:insetTop="0dp"
         android:insetRight="0dp"
         android:insetBottom="0dp"
-        android:text="Добавить"
         app:icon="@drawable/baseline_add_24"
         app:iconGravity="textStart"
         app:iconPadding="0dp"
         app:iconSize="30dp"
+        android:text="Добавить"
         app:layout_constraintBottom_toBottomOf="@id/footer"
         app:layout_constraintEnd_toEndOf="@id/footer" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/footer"
-        tools:listitem="@layout/item_time_edit" />
+        tools:listitem="@layout/item_semester"
+        />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

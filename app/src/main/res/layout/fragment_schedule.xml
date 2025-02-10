@@ -5,15 +5,43 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/group_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="БББ2400"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="20dp"
+        />
+
+    <TextView
+        android:clickable="true"
+        android:id="@+id/semester"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2 сем"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        />
+
     <FrameLayout
         android:id="@+id/stroke"
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/item_day_stroke_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/group_name">
 
 
         <GridLayout
@@ -143,18 +171,17 @@
         android:id="@+id/add_lesson_button"
         android:layout_width="55dp"
         android:layout_height="55dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="10dp"
         android:insetLeft="0dp"
         android:insetTop="0dp"
         android:insetRight="0dp"
         android:insetBottom="0dp"
         android:padding="0dp"
-        app:iconPadding="0dp"
         app:icon="@drawable/baseline_add_24"
         app:iconGravity="textEnd"
+        app:iconPadding="0dp"
         app:iconSize="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
