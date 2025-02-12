@@ -2,6 +2,7 @@ package ru.slavapmk.journaltracker.ui
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
@@ -12,13 +13,17 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import ru.slavapmk.journaltracker.R
 import ru.slavapmk.journaltracker.databinding.ActivityMainBinding
+import ru.slavapmk.journaltracker.models.MainActivityViewModel
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
+
     companion object {
         lateinit var fmanager: FragmentManager
     }
+
+    val viewModel by viewModels<MainActivityViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

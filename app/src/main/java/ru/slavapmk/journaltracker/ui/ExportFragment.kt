@@ -1,18 +1,21 @@
 package ru.slavapmk.journaltracker.ui
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.viewpager.widget.PagerAdapter
+import androidx.fragment.app.viewModels
 import ru.slavapmk.journaltracker.R
 import ru.slavapmk.journaltracker.databinding.FragmentExportBinding
+import ru.slavapmk.journaltracker.models.ExportPagerAdapter
+import ru.slavapmk.journaltracker.models.ExportViewModel
 
 class ExportFragment : Fragment() {
     private lateinit var binding: FragmentExportBinding
     private val activity: MainActivity by lazy { requireActivity() as MainActivity }
+    val viewModel by viewModels<ExportViewModel>()
+
     private val tabsNames by lazy {
         listOf(
             getString(R.string.export_tab_day),
@@ -42,7 +45,7 @@ class ExportFragment : Fragment() {
         super.onCreate(savedInstanceState)
         binding = FragmentExportBinding.inflate(layoutInflater)
 
-        binding.pager.adapter = ExportAdapter(
+        binding.pager.adapter = ExportPagerAdapter(
             requireContext(),
             tabsNames,
             tabsLayouts
@@ -56,41 +59,8 @@ class ExportFragment : Fragment() {
                 i
             )?.setIcon(tabIcon)
         }
-
         return binding.root
     }
-
 }
 
-class ExportAdapter(
-    private val context: Context,
-    private val listNames: List<String>,
-    private val listLayouts: List<Int>,
-) : PagerAdapter() {
-    override fun getCount(): Int {
-        return 3
-    }
 
-    override fun isViewFromObject(view: View, `object`: Any): Boolean {
-        return view == `object`
-    }
-
-    override fun getPageTitle(position: Int): CharSequence {
-        return listNames[position]
-    }
-
-    override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        val inflater = LayoutInflater.from(context)
-        val layout = inflater.inflate(
-            listLayouts[position],
-            container,
-            false
-        )
-        container.addView(layout)
-        return layout
-    }
-
-    override fun destroyItem(collection: ViewGroup, position: Int, `object`: Any) {
-        collection.removeView(`object` as View?)
-    }
-}

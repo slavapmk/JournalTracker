@@ -2,19 +2,19 @@ package ru.slavapmk.journaltracker.ui
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.navigation.ui.AppBarConfiguration
 import ru.slavapmk.journaltracker.R
 import ru.slavapmk.journaltracker.databinding.ActivityCampusEditBinding
-import ru.slavapmk.journaltracker.databinding.ActivityEditLessonBinding
-import ru.slavapmk.journaltracker.databinding.ActivityMainBinding
+import ru.slavapmk.journaltracker.models.CampusEditViewModel
 import ru.slavapmk.journaltracker.ui.MainActivity.Companion.fmanager
 
 class CampusEditActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCampusEditBinding
+    val viewModel by viewModels<CampusEditViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
