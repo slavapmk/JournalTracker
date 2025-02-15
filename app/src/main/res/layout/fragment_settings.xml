@@ -16,8 +16,11 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/groupInput"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:maxLines="1" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -32,8 +35,11 @@
         app:layout_constraintTop_toBottomOf="@id/groupField">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/weeksInput"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:maxLines="1" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -48,8 +54,11 @@
         app:layout_constraintTop_toBottomOf="@id/weeksField">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/weeksFormatInput"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:maxLines="1" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -64,8 +73,11 @@
         app:layout_constraintTop_toBottomOf="@id/weeksFormatField">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/studentsFormatInput"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:maxLines="1" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton

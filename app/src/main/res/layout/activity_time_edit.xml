@@ -28,6 +28,7 @@
         app:layout_constraintTop_toTopOf="@id/footer">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/startTimeInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -45,6 +46,7 @@
         app:layout_constraintTop_toBottomOf="@id/startTimeField">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/endTimeInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

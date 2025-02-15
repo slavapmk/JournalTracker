@@ -8,7 +8,7 @@
     tools:context=".ui.EditLessonActivity">
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/lessonField"
+        android:id="@+id/studentField"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="40dp"
@@ -34,7 +34,7 @@
         android:hint="@string/edit_lesson_teacher"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/lessonField">
+        app:layout_constraintTop_toBottomOf="@id/studentField">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
