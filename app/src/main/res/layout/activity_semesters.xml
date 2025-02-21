@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/startTimeField"
+        android:id="@+id/codename_field"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="40dp"
@@ -43,7 +43,7 @@
         android:hint="@string/edit_semester_date_end"
         app:layout_constraintEnd_toEndOf="@id/footer"
         app:layout_constraintStart_toStartOf="@id/footer"
-        app:layout_constraintTop_toBottomOf="@id/startTimeField">
+        app:layout_constraintTop_toBottomOf="@id/codename_field">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/end_time_input"

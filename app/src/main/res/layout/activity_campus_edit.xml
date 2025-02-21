@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/startTimeField"
+        android:id="@+id/codename_field"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="40dp"
@@ -28,13 +28,14 @@
         app:layout_constraintTop_toTopOf="@id/footer">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/codename_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/endTimeField"
+        android:id="@+id/name_field"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="40dp"
@@ -42,9 +43,10 @@
         android:hint="@string/campus_name"
         app:layout_constraintEnd_toEndOf="@id/footer"
         app:layout_constraintStart_toStartOf="@id/footer"
-        app:layout_constraintTop_toBottomOf="@id/startTimeField">
+        app:layout_constraintTop_toBottomOf="@id/codename_field">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/name_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -60,11 +62,11 @@
         android:insetTop="0dp"
         android:insetRight="0dp"
         android:insetBottom="0dp"
+        android:text="@string/campus_add"
         app:icon="@drawable/baseline_add_24"
         app:iconGravity="textStart"
         app:iconPadding="0dp"
         app:iconSize="30dp"
-        android:text="@string/campus_add"
         app:layout_constraintBottom_toBottomOf="@id/footer"
         app:layout_constraintEnd_toEndOf="@id/footer" />
 
