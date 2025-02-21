@@ -1,4 +1,4 @@
-package ru.slavapmk.journaltracker.models
+package ru.slavapmk.journaltracker.viewmodels
 
 import android.content.Context
 import android.view.LayoutInflater

@@ -11,7 +11,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import ru.slavapmk.journaltracker.R
 import ru.slavapmk.journaltracker.databinding.ActivityStudentsEditBinding
-import ru.slavapmk.journaltracker.models.StudentsEditViewModel
+import ru.slavapmk.journaltracker.viewmodels.StudentsEditViewModel
 import ru.slavapmk.journaltracker.ui.MainActivity.Companion.fmanager
 
 class StudentsEditActivity : AppCompatActivity() {

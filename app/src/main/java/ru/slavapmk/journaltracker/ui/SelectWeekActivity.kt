@@ -9,7 +9,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import ru.slavapmk.journaltracker.R
 import ru.slavapmk.journaltracker.databinding.ActivitySelectWeekBinding
-import ru.slavapmk.journaltracker.models.SelectWeekViewModel
+import ru.slavapmk.journaltracker.viewmodels.SelectWeekViewModel
 import ru.slavapmk.journaltracker.ui.MainActivity.Companion.fmanager
 
 class SelectWeekActivity : AppCompatActivity() {

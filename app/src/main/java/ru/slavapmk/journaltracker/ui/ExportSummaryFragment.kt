@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import ru.slavapmk.journaltracker.databinding.FragmentExportSemesterBinding
-import ru.slavapmk.journaltracker.models.ExportSummaryViewModel
+import ru.slavapmk.journaltracker.viewmodels.ExportSummaryViewModel
 
 class ExportSummaryFragment : Fragment() {
     private lateinit var binding: FragmentExportSemesterBinding

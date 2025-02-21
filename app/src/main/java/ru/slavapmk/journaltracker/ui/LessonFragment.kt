@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import ru.slavapmk.journaltracker.R
 import ru.slavapmk.journaltracker.databinding.FragmentLessonBinding
-import ru.slavapmk.journaltracker.models.LessonViewModel
+import ru.slavapmk.journaltracker.viewmodels.LessonViewModel
 import java.util.Calendar
 
 class LessonFragment : Fragment() {

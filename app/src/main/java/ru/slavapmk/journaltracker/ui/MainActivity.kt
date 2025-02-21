@@ -13,7 +13,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import ru.slavapmk.journaltracker.R
 import ru.slavapmk.journaltracker.databinding.ActivityMainBinding
-import ru.slavapmk.journaltracker.models.MainActivityViewModel
+import ru.slavapmk.journaltracker.viewmodels.MainActivityViewModel
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding

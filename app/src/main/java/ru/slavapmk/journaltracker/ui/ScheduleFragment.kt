@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import ru.slavapmk.journaltracker.databinding.FragmentScheduleBinding
-import ru.slavapmk.journaltracker.models.ScheduleViewModel
+import ru.slavapmk.journaltracker.viewmodels.ScheduleViewModel
 
 class ScheduleFragment : Fragment() {
     private lateinit var binding: FragmentScheduleBinding

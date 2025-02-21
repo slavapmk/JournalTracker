@@ -8,8 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import ru.slavapmk.journaltracker.R
 import ru.slavapmk.journaltracker.databinding.FragmentExportBinding
-import ru.slavapmk.journaltracker.models.ExportPagerAdapter
-import ru.slavapmk.journaltracker.models.ExportViewModel
+import ru.slavapmk.journaltracker.viewmodels.ExportPagerAdapter
+import ru.slavapmk.journaltracker.viewmodels.ExportViewModel
 
 class ExportFragment : Fragment() {
     private lateinit var binding: FragmentExportBinding
