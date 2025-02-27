@@ -1,4 +1,4 @@
-package ru.slavapmk.journalTracker.ui
+package ru.slavapmk.journalTracker.ui.campusEdit
 
 import android.os.Bundle
 import android.text.Editable
@@ -10,46 +10,47 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import ru.slavapmk.journalTracker.R
-import ru.slavapmk.journalTracker.databinding.ActivitySemestersBinding
-import ru.slavapmk.journalTracker.viewModels.SemestersViewModel
+import ru.slavapmk.journalTracker.databinding.ActivityCampusEditBinding
+import ru.slavapmk.journalTracker.viewModels.CampusEditViewModel
 import ru.slavapmk.journalTracker.ui.MainActivity.Companion.fmanager
 
-class SemestersActivity : AppCompatActivity() {
-    private lateinit var binding: ActivitySemestersBinding
-    val viewModel by viewModels<SemestersViewModel>()
+class CampusEditActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityCampusEditBinding
+    val viewModel by viewModels<CampusEditViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         fmanager = supportFragmentManager
-        binding = ActivitySemestersBinding.inflate(layoutInflater)
+        binding = ActivityCampusEditBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 5)
             insets
         }
 
-        binding.startTimeInput.addTextChangedListener(object : TextWatcher {
+        binding.codenameInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewModel.startDate = s.toString()
+                viewModel.codename = s.toString()
             }
 
             override fun afterTextChanged(s: Editable?) {}
         })
-        binding.endTimeInput.addTextChangedListener(object : TextWatcher {
+        binding.nameInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewModel.endDate = s.toString()
+                viewModel.name = s.toString()
             }
 
             override fun afterTextChanged(s: Editable?) {}
         })
-        binding.startTimeInput.setText(viewModel.startDate)
-        binding.endTimeInput.setText(viewModel.endDate)
+        binding.codenameInput.setText(viewModel.codename)
+        binding.nameInput.setText(viewModel.name)
     }
 }

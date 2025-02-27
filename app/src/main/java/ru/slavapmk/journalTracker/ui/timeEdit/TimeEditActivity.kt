@@ -1,4 +1,4 @@
-package ru.slavapmk.journalTracker.ui
+package ru.slavapmk.journalTracker.ui.timeEdit
 
 import android.os.Bundle
 import android.text.Editable

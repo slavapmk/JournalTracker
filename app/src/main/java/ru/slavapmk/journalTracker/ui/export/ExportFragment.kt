@@ -1,4 +1,4 @@
-package ru.slavapmk.journalTracker.ui
+package ru.slavapmk.journalTracker.ui.export
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import ru.slavapmk.journalTracker.R
 import ru.slavapmk.journalTracker.databinding.FragmentExportBinding
+import ru.slavapmk.journalTracker.ui.MainActivity
 import ru.slavapmk.journalTracker.viewModels.ExportPagerAdapter
 import ru.slavapmk.journalTracker.viewModels.ExportViewModel
 

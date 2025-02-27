@@ -1,4 +1,4 @@
-package ru.slavapmk.journalTracker.ui
+package ru.slavapmk.journalTracker.ui.settings
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,7 +10,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import ru.slavapmk.journalTracker.databinding.FragmentSettingsBinding
+import ru.slavapmk.journalTracker.ui.MainActivity
+import ru.slavapmk.journalTracker.ui.campusEdit.CampusEditActivity
 import ru.slavapmk.journalTracker.ui.studentsedit.StudentsEditActivity
+import ru.slavapmk.journalTracker.ui.timeEdit.TimeEditActivity
 import ru.slavapmk.journalTracker.viewModels.SettingsViewModel
 
 class SettingsFragment : Fragment() {

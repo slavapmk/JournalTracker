@@ -1,4 +1,4 @@
-package ru.slavapmk.journalTracker.ui
+package ru.slavapmk.journalTracker.ui.selectWeek
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge

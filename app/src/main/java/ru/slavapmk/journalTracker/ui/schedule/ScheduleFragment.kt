@@ -12,8 +12,8 @@ import ru.slavapmk.journalTracker.databinding.FragmentScheduleBinding
 import ru.slavapmk.journalTracker.ui.lessonEdit.LessonEditActivity
 import ru.slavapmk.journalTracker.ui.lesson.LessonActivity
 import ru.slavapmk.journalTracker.ui.MainActivity
-import ru.slavapmk.journalTracker.ui.SelectWeekActivity
-import ru.slavapmk.journalTracker.ui.SemestersActivity
+import ru.slavapmk.journalTracker.ui.selectWeek.SelectWeekActivity
+import ru.slavapmk.journalTracker.ui.semesters.SemestersActivity
 import ru.slavapmk.journalTracker.viewModels.ScheduleViewModel
 
 class ScheduleFragment : Fragment() {
