@@ -24,7 +24,7 @@ class StudentsEditActivity : AppCompatActivity() {
     private lateinit var binding: ActivityStudentsEditBinding
     val viewModel by viewModels<StudentsEditViewModel>()
 
-    val studentsEditListAdapter by lazy {
+    private val studentsEditListAdapter by lazy {
         StudentsEditListAdapter(viewModel.studentsList) { _, student ->
             val indexOf = viewModel.studentsList.indexOf(student)
             val size = viewModel.studentsList.size
