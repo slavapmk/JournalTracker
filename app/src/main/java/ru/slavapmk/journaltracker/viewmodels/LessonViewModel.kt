@@ -1,22 +1,24 @@
 package ru.slavapmk.journaltracker.viewmodels
 
 import androidx.lifecycle.ViewModel
+import ru.slavapmk.journaltracker.datamodels.lesson.LessonInfo
 import ru.slavapmk.journaltracker.datamodels.lesson.LessonStudentListItem
-import java.util.Date
-import kotlin.properties.Delegates
 
 class LessonViewModel : ViewModel() {
-    var index by Delegates.notNull<Int>()
-    var name by Delegates.notNull<String>()
-    var date by Delegates.notNull<Date>()
-    var teacher by Delegates.notNull<String>()
-    val students by lazy {
-        mutableListOf(
+    var info: LessonInfo = LessonInfo(
+        1,
+        "Физика",
+        "Л",
+        "Носков",
+        27, 2, 25,
+        11, 15,
+        12, 30,
+        listOf(
             LessonStudentListItem("Первый", false),
             LessonStudentListItem("Второй", true),
             LessonStudentListItem("Третий", true),
             LessonStudentListItem("Четвёртый", false),
             LessonStudentListItem("Пятый", true),
         )
-    }
+    )
 }

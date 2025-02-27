@@ -10,7 +10,6 @@ import ru.slavapmk.journaltracker.R
 import ru.slavapmk.journaltracker.databinding.ActivityLessonBinding
 import ru.slavapmk.journaltracker.ui.MainActivity.Companion.fmanager
 import ru.slavapmk.journaltracker.viewmodels.LessonViewModel
-import java.util.Calendar
 
 class LessonActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLessonBinding
@@ -26,21 +25,19 @@ class LessonActivity : AppCompatActivity() {
 
         binding.lessonName.text = getString(
             R.string.students_lesson_name,
-            viewModel.index,
-            viewModel.name
+            viewModel.info.index + 1,
+            viewModel.info.name,
+            viewModel.info.type
         )
-
-        val instance = Calendar.getInstance()
-        instance.time = viewModel.date
 
         binding.lessonDate.text = getString(
             R.string.students_lesson_date,
-            instance.get(Calendar.DAY_OF_MONTH),
-            instance.get(Calendar.MONTH),
-            instance.get(Calendar.YEAR)
+            viewModel.info.dateDay,
+            viewModel.info.dateMonth,
+            viewModel.info.dateYear
         )
 
-        binding.lessonTeacher.text = viewModel.teacher
+        binding.lessonTeacher.text = viewModel.info.teacher
 
         val lessonId = if (!intent.hasExtra("LESSON_ID")) {
             throw RuntimeException("Lesson id not catch")
@@ -48,9 +45,14 @@ class LessonActivity : AppCompatActivity() {
             intent.getIntExtra("LESSON_ID", -1)
         }
 
+        binding.lessonTimes.text = getString(
+            R.string.item_lesson_times,
+            viewModel.info.startHour, viewModel.info.startMinute,
+            viewModel.info.endHour, viewModel.info.endMinute
+        )
         binding.students.layoutManager = LinearLayoutManager(this)
         binding.students.adapter = LessonStudentsAdapter(
-            viewModel.students
+            viewModel.info.students
         )
     }
 }

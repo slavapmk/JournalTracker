@@ -11,7 +11,7 @@ import ru.slavapmk.journaltracker.R
 import ru.slavapmk.journaltracker.datamodels.lesson.LessonStudentListItem
 
 class LessonStudentsAdapter(
-    private val students: MutableList<LessonStudentListItem>
+    private val students: List<LessonStudentListItem>
 ) : RecyclerView.Adapter<LessonStudentsViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LessonStudentsViewHolder {
         val inflate = LayoutInflater.from(parent.context)
@@ -24,7 +24,10 @@ class LessonStudentsAdapter(
         val student = students[position]
         holder.index.text = holder.context.getString(R.string.item_edit_student_order, position + 1)
         holder.name.text = holder.context.getString(R.string.item_edit_student_name, student.name)
-        student.visited = holder.visited.isChecked
+        holder.visited.isChecked = student.visited
+        holder.visited.setOnCheckedChangeListener { _, isChecked ->
+            student.visited = isChecked
+        }
     }
 }
 

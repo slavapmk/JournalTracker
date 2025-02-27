@@ -26,8 +26,8 @@
     <string name="export_share_png">Share PNG</string>
     <string name="export_save_png">Save PNG</string>
     <string name="export_open_png">Open PNG</string>
-    <string name="students_lesson_name" translatable="false">%d. %s</string>
-    <string name="students_lesson_date" translatable="false">%d.%d.%d</string>
+    <string name="students_lesson_name" translatable="false">%d. %s (%s)</string>
+    <string name="students_lesson_date" translatable="false">%02d.%02d.%02d</string>
     <string name="students_lesson_teacher" translatable="false">%s</string>
     <string name="schedule_group" translatable="false">%s</string>
     <string name="schedule_week">%d sem - %d week</string>
@@ -47,20 +47,20 @@
     <string name="item_date_date" translatable="false">%d</string>
     <string name="item_date_month" translatable="false">%s</string>
     <string name="item_lesson_order" translatable="false">%d.</string>
-    <string name="item_lesson_times" translatable="false">%d:%d-%d:%d</string>
+    <string name="item_lesson_times" translatable="false">%02d:%02d - %02d:%02d</string>
     <string name="item_lesson_cabinet">Cab.: %d (%s)</string>
     <string name="item_lesson_name" translatable="false">%s (%s)</string>
     <string name="item_lesson_teacher" translatable="false">%s</string>
     <string name="item_semester_order" translatable="false">%d.</string>
-    <string name="item_semester_dates" translatable="false">%d %s - %d %s</string>
+    <string name="item_semester_dates" translatable="false">%02d %s - %02d %s</string>
     <string name="item_student_order" translatable="false">%d.</string>
     <string name="item_student_name" translatable="false">%s</string>
     <string name="item_edit_student_order" translatable="false">%d.</string>
     <string name="item_edit_student_name" translatable="false">%s</string>
     <string name="item_edit_time_order" translatable="false">%d.</string>
-    <string name="item_edit_time" translatable="false">%d:%d - %d:%d</string>
+    <string name="item_edit_time" translatable="false">%02d:%02d - %02d:%02d</string>
     <string name="item_week_order" translatable="false">%d.</string>
-    <string name="item_week_dates" translatable="false">%d %s - %d %s</string>
+    <string name="item_week_dates" translatable="false">%02d %s - %02d %s</string>
     <string name="campus_codename">Codename</string>
     <string name="export_tab_day">Day</string>
     <string name="bar_item_schedule">Schedule</string>

@@ -41,6 +41,9 @@ class ScheduleLessonsAdapter(
             R.string.item_lesson_teacher,
             lesson.teacher
         )
+        holder.itemView.setOnClickListener {
+            onSelect(lesson)
+        }
     }
 }
 
