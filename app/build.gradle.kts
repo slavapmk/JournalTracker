@@ -5,13 +5,13 @@ plugins {
 }
 
 android {
-    namespace = "ru.slavapmk.journaltracker"
+    namespace = "ru.slavapmk.journalTracker"
     compileSdk = 35
 
     defaultConfig {
         versionCode = 4
         versionName = "0.4"
-        applicationId = "ru.slavapmk.journaltracker"
+        applicationId = "ru.slavapmk.journalTracker"
         minSdk = 29
         targetSdk = 35
 
