@@ -36,6 +36,6 @@ class StudentEditListViewHolder(
     var context: Context, itemView: View
 ) : RecyclerView.ViewHolder(itemView) {
     var index: TextView = itemView.findViewById(R.id.position)
-    var name: TextView = itemView.findViewById(R.id.name)
+    var name: TextView = itemView.findViewById(R.id.times)
     var delete: MaterialButton = itemView.findViewById(R.id.delete_button)
 }
