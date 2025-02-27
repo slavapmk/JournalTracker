@@ -36,7 +36,7 @@ class SelectWeekActivity : AppCompatActivity() {
         }
 
         viewModel.semester = Semester(
-            2, 2, 2025,
+            1, 2, 2025,
             10, 6, 2025
         )
         viewModel.weeks = generateWeeks(viewModel.semester)
