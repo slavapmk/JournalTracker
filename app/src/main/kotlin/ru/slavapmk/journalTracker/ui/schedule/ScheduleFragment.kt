@@ -39,7 +39,7 @@ class ScheduleFragment : Fragment() {
             activity.startActivity(intent)
         }
 
-        binding.week.setOnClickListener {
+        binding.semester.setOnClickListener {
             val intent = Intent(activity, SemestersActivity::class.java)
             activity.startActivity(intent)
         }
