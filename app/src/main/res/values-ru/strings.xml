@@ -9,7 +9,7 @@
     <string name="edit_lesson_campus">Корпус</string>
     <string name="edit_lesson_order">Номер занятия</string>
     <string name="edit_lesson_type">Тип занятия</string>
-    <string name="edit_lesson_add">Добавить</string>
+    <string name="edit_lesson_apply">Применить</string>
     <string name="edit_semester_date_start">Дата начала</string>
     <string name="edit_semester_date_end">Дата конца</string>
     <string name="edit_semester_add">Добавить</string>
@@ -26,11 +26,12 @@
     <string name="export_share_png">Поделиться PNG</string>
     <string name="export_save_png">Сохранить PNG</string>
     <string name="export_open_png">Открыть PNG</string>
-    <string name="schedule_week">%d сем - %d нед</string>
+    <string name="schedule_week">%d неделя (%s)</string>
+    <string name="schedule_semester">%d семестр</string>
     <string name="schedule_select_week">Выбрать неделю</string>
     <string name="schedule_current_date">Сегодня</string>
     <string name="settings_group_name">Название группы</string>
-    <string name="settings_weeks_types">Кол-во тип недель</string>
+    <string name="settings_weeks_types_title">Кол-во тип недель</string>
     <string name="settings_weeks_format">Формат типа недели</string>
     <string name="settings_attendance_format">Формат отметок</string>
     <string name="settings_edit_timetable">Редактор занятий</string>
@@ -43,4 +44,6 @@
     <string name="export_day">Экспорт дня</string>
     <string name="export_week">Экспорт недели</string>
     <string name="export_semester">Экспорт семестра</string>
+    <string name="week_format_type_even_uneven">Чётный / Нечётный</string>
+    <string name="week_format_type_up_down">Верхняя / Нижняя</string>
 </resources>

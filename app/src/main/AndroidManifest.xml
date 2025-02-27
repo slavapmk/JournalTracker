@@ -13,29 +13,31 @@
         android:theme="@style/Theme.JournalTracker"
         tools:targetApi="31">
         <activity
-            android:name=".ui.SemestersActivity"
+            android:name=".ui.semesters.SemestersActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.SelectWeekActivity"
+            android:name=".ui.selectWeek.SelectWeekActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.StudentsEditActivity"
+            android:name=".ui.studentsedit.StudentsEditActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.CampusEditActivity"
+            android:name=".ui.campusEdit.CampusEditActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.TimeEditActivity"
+            android:name=".ui.timeEdit.TimeEditActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.EditLessonActivity"
+            android:name=".ui.lessonEdit.LessonEditActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.lesson.LessonActivity"
             android:exported="false" />
         <activity
             android:name=".ui.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

@@ -8,7 +8,7 @@
     <string name="edit_lesson_campus">Campus</string>
     <string name="edit_lesson_order">Lesson order</string>
     <string name="edit_lesson_type">Lesson type</string>
-    <string name="edit_lesson_add">Add</string>
+    <string name="edit_lesson_apply">Apply</string>
     <string name="edit_semester_date_start">Start date</string>
     <string name="edit_semester_date_end">End date</string>
     <string name="edit_semester_add">Add</string>
@@ -26,15 +26,15 @@
     <string name="export_share_png">Share PNG</string>
     <string name="export_save_png">Save PNG</string>
     <string name="export_open_png">Open PNG</string>
-    <string name="students_lesson_name" translatable="false">%d. %s</string>
-    <string name="students_lesson_date" translatable="false">%d.%d.%d</string>
+    <string name="students_lesson_name" translatable="false">%d. %s (%s)</string>
+    <string name="students_lesson_date" translatable="false">%02d.%02d.%02d</string>
     <string name="students_lesson_teacher" translatable="false">%s</string>
-    <string name="schedule_group" translatable="false">%s</string>
-    <string name="schedule_week">%d sem - %d week</string>
+    <string name="schedule_week">%d week (%s)</string>
+    <string name="schedule_semester">%d semester</string>
     <string name="schedule_select_week">Select week</string>
     <string name="schedule_current_date">Today</string>
     <string name="settings_group_name">Group name</string>
-    <string name="settings_weeks_types">Week types</string>
+    <string name="settings_weeks_types_title">Week types</string>
     <string name="settings_weeks_format">Week type format</string>
     <string name="settings_attendance_format">Attedance format</string>
     <string name="settings_edit_timetable">Edit timetable</string>
@@ -47,20 +47,20 @@
     <string name="item_date_date" translatable="false">%d</string>
     <string name="item_date_month" translatable="false">%s</string>
     <string name="item_lesson_order" translatable="false">%d.</string>
-    <string name="item_lesson_times" translatable="false">%d:%d-%d:%d</string>
+    <string name="item_lesson_times" translatable="false">%02d:%02d - %02d:%02d</string>
     <string name="item_lesson_cabinet">Cab.: %d (%s)</string>
-    <string name="item_lesson_name" translatable="false">%s</string>
+    <string name="item_lesson_name" translatable="false">%s (%s)</string>
     <string name="item_lesson_teacher" translatable="false">%s</string>
     <string name="item_semester_order" translatable="false">%d.</string>
-    <string name="item_semester_dates" translatable="false">%d %s - %d %s</string>
+    <string name="item_semester_dates" translatable="false">%02d.%02d.%02d - %02d.%02d.%02d</string>
     <string name="item_student_order" translatable="false">%d.</string>
     <string name="item_student_name" translatable="false">%s</string>
     <string name="item_edit_student_order" translatable="false">%d.</string>
     <string name="item_edit_student_name" translatable="false">%s</string>
     <string name="item_edit_time_order" translatable="false">%d.</string>
-    <string name="item_edit_time" translatable="false">%d:%d - %d:%d</string>
-    <string name="item_week_order" translatable="false">%d.</string>
-    <string name="item_week_dates" translatable="false">%d %s - %d %s</string>
+    <string name="item_edit_time" translatable="false">%02d:%02d - %02d:%02d</string>
+    <string name="item_week_order" translatable="false">%02d.</string>
+    <string name="item_week_dates" translatable="false">%02d.%02d.%02d - %02d.%02d.%02d</string>
     <string name="campus_codename">Codename</string>
     <string name="export_tab_day">Day</string>
     <string name="bar_item_schedule">Schedule</string>
@@ -69,4 +69,9 @@
     <string name="export_day">Export day</string>
     <string name="export_week">Export week</string>
     <string name="export_semester">Export semester</string>
+    <string name="settings_weeks_types" translatable="false">%d</string>
+    <string name="week_format_type_even_uneven">Even / Uneven</string>
+    <string name="week_format_type_up_down">Up / Down</string>
+    <string name="attendance_format_type_plus_minus" translatable="false">+ / -</string>
+    <string name="attendance_format_type_skip_hours" translatable="false">• / 2</string>
 </resources>

@@ -6,21 +6,13 @@
     app:startDestination="@id/schedule">
     <fragment
         android:id="@+id/schedule"
-        android:name="ru.slavapmk.journaltracker.ui.ScheduleFragment"
+        android:name="ru.slavapmk.journalTracker.ui.schedule.ScheduleFragment"
         android:label="Schedule"
         tools:layout="@layout/fragment_schedule">
-        <action
-            android:id="@+id/action_schedule_to_lesson"
-            app:destination="@id/lesson" />
     </fragment>
     <fragment
-        android:id="@+id/lesson"
-        android:name="ru.slavapmk.journaltracker.ui.LessonFragment"
-        android:label="Lesson"
-        tools:layout="@layout/fragment_lesson" />
-    <fragment
         android:id="@+id/export"
-        android:name="ru.slavapmk.journaltracker.ui.ExportFragment"
+        android:name="ru.slavapmk.journalTracker.ui.export.ExportFragment"
         android:label="Export"
         tools:layout="@layout/fragment_export" >
 <!--        <action-->
@@ -50,7 +42,7 @@
 <!--        tools:layout="@layout/fragment_export_summary" />-->
     <fragment
         android:id="@+id/settings"
-        android:name="ru.slavapmk.journaltracker.ui.SettingsFragment"
+        android:name="ru.slavapmk.journalTracker.ui.settings.SettingsFragment"
         android:label="Settings"
         tools:layout="@layout/fragment_settings" />
 </navigation>
