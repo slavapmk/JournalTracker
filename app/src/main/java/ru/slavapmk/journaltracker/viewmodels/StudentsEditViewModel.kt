@@ -1,17 +1,17 @@
 package ru.slavapmk.journaltracker.viewmodels
 
 import androidx.lifecycle.ViewModel
-import ru.slavapmk.journaltracker.datamodels.ListStudentItem
+import ru.slavapmk.journaltracker.datamodels.editstudent.EditStudentListItem
 
 class StudentsEditViewModel : ViewModel() {
     var studentName = ""
-    val studentsList: MutableList<ListStudentItem> by lazy {
+    val studentsList: MutableList<EditStudentListItem> by lazy {
         mutableListOf(
-            ListStudentItem("Первый"),
-            ListStudentItem("Второй"),
-            ListStudentItem("Третий"),
-            ListStudentItem("Четвёртый"),
-            ListStudentItem("Пятый"),
+            EditStudentListItem("Первый"),
+            EditStudentListItem("Второй"),
+            EditStudentListItem("Третий"),
+            EditStudentListItem("Четвёртый"),
+            EditStudentListItem("Пятый"),
         )
     }
 }

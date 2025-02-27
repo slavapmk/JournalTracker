@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import ru.slavapmk.journaltracker.R
 import ru.slavapmk.journaltracker.databinding.FragmentLessonBinding
 import ru.slavapmk.journaltracker.viewmodels.LessonViewModel
@@ -40,6 +41,12 @@ class LessonFragment : Fragment() {
         )
 
         binding.lessonTeacher.text = viewModel.teacher
+
+
+        binding.students.layoutManager = LinearLayoutManager(requireContext())
+        binding.students.adapter = LessonStudentsAdapter(
+            viewModel.students
+        )
 
         return binding.root
     }
