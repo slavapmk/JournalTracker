@@ -25,7 +25,7 @@ class StudentsEditActivity : AppCompatActivity() {
     val viewModel by viewModels<StudentsEditViewModel>()
 
     val studentsEditListAdapter by lazy {
-        StudentsEditListAdapter(viewModel.studentsList) { i, student ->
+        StudentsEditListAdapter(viewModel.studentsList) { _, student ->
             val indexOf = viewModel.studentsList.indexOf(student)
             val size = viewModel.studentsList.size
             viewModel.studentsList.remove(student)
@@ -78,7 +78,7 @@ class StudentsEditActivity : AppCompatActivity() {
                 imm?.hideSoftInputFromWindow(view.windowToken, 0)
             }
         }
-        binding.studentInput.setOnEditorActionListener { v, actionId, event ->
+        binding.studentInput.setOnEditorActionListener { _, actionId, event ->
             if ((event != null && (event.keyCode == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
                 addStudentFromInput()
             }
