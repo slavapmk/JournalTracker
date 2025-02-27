@@ -87,7 +87,10 @@ class StudentsEditActivity : AppCompatActivity() {
     }
 
     private fun addStudentFromInput() {
-        val text = binding.studentInput.text.toString()
+        val text = binding.studentInput.text?.toString()
+        if (text.isNullOrEmpty()) {
+            return
+        }
         binding.studentInput.text?.clear()
         viewModel.studentsList.add(
             StudentsEditListItem(
