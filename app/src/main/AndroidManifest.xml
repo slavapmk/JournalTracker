@@ -31,6 +31,9 @@
             android:name=".ui.EditLessonActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.LessonActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.MainActivity"
             android:exported="true">
             <intent-filter>

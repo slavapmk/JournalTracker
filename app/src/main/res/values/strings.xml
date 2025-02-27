@@ -49,7 +49,7 @@
     <string name="item_lesson_order" translatable="false">%d.</string>
     <string name="item_lesson_times" translatable="false">%d:%d-%d:%d</string>
     <string name="item_lesson_cabinet">Cab.: %d (%s)</string>
-    <string name="item_lesson_name" translatable="false">%s</string>
+    <string name="item_lesson_name" translatable="false">%s (%s)</string>
     <string name="item_lesson_teacher" translatable="false">%s</string>
     <string name="item_semester_order" translatable="false">%d.</string>
     <string name="item_semester_dates" translatable="false">%d %s - %d %s</string>

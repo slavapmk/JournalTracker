@@ -9,15 +9,7 @@
         android:name="ru.slavapmk.journaltracker.ui.ScheduleFragment"
         android:label="Schedule"
         tools:layout="@layout/fragment_schedule">
-        <action
-            android:id="@+id/action_schedule_to_lesson"
-            app:destination="@id/lesson" />
     </fragment>
-    <fragment
-        android:id="@+id/lesson"
-        android:name="ru.slavapmk.journaltracker.ui.LessonFragment"
-        android:label="Lesson"
-        tools:layout="@layout/fragment_lesson" />
     <fragment
         android:id="@+id/export"
         android:name="ru.slavapmk.journaltracker.ui.ExportFragment"

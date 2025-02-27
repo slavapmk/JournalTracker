@@ -58,6 +58,7 @@
         app:layout_constraintVertical_bias="0.224" />
 
     <TextView
+        android:id="@+id/teacher"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"

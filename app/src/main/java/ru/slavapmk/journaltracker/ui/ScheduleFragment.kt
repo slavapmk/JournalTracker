@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import ru.slavapmk.journaltracker.databinding.FragmentScheduleBinding
 import ru.slavapmk.journaltracker.viewmodels.ScheduleViewModel
 
@@ -36,6 +37,15 @@ class ScheduleFragment : Fragment() {
         binding.week.setOnClickListener {
             val intent = Intent(activity, SemestersActivity::class.java)
             activity.startActivity(intent)
+        }
+
+        binding.lessons.layoutManager = LinearLayoutManager(requireContext())
+        binding.lessons.adapter = ScheduleLessonsAdapter(
+            viewModel.lessons
+        ) { lesson ->
+            val intent = Intent(activity, LessonActivity::class.java)
+            intent.putExtra("LESSON_ID", lesson.id)
+            startActivity(intent)
         }
 
         return binding.root
