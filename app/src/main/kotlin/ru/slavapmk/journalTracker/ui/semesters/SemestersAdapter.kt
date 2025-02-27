@@ -29,8 +29,8 @@ class SemestersAdapter(
         )
         holder.name.text = holder.context.getString(
             R.string.item_semester_dates,
-            semester.startDay, semester.startMonth, semester.startYear,
-            semester.endDay, semester.endMonth, semester.endYear,
+            semester.startDay, semester.startMonth, semester.startYear % 100,
+            semester.endDay, semester.endMonth, semester.endYear % 100,
         )
         holder.deleteButton.setOnClickListener {
             onDelete(semester)

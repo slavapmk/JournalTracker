@@ -4,7 +4,11 @@ import androidx.lifecycle.ViewModel
 import ru.slavapmk.journalTracker.dataModels.semesters.Semester
 
 class SemestersViewModel : ViewModel() {
-    var startDate: String = ""
-    var endDate: String = ""
+    var startDay: Int? = null
+    var startMonth: Int? = null
+    var startYear: Int? = null
+    var endDay: Int? = null
+    var endMonth: Int? = null
+    var endYear: Int? = null
     val semesters: MutableList<Semester> = mutableListOf()
 }

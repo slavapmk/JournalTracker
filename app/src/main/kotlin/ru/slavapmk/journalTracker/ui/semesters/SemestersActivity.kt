@@ -1,8 +1,7 @@
 package ru.slavapmk.journalTracker.ui.semesters
 
+import android.app.DatePickerDialog
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -14,7 +13,8 @@ import ru.slavapmk.journalTracker.R
 import ru.slavapmk.journalTracker.databinding.ActivitySemestersBinding
 import ru.slavapmk.journalTracker.viewModels.SemestersViewModel
 import ru.slavapmk.journalTracker.ui.MainActivity.Companion.fmanager
-import ru.slavapmk.journalTracker.ui.studentsedit.StudentsEditListAdapter
+import java.util.Calendar
+import java.util.Locale
 
 class SemestersActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySemestersBinding
@@ -47,26 +47,81 @@ class SemestersActivity : AppCompatActivity() {
             insets
         }
 
-        binding.startTimeInput.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+        binding.startDateInput.setOnClickListener {
+            val calendar = Calendar.getInstance()
+            val year = calendar.get(Calendar.YEAR)
+            val month = calendar.get(Calendar.MONTH)
+            val day = calendar.get(Calendar.DAY_OF_MONTH)
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewModel.startDate = s.toString()
-            }
+            val datePickerDialog = DatePickerDialog(
+                this,
+                { _, selectedYear, selectedMonth, selectedDay ->
+                    val date = String.format(
+                        Locale.getDefault(),
+                        "%02d.%02d.%02d",
+                        selectedDay,
+                        selectedMonth + 1,
+                        selectedYear % 100
+                    )
+                    viewModel.startYear = selectedYear
+                    viewModel.startMonth = selectedMonth + 1
+                    viewModel.startDay = selectedDay
+                    binding.startDateInput.setText(date)
+                },
+                year, month, day
+            )
 
-            override fun afterTextChanged(s: Editable?) {}
-        })
-        binding.endTimeInput.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            datePickerDialog.show()
+        }
+        if (viewModel.startDay != null || viewModel.startMonth != null || viewModel.startYear != null) {
+            binding.startDateInput.setText(
+                String.format(
+                    Locale.getDefault(),
+                    "%02d.%02d.%02d",
+                    viewModel.startDay,
+                    viewModel.startMonth,
+                    viewModel.startYear?.rem(100)
+                )
+            )
+        }
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewModel.endDate = s.toString()
-            }
+        binding.endDateInput.setOnClickListener {
+            val calendar = Calendar.getInstance()
+            val year = calendar.get(Calendar.YEAR)
+            val month = calendar.get(Calendar.MONTH)
+            val day = calendar.get(Calendar.DAY_OF_MONTH)
 
-            override fun afterTextChanged(s: Editable?) {}
-        })
-        binding.startTimeInput.setText(viewModel.startDate)
-        binding.endTimeInput.setText(viewModel.endDate)
+            val datePickerDialog = DatePickerDialog(
+                this,
+                { _, selectedYear, selectedMonth, selectedDay ->
+                    val date = String.format(
+                        Locale.getDefault(),
+                        "%02d.%02d.%02d",
+                        selectedDay,
+                        selectedMonth + 1,
+                        selectedYear % 100
+                    )
+                    viewModel.endYear = selectedYear
+                    viewModel.endMonth = selectedMonth + 1
+                    viewModel.endDay = selectedDay
+                    binding.endDateInput.setText(date)
+                },
+                year, month, day
+            )
+
+            datePickerDialog.show()
+        }
+        if (viewModel.endDay != null || viewModel.endMonth != null || viewModel.endYear != null) {
+            binding.endDateInput.setText(
+                String.format(
+                    Locale.getDefault(),
+                    "%02d.%02d.%02d",
+                    viewModel.endDay,
+                    viewModel.endMonth,
+                    viewModel.endYear?.rem(100)
+                )
+            )
+        }
 
         binding.semesters.layoutManager = LinearLayoutManager(this)
         binding.semesters.adapter = semestersAdapter
