@@ -10,6 +10,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.slavapmk.journalTracker.R
+import ru.slavapmk.journalTracker.dataModels.semesters.Semester
 import ru.slavapmk.journalTracker.databinding.ActivitySemestersBinding
 import ru.slavapmk.journalTracker.viewModels.SemestersViewModel
 import ru.slavapmk.journalTracker.ui.MainActivity.Companion.fmanager
@@ -121,6 +122,43 @@ class SemestersActivity : AppCompatActivity() {
                     viewModel.endYear?.rem(100)
                 )
             )
+        }
+
+        binding.addButton.setOnClickListener {
+            if (
+                viewModel.startDay == null || viewModel.startMonth == null || viewModel.startYear == null ||
+                viewModel.endDay == null || viewModel.endMonth == null || viewModel.endYear == null
+            ) {
+                return@setOnClickListener
+            }
+            val element = Semester(
+                viewModel.startDay!!,
+                viewModel.startMonth!!,
+                viewModel.startYear!!,
+                viewModel.endDay!!,
+                viewModel.endMonth!!,
+                viewModel.endYear!!,
+            )
+            viewModel.semesters.add(element)
+            viewModel.semesters.sortWith(
+                compareBy(
+                    Semester::startYear, Semester::startMonth, Semester::startDay
+                )
+            )
+            val indexOf = viewModel.semesters.indexOf(element)
+            binding.semesters.adapter?.notifyItemInserted(indexOf)
+            binding.semesters.adapter?.notifyItemRangeChanged(
+                indexOf, viewModel.semesters.size - indexOf
+            )
+            binding.semesters.scrollToPosition(indexOf)
+            viewModel.startDay = null
+            viewModel.startMonth = null
+            viewModel.startYear = null
+            viewModel.endDay = null
+            viewModel.endMonth = null
+            viewModel.endYear = null
+            binding.startDateInput.text?.clear()
+            binding.endDateInput.text?.clear()
         }
 
         binding.semesters.layoutManager = LinearLayoutManager(this)

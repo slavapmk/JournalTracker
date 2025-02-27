@@ -8,7 +8,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import ru.slavapmk.journalTracker.R
-import ru.slavapmk.journalTracker.dataModels.schedule.ScheduleListLesson
 import ru.slavapmk.journalTracker.dataModels.semesters.Semester
 
 class SemestersAdapter(
