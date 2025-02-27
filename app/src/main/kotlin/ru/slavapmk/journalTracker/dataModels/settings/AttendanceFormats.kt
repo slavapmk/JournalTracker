@@ -1,6 +1,6 @@
 package ru.slavapmk.journalTracker.dataModels.settings
 
-enum class StudentsFormats {
+enum class AttendanceFormats {
     PLUS_MINUS,
     SKIP_HOURS
 }

@@ -72,6 +72,6 @@
     <string name="settings_weeks_types" translatable="false">%d</string>
     <string name="week_format_type_even_uneven">Even / Uneven</string>
     <string name="week_format_type_up_down">Up / Down</string>
-    <string name="students_format_type_plus_minus" translatable="false">+ / -</string>
-    <string name="students_format_type_skip_hours" translatable="false">• / 2</string>
+    <string name="attendance_format_type_plus_minus" translatable="false">+ / -</string>
+    <string name="attendance_format_type_skip_hours" translatable="false">• / 2</string>
 </resources>
