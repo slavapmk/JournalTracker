@@ -1,4 +1,4 @@
-package ru.slavapmk.journaltracker.ui
+package ru.slavapmk.journaltracker.ui.studentsedit
 
 import android.content.Context
 import android.os.Bundle
@@ -16,16 +16,16 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.slavapmk.journaltracker.R
 import ru.slavapmk.journaltracker.databinding.ActivityStudentsEditBinding
-import ru.slavapmk.journaltracker.datamodels.editstudents.EditStudentsListItem
-import ru.slavapmk.journaltracker.viewmodels.StudentsEditViewModel
+import ru.slavapmk.journaltracker.dataModels.studentsEdit.StudentsEditListItem
+import ru.slavapmk.journaltracker.viewModels.StudentsEditViewModel
 import ru.slavapmk.journaltracker.ui.MainActivity.Companion.fmanager
 
 class StudentsEditActivity : AppCompatActivity() {
     private lateinit var binding: ActivityStudentsEditBinding
     val viewModel by viewModels<StudentsEditViewModel>()
 
-    val studentsListAdapter by lazy {
-        StudentsListAdapter(viewModel.studentsList) { i, student ->
+    val studentsEditListAdapter by lazy {
+        StudentsEditListAdapter(viewModel.studentsList) { i, student ->
             val indexOf = viewModel.studentsList.indexOf(student)
             val size = viewModel.studentsList.size
             viewModel.studentsList.remove(student)
@@ -66,7 +66,7 @@ class StudentsEditActivity : AppCompatActivity() {
         }
 
         binding.studentsList.layoutManager = LinearLayoutManager(this)
-        binding.studentsList.adapter = studentsListAdapter
+        binding.studentsList.adapter = studentsEditListAdapter
 
         binding.studentField.setEndIconOnClickListener {
             if (binding.studentInput.text.isNullOrEmpty()) {
@@ -90,11 +90,11 @@ class StudentsEditActivity : AppCompatActivity() {
         val text = binding.studentInput.text.toString()
         binding.studentInput.text?.clear()
         viewModel.studentsList.add(
-            EditStudentsListItem(
+            StudentsEditListItem(
                 text
             )
         )
-        studentsListAdapter.notifyItemInserted(
+        studentsEditListAdapter.notifyItemInserted(
             viewModel.studentsList.size - 1
         )
     }

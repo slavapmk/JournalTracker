@@ -6,7 +6,7 @@
     app:startDestination="@id/schedule">
     <fragment
         android:id="@+id/schedule"
-        android:name="ru.slavapmk.journaltracker.ui.ScheduleFragment"
+        android:name="ru.slavapmk.journaltracker.ui.schedule.ScheduleFragment"
         android:label="Schedule"
         tools:layout="@layout/fragment_schedule">
     </fragment>

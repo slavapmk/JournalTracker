@@ -1,4 +1,4 @@
-package ru.slavapmk.journaltracker.datamodels.lesson
+package ru.slavapmk.journaltracker.dataModels.lesson
 
 data class LessonInfo(
     val id: Int,

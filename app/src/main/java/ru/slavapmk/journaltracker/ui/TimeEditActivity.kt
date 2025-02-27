@@ -11,7 +11,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import ru.slavapmk.journaltracker.R
 import ru.slavapmk.journaltracker.databinding.ActivityTimeEditBinding
-import ru.slavapmk.journaltracker.viewmodels.TimeEditViewModel
+import ru.slavapmk.journaltracker.viewModels.TimeEditViewModel
 import ru.slavapmk.journaltracker.ui.MainActivity.Companion.fmanager
 
 class TimeEditActivity : AppCompatActivity() {

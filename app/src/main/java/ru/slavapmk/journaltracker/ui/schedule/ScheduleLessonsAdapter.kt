@@ -1,4 +1,4 @@
-package ru.slavapmk.journaltracker.ui
+package ru.slavapmk.journaltracker.ui.schedule
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import ru.slavapmk.journaltracker.R
-import ru.slavapmk.journaltracker.datamodels.schedule.ScheduleListLesson
+import ru.slavapmk.journaltracker.dataModels.schedule.ScheduleListLesson
 
 class ScheduleLessonsAdapter(
     private val lessons: MutableList<ScheduleListLesson>,

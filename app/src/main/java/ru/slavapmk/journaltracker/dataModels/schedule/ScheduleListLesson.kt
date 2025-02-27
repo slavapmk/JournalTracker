@@ -1,4 +1,4 @@
-package ru.slavapmk.journaltracker.datamodels.schedule
+package ru.slavapmk.journaltracker.dataModels.schedule
 
 data class ScheduleListLesson(
     val id: Int,

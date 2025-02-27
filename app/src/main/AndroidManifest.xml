@@ -19,7 +19,7 @@
             android:name=".ui.SelectWeekActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.StudentsEditActivity"
+            android:name=".ui.studentsedit.StudentsEditActivity"
             android:exported="false" />
         <activity
             android:name=".ui.CampusEditActivity"
@@ -31,7 +31,7 @@
             android:name=".ui.EditLessonActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.LessonActivity"
+            android:name=".ui.lesson.LessonActivity"
             android:exported="false" />
         <activity
             android:name=".ui.MainActivity"

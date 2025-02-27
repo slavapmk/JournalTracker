@@ -1,4 +1,4 @@
-package ru.slavapmk.journaltracker.ui
+package ru.slavapmk.journaltracker.ui.lesson
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -8,7 +8,7 @@ import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import ru.slavapmk.journaltracker.R
-import ru.slavapmk.journaltracker.datamodels.lesson.LessonStudentListItem
+import ru.slavapmk.journaltracker.dataModels.lesson.LessonStudentListItem
 
 class LessonStudentsAdapter(
     private val students: List<LessonStudentListItem>

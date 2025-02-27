@@ -1,8 +1,8 @@
-package ru.slavapmk.journaltracker.viewmodels
+package ru.slavapmk.journaltracker.viewModels
 
 import androidx.lifecycle.ViewModel
-import ru.slavapmk.journaltracker.datamodels.lesson.LessonInfo
-import ru.slavapmk.journaltracker.datamodels.lesson.LessonStudentListItem
+import ru.slavapmk.journaltracker.dataModels.lesson.LessonInfo
+import ru.slavapmk.journaltracker.dataModels.lesson.LessonStudentListItem
 
 class LessonViewModel : ViewModel() {
     var info: LessonInfo = LessonInfo(

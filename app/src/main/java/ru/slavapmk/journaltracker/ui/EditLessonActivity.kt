@@ -7,7 +7,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.ui.AppBarConfiguration
 import ru.slavapmk.journaltracker.databinding.ActivityEditLessonBinding
-import ru.slavapmk.journaltracker.viewmodels.EditLessonViewModel
+import ru.slavapmk.journaltracker.viewModels.EditLessonViewModel
 
 class EditLessonActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration

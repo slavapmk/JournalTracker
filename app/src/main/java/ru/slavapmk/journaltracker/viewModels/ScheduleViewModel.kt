@@ -1,7 +1,7 @@
-package ru.slavapmk.journaltracker.viewmodels
+package ru.slavapmk.journaltracker.viewModels
 
 import androidx.lifecycle.ViewModel
-import ru.slavapmk.journaltracker.datamodels.schedule.ScheduleListLesson
+import ru.slavapmk.journaltracker.dataModels.schedule.ScheduleListLesson
 import java.util.Calendar
 import java.util.Date
 

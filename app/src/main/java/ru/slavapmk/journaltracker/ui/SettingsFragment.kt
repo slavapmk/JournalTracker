@@ -10,7 +10,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import ru.slavapmk.journaltracker.databinding.FragmentSettingsBinding
-import ru.slavapmk.journaltracker.viewmodels.SettingsViewModel
+import ru.slavapmk.journaltracker.ui.studentsedit.StudentsEditActivity
+import ru.slavapmk.journaltracker.viewModels.SettingsViewModel
 
 class SettingsFragment : Fragment() {
     private lateinit var binding: FragmentSettingsBinding

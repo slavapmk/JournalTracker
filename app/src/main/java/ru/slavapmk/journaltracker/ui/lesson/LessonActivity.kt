@@ -1,4 +1,4 @@
-package ru.slavapmk.journaltracker.ui
+package ru.slavapmk.journaltracker.ui.lesson
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,8 +9,9 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.slavapmk.journaltracker.R
 import ru.slavapmk.journaltracker.databinding.ActivityLessonBinding
+import ru.slavapmk.journaltracker.ui.EditLessonActivity
 import ru.slavapmk.journaltracker.ui.MainActivity.Companion.fmanager
-import ru.slavapmk.journaltracker.viewmodels.LessonViewModel
+import ru.slavapmk.journaltracker.viewModels.LessonViewModel
 
 class LessonActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLessonBinding

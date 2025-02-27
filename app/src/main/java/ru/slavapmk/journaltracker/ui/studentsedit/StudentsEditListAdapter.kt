@@ -1,4 +1,4 @@
-package ru.slavapmk.journaltracker.ui
+package ru.slavapmk.journaltracker.ui.studentsedit
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -8,21 +8,21 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import ru.slavapmk.journaltracker.R
-import ru.slavapmk.journaltracker.datamodels.editstudents.EditStudentsListItem
+import ru.slavapmk.journaltracker.dataModels.studentsEdit.StudentsEditListItem
 
-class StudentsListAdapter(
-    private val students: MutableList<EditStudentsListItem>,
-    private val delete: ((Int, EditStudentsListItem) -> Unit)
-) : RecyclerView.Adapter<StudentListViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StudentListViewHolder {
+class StudentsEditListAdapter(
+    private val students: MutableList<StudentsEditListItem>,
+    private val delete: ((Int, StudentsEditListItem) -> Unit)
+) : RecyclerView.Adapter<StudentEditListViewHolder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StudentEditListViewHolder {
         val inflate = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_student_edit, parent, false)
-        return StudentListViewHolder(parent.context, inflate)
+        return StudentEditListViewHolder(parent.context, inflate)
     }
 
     override fun getItemCount(): Int = students.size
 
-    override fun onBindViewHolder(holder: StudentListViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: StudentEditListViewHolder, position: Int) {
         val student = students[position]
         holder.index.text = holder.context.getString(R.string.item_edit_student_order, position + 1)
         holder.name.text = holder.context.getString(R.string.item_edit_student_name, student.name)
@@ -32,7 +32,7 @@ class StudentsListAdapter(
     }
 }
 
-class StudentListViewHolder(
+class StudentEditListViewHolder(
     var context: Context, itemView: View
 ) : RecyclerView.ViewHolder(itemView) {
     var index: TextView = itemView.findViewById(R.id.position)
