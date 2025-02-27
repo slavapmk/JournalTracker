@@ -9,14 +9,30 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import ru.slavapmk.journalTracker.R
 import ru.slavapmk.journalTracker.databinding.ActivitySemestersBinding
 import ru.slavapmk.journalTracker.viewModels.SemestersViewModel
 import ru.slavapmk.journalTracker.ui.MainActivity.Companion.fmanager
+import ru.slavapmk.journalTracker.ui.studentsedit.StudentsEditListAdapter
 
 class SemestersActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySemestersBinding
     val viewModel by viewModels<SemestersViewModel>()
+
+    private val semestersAdapter by lazy {
+        SemestersAdapter(viewModel.semesters) { semester ->
+            val indexOf = viewModel.semesters.indexOf(semester)
+            val size = viewModel.semesters.size
+            viewModel.semesters.remove(semester)
+            val updateCount = size - indexOf
+            binding.semesters.adapter?.notifyItemRemoved(indexOf)
+            binding.semesters.adapter?.notifyItemRangeChanged(
+                indexOf,
+                updateCount
+            )
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,5 +67,8 @@ class SemestersActivity : AppCompatActivity() {
         })
         binding.startTimeInput.setText(viewModel.startDate)
         binding.endTimeInput.setText(viewModel.endDate)
+
+        binding.semesters.layoutManager = LinearLayoutManager(this)
+        binding.semesters.adapter = semestersAdapter
     }
 }

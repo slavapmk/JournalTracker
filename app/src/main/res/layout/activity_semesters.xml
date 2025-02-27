@@ -71,6 +71,7 @@
         app:layout_constraintEnd_toEndOf="@id/footer" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/semesters"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"

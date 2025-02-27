@@ -52,7 +52,7 @@
     <string name="item_lesson_name" translatable="false">%s (%s)</string>
     <string name="item_lesson_teacher" translatable="false">%s</string>
     <string name="item_semester_order" translatable="false">%d.</string>
-    <string name="item_semester_dates" translatable="false">%02d %s - %02d %s</string>
+    <string name="item_semester_dates" translatable="false">%02d.%02d.%02d - %02d.%02d.%02d</string>
     <string name="item_student_order" translatable="false">%d.</string>
     <string name="item_student_name" translatable="false">%s</string>
     <string name="item_edit_student_order" translatable="false">%d.</string>
