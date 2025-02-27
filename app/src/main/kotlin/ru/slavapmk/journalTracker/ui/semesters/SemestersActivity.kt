@@ -22,17 +22,21 @@ class SemestersActivity : AppCompatActivity() {
     val viewModel by viewModels<SemestersViewModel>()
 
     private val semestersAdapter by lazy {
-        SemestersAdapter(viewModel.semesters) { semester ->
-            val indexOf = viewModel.semesters.indexOf(semester)
-            val size = viewModel.semesters.size
-            viewModel.semesters.remove(semester)
-            val updateCount = size - indexOf
-            binding.semesters.adapter?.notifyItemRemoved(indexOf)
-            binding.semesters.adapter?.notifyItemRangeChanged(
-                indexOf,
-                updateCount
-            )
-        }
+        SemestersAdapter(
+            viewModel.semesters, { semester ->
+                val indexOf = viewModel.semesters.indexOf(semester)
+                val size = viewModel.semesters.size
+                viewModel.semesters.remove(semester)
+                val updateCount = size - indexOf
+                binding.semesters.adapter?.notifyItemRemoved(indexOf)
+                binding.semesters.adapter?.notifyItemRangeChanged(
+                    indexOf,
+                    updateCount
+                )
+            }, {
+                finish()
+            }
+        )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

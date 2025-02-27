@@ -12,7 +12,8 @@ import ru.slavapmk.journalTracker.dataModels.semesters.Semester
 
 class SemestersAdapter(
     private val semesters: MutableList<Semester>,
-    private val onDelete: ((Semester) -> Unit)
+    private val onDelete: ((Semester) -> Unit),
+    private val onSelect: ((Semester) -> Unit)
 ) : RecyclerView.Adapter<SemestersViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SemestersViewHolder {
         val inflate = LayoutInflater.from(parent.context)
@@ -33,6 +34,9 @@ class SemestersAdapter(
         )
         holder.deleteButton.setOnClickListener {
             onDelete(semester)
+        }
+        holder.itemView.setOnClickListener {
+            onSelect(semester)
         }
     }
 }
