@@ -3,7 +3,6 @@ package ru.slavapmk.journalTracker.ui.campusEdit
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.widget.LinearLayout
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -14,8 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import ru.slavapmk.journalTracker.R
 import ru.slavapmk.journalTracker.dataModels.campuses.Campus
 import ru.slavapmk.journalTracker.databinding.ActivityCampusEditBinding
-import ru.slavapmk.journalTracker.viewModels.CampusEditViewModel
 import ru.slavapmk.journalTracker.ui.MainActivity.Companion.fmanager
+import ru.slavapmk.journalTracker.viewModels.CampusEditViewModel
 
 class CampusEditActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCampusEditBinding
@@ -75,6 +74,12 @@ class CampusEditActivity : AppCompatActivity() {
                 )
             )
             binding.campuses.adapter?.notifyItemInserted(viewModel.campuses.size - 1)
+            binding.nameInput.text?.clear()
+            binding.nameInput.clearFocus()
+            binding.codenameInput.text?.clear()
+            binding.codenameInput.clearFocus()
+            viewModel.name = ""
+            viewModel.codename = ""
         }
         binding.codenameInput.setText(viewModel.codename)
         binding.nameInput.setText(viewModel.name)
