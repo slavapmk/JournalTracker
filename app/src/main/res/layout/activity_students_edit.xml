@@ -25,6 +25,7 @@
             android:id="@+id/studentInput"
             android:maxLines="1"
             android:inputType="textPersonName"
+            android:imeOptions="actionDone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
