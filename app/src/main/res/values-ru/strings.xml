@@ -30,7 +30,7 @@
     <string name="schedule_select_week">Выбрать неделю</string>
     <string name="schedule_current_date">Сегодня</string>
     <string name="settings_group_name">Название группы</string>
-    <string name="settings_weeks_types">Кол-во тип недель</string>
+    <string name="settings_weeks_types_title">Кол-во тип недель</string>
     <string name="settings_weeks_format">Формат типа недели</string>
     <string name="settings_attendance_format">Формат отметок</string>
     <string name="settings_edit_timetable">Редактор занятий</string>

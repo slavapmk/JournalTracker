@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import ru.slavapmk.journalTracker.R
 import ru.slavapmk.journalTracker.databinding.FragmentSettingsBinding
 import ru.slavapmk.journalTracker.ui.MainActivity
 import ru.slavapmk.journalTracker.ui.campusEdit.CampusEditActivity
@@ -88,7 +89,11 @@ class SettingsFragment : Fragment() {
             }
         })
         binding.groupInput.setText(viewModel.groupName)
-        binding.weeksInput.setText(viewModel.weekTypes.toString())
+        binding.weeksInput.setText(
+            requireContext().getString(
+                R.string.settings_weeks_types, viewModel.weekTypes
+            )
+        )
         binding.weeksFormatInput.setText(viewModel.weekFormat)
         binding.studentsFormatInput.setText(viewModel.studentFormat)
 

@@ -34,7 +34,7 @@
     <string name="schedule_select_week">Select week</string>
     <string name="schedule_current_date">Today</string>
     <string name="settings_group_name">Group name</string>
-    <string name="settings_weeks_types">Week types</string>
+    <string name="settings_weeks_types_title">Week types</string>
     <string name="settings_weeks_format">Week type format</string>
     <string name="settings_attendance_format">Attedance format</string>
     <string name="settings_edit_timetable">Edit timetable</string>
@@ -69,4 +69,5 @@
     <string name="export_day">Export day</string>
     <string name="export_week">Export week</string>
     <string name="export_semester">Export semester</string>
+    <string name="settings_weeks_types" translatable="false">%d</string>
 </resources>
