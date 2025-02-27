@@ -135,6 +135,14 @@ class SemestersActivity : AppCompatActivity() {
             ) {
                 return@setOnClickListener
             }
+
+            if (
+                viewModel.endYear!! * 10000 + viewModel.endMonth!! * 100 + viewModel.endDay!! <=
+                viewModel.startYear!! * 10000 + viewModel.startMonth!! * 100 + viewModel.startDay!!
+            ) {
+                return@setOnClickListener
+            }
+
             val element = Semester(
                 viewModel.startDay!!,
                 viewModel.startMonth!!,
