@@ -1,5 +1,6 @@
 package ru.slavapmk.journaltracker.ui
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -54,5 +55,15 @@ class LessonActivity : AppCompatActivity() {
         binding.students.adapter = LessonStudentsAdapter(
             viewModel.info.students
         )
+        binding.editButton.setOnClickListener {
+            startActivity(
+                Intent(this, EditLessonActivity::class.java).apply {
+                    putExtra("LESSON_ID", lessonId)
+                }
+            )
+        }
+        binding.deleteButton.setOnClickListener {
+            TODO()
+        }
     }
 }

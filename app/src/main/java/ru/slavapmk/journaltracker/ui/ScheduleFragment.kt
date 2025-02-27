@@ -43,9 +43,11 @@ class ScheduleFragment : Fragment() {
         binding.lessons.adapter = ScheduleLessonsAdapter(
             viewModel.lessons
         ) { lesson ->
-            val intent = Intent(activity, LessonActivity::class.java)
-            intent.putExtra("LESSON_ID", lesson.id)
-            startActivity(intent)
+            startActivity(
+                Intent(activity, LessonActivity::class.java).apply {
+                    putExtra("LESSON_ID", lesson.id)
+                }
+            )
         }
 
         return binding.root

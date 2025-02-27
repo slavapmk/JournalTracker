@@ -1,6 +1,7 @@
 package ru.slavapmk.journaltracker.datamodels.lesson
 
 data class LessonInfo(
+    val id: Int,
     val index: Int,
     val name: String,
     val type: String,

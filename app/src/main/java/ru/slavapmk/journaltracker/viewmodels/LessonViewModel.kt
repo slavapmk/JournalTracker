@@ -6,6 +6,7 @@ import ru.slavapmk.journaltracker.datamodels.lesson.LessonStudentListItem
 
 class LessonViewModel : ViewModel() {
     var info: LessonInfo = LessonInfo(
+        123,
         1,
         "Физика",
         "Л",
