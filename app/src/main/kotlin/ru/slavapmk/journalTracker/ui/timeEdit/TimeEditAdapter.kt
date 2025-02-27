@@ -40,7 +40,7 @@ class TimeEditAdapter(
 class TimeEditViewHolder(
     var context: Context, itemView: View
 ) : RecyclerView.ViewHolder(itemView) {
-    var order: TextView = itemView.findViewById(R.id.position)
-    var times: TextView = itemView.findViewById(R.id.times)
+    var order: TextView = itemView.findViewById(R.id.order)
+    var times: TextView = itemView.findViewById(R.id.name)
     var deleteButton: MaterialButton = itemView.findViewById(R.id.delete_button)
 }

@@ -129,6 +129,23 @@ class TimeEditActivity : AppCompatActivity() {
             viewModel.endMinutes = -1
         }
 
+        if (viewModel.startHours != -1 && viewModel.startMinutes != -1) {
+            binding.startTimeInput.setText(
+                String.format(
+                    Locale.getDefault(), "%02d:%02d",
+                    viewModel.startHours, viewModel.startMinutes
+                )
+            )
+        }
+        if (viewModel.endHours != -1 && viewModel.endMinutes != -1) {
+            binding.endTimeInput.setText(
+                String.format(
+                    Locale.getDefault(), "%02d:%02d",
+                    viewModel.endHours, viewModel.endMinutes
+                )
+            )
+        }
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, 5)

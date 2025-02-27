@@ -3,13 +3,16 @@ package ru.slavapmk.journalTracker.ui.campusEdit
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.widget.LinearLayout
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import ru.slavapmk.journalTracker.R
+import ru.slavapmk.journalTracker.dataModels.campuses.Campus
 import ru.slavapmk.journalTracker.databinding.ActivityCampusEditBinding
 import ru.slavapmk.journalTracker.viewModels.CampusEditViewModel
 import ru.slavapmk.journalTracker.ui.MainActivity.Companion.fmanager
@@ -17,6 +20,17 @@ import ru.slavapmk.journalTracker.ui.MainActivity.Companion.fmanager
 class CampusEditActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCampusEditBinding
     val viewModel by viewModels<CampusEditViewModel>()
+    private val campusesAdapter by lazy {
+        CampusesAdapter(viewModel.campuses) {
+            val indexOf = viewModel.campuses.indexOf(it)
+            val size = viewModel.campuses.size
+            viewModel.campuses.remove(it)
+            binding.campuses.adapter?.notifyItemRemoved(indexOf)
+            binding.campuses.adapter?.notifyItemRangeChanged(
+                indexOf, size - indexOf
+            )
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +64,22 @@ class CampusEditActivity : AppCompatActivity() {
 
             override fun afterTextChanged(s: Editable?) {}
         })
+        binding.addButton.setOnClickListener {
+            if (viewModel.codename == "" || viewModel.name == "") {
+                return@setOnClickListener
+            }
+            viewModel.campuses.add(
+                Campus(
+                    viewModel.codename,
+                    viewModel.name
+                )
+            )
+            binding.campuses.adapter?.notifyItemInserted(viewModel.campuses.size - 1)
+        }
         binding.codenameInput.setText(viewModel.codename)
         binding.nameInput.setText(viewModel.name)
+
+        binding.campuses.layoutManager = LinearLayoutManager(this)
+        binding.campuses.adapter = campusesAdapter
     }
 }

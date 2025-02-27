@@ -34,7 +34,7 @@ class LessonStudentsAdapter(
 class LessonStudentsViewHolder(
     var context: Context, itemView: View
 ) : RecyclerView.ViewHolder(itemView) {
-    var index: TextView = itemView.findViewById(R.id.position)
-    var name: TextView = itemView.findViewById(R.id.times)
+    var index: TextView = itemView.findViewById(R.id.order)
+    var name: TextView = itemView.findViewById(R.id.name)
     var visited: CheckBox = itemView.findViewById(R.id.visited)
 }
