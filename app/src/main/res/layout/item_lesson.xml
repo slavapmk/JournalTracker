@@ -5,7 +5,7 @@
     android:layout_height="150dp"
     android:layout_marginHorizontal="10dp"
     android:layout_marginBottom="20dp"
-    android:background="@drawable/item_lesson_background"
+    android:background="@drawable/item_background_clickable"
     android:clickable="true">
 
     <TextView
