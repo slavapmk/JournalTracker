@@ -8,7 +8,7 @@
     <string name="edit_lesson_campus">Campus</string>
     <string name="edit_lesson_order">Lesson order</string>
     <string name="edit_lesson_type">Lesson type</string>
-    <string name="edit_lesson_add">Add</string>
+    <string name="edit_lesson_apply">Apply</string>
     <string name="edit_semester_date_start">Start date</string>
     <string name="edit_semester_date_end">End date</string>
     <string name="edit_semester_add">Add</string>

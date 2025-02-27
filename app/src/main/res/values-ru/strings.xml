@@ -9,7 +9,7 @@
     <string name="edit_lesson_campus">Корпус</string>
     <string name="edit_lesson_order">Номер занятия</string>
     <string name="edit_lesson_type">Тип занятия</string>
-    <string name="edit_lesson_add">Добавить</string>
+    <string name="edit_lesson_apply">Применить</string>
     <string name="edit_semester_date_start">Дата начала</string>
     <string name="edit_semester_date_end">Дата конца</string>
     <string name="edit_semester_add">Добавить</string>
