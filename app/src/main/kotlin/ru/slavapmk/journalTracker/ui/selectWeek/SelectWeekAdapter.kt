@@ -22,7 +22,7 @@ class SelectWeekAdapter(
     override fun getItemCount(): Int = weeks.size
     override fun onBindViewHolder(holder: SelectWeekViewHolder, position: Int) {
         val week = weeks[position]
-        holder.order.text = holder.context.getString(R.string.item_edit_student_order, position + 1)
+        holder.order.text = holder.context.getString(R.string.item_week_order, position + 1)
         holder.dates.text = holder.context.getString(
             R.string.item_week_dates,
             week.startDay,

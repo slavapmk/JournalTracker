@@ -59,7 +59,7 @@
     <string name="item_edit_student_name" translatable="false">%s</string>
     <string name="item_edit_time_order" translatable="false">%d.</string>
     <string name="item_edit_time" translatable="false">%02d:%02d - %02d:%02d</string>
-    <string name="item_week_order" translatable="false">%d.</string>
+    <string name="item_week_order" translatable="false">%02d.</string>
     <string name="item_week_dates" translatable="false">%02d.%02d.%02d - %02d.%02d.%02d</string>
     <string name="campus_codename">Codename</string>
     <string name="export_tab_day">Day</string>
