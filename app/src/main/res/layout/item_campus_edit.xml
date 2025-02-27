@@ -33,7 +33,7 @@
         app:layout_constraintStart_toEndOf="@id/order" />
 
     <TextView
-        android:id="@+id/name"
+        android:id="@+id/dates"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/item_campus_name"

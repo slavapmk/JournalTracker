@@ -4,13 +4,11 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import ru.slavapmk.journalTracker.R
 import ru.slavapmk.journalTracker.dataModels.campuses.Campus
-import ru.slavapmk.journalTracker.dataModels.lesson.LessonStudentListItem
 
 class CampusesAdapter(
     private val campuses: List<Campus>,
@@ -39,6 +37,6 @@ class CampusesViewHolder(
 ) : RecyclerView.ViewHolder(itemView) {
     var order: TextView = itemView.findViewById(R.id.order)
     var codename: TextView = itemView.findViewById(R.id.codename)
-    var name: TextView = itemView.findViewById(R.id.name)
+    var name: TextView = itemView.findViewById(R.id.dates)
     var deleteButton: MaterialButton = itemView.findViewById(R.id.delete_button)
 }
