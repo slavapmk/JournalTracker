@@ -1,4 +1,4 @@
-package ru.slavapmk.journaltracker.ui
+package ru.slavapmk.journaltracker.ui.lessonEdit
 
 import android.os.Bundle
 import android.text.Editable
@@ -6,18 +6,18 @@ import android.text.TextWatcher
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.ui.AppBarConfiguration
-import ru.slavapmk.journaltracker.databinding.ActivityEditLessonBinding
+import ru.slavapmk.journaltracker.databinding.ActivityLessonEditBinding
 import ru.slavapmk.journaltracker.viewModels.EditLessonViewModel
 
-class EditLessonActivity : AppCompatActivity() {
+class LessonEditActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var binding: ActivityEditLessonBinding
+    private lateinit var binding: ActivityLessonEditBinding
     val viewModel by viewModels<EditLessonViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityEditLessonBinding.inflate(layoutInflater)
+        binding = ActivityLessonEditBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         binding.nameInput.addTextChangedListener(object : TextWatcher {

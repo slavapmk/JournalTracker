@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.slavapmk.journaltracker.R
 import ru.slavapmk.journaltracker.databinding.ActivityLessonBinding
-import ru.slavapmk.journaltracker.ui.EditLessonActivity
+import ru.slavapmk.journaltracker.ui.lessonEdit.LessonEditActivity
 import ru.slavapmk.journaltracker.ui.MainActivity.Companion.fmanager
 import ru.slavapmk.journaltracker.viewModels.LessonViewModel
 
@@ -58,7 +58,7 @@ class LessonActivity : AppCompatActivity() {
         )
         binding.editButton.setOnClickListener {
             startActivity(
-                Intent(this, EditLessonActivity::class.java).apply {
+                Intent(this, LessonEditActivity::class.java).apply {
                     putExtra("LESSON_ID", lessonId)
                 }
             )

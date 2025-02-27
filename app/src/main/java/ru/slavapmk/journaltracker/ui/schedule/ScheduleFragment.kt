@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.slavapmk.journaltracker.databinding.FragmentScheduleBinding
-import ru.slavapmk.journaltracker.ui.EditLessonActivity
+import ru.slavapmk.journaltracker.ui.lessonEdit.LessonEditActivity
 import ru.slavapmk.journaltracker.ui.lesson.LessonActivity
 import ru.slavapmk.journaltracker.ui.MainActivity
 import ru.slavapmk.journaltracker.ui.SelectWeekActivity
@@ -30,7 +30,7 @@ class ScheduleFragment : Fragment() {
         binding = FragmentScheduleBinding.inflate(layoutInflater)
 
         binding.addLessonButton.setOnClickListener {
-            val intent = Intent(activity, EditLessonActivity::class.java)
+            val intent = Intent(activity, LessonEditActivity::class.java)
             activity.startActivity(intent)
         }
 

@@ -28,7 +28,7 @@
             android:name=".ui.TimeEditActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.EditLessonActivity"
+            android:name=".ui.lessonEdit.LessonEditActivity"
             android:exported="false" />
         <activity
             android:name=".ui.lesson.LessonActivity"
