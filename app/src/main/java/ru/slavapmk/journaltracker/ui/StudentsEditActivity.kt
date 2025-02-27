@@ -16,7 +16,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.slavapmk.journaltracker.R
 import ru.slavapmk.journaltracker.databinding.ActivityStudentsEditBinding
-import ru.slavapmk.journaltracker.datamodels.editstudent.EditStudentListItem
+import ru.slavapmk.journaltracker.datamodels.editstudents.EditStudentsListItem
 import ru.slavapmk.journaltracker.viewmodels.StudentsEditViewModel
 import ru.slavapmk.journaltracker.ui.MainActivity.Companion.fmanager
 
@@ -90,7 +90,7 @@ class StudentsEditActivity : AppCompatActivity() {
         val text = binding.studentInput.text.toString()
         binding.studentInput.text?.clear()
         viewModel.studentsList.add(
-            EditStudentListItem(
+            EditStudentsListItem(
                 text
             )
         )

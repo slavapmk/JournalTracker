@@ -1,7 +1,7 @@
 package ru.slavapmk.journaltracker.viewmodels
 
 import androidx.lifecycle.ViewModel
-import ru.slavapmk.journaltracker.datamodels.lessonstudent.LessonStudentListItem
+import ru.slavapmk.journaltracker.datamodels.lesson.LessonStudentListItem
 import java.util.Date
 import kotlin.properties.Delegates
 

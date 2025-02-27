@@ -8,11 +8,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import ru.slavapmk.journaltracker.R
-import ru.slavapmk.journaltracker.datamodels.editstudent.EditStudentListItem
+import ru.slavapmk.journaltracker.datamodels.editstudents.EditStudentsListItem
 
 class StudentsListAdapter(
-    private val students: MutableList<EditStudentListItem>,
-    private val delete: ((Int, EditStudentListItem) -> Unit)
+    private val students: MutableList<EditStudentsListItem>,
+    private val delete: ((Int, EditStudentsListItem) -> Unit)
 ) : RecyclerView.Adapter<StudentListViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StudentListViewHolder {
         val inflate = LayoutInflater.from(parent.context)

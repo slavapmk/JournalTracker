@@ -8,7 +8,7 @@ import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import ru.slavapmk.journaltracker.R
-import ru.slavapmk.journaltracker.datamodels.lessonstudent.LessonStudentListItem
+import ru.slavapmk.journaltracker.datamodels.lesson.LessonStudentListItem
 
 class LessonStudentsAdapter(
     private val students: MutableList<LessonStudentListItem>
