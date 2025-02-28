@@ -28,18 +28,30 @@ class StudentsEditViewModel : ViewModel() {
         MutableLiveData()
     }
 
-    fun addStudent(new: StudentsEditListItem): Int {
-        studentsList.add(new)
+    val updateStudentLiveData: MutableLiveData<Pair<StudentsEditListItem, StudentsEditListItem>> by lazy {
+        MutableLiveData()
+    }
+
+    fun addStudent(insert: StudentsEditListItem): Int {
+        studentsList.add(insert)
         viewModelScope.launch {
-            Dependencies.studentRepository.insertStudent(
+            val id = Dependencies.studentRepository.insertStudent(
                 StudentEntity(
                     0,
-                    new.name
+                    insert.name
+                )
+            )
+            updateStudentLiveData.postValue(
+                Pair(
+                    insert, StudentsEditListItem(
+                        id,
+                        insert.name
+                    )
                 )
             )
         }
         studentsList.sortBy { it.name }
-        return studentsList.indexOf(new)
+        return studentsList.indexOf(insert)
     }
 
     fun deleteStudent(student: StudentsEditListItem) {

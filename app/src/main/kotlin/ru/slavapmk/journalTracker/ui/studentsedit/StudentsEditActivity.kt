@@ -1,6 +1,5 @@
 package ru.slavapmk.journalTracker.ui.studentsedit
 
-import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -16,11 +15,10 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.slavapmk.journalTracker.R
-import ru.slavapmk.journalTracker.databinding.ActivityStudentsEditBinding
 import ru.slavapmk.journalTracker.dataModels.studentsEdit.StudentsEditListItem
-import ru.slavapmk.journalTracker.storageModels.Dependencies
-import ru.slavapmk.journalTracker.viewModels.StudentsEditViewModel
+import ru.slavapmk.journalTracker.databinding.ActivityStudentsEditBinding
 import ru.slavapmk.journalTracker.ui.MainActivity.Companion.fmanager
+import ru.slavapmk.journalTracker.viewModels.StudentsEditViewModel
 
 class StudentsEditActivity : AppCompatActivity() {
     private lateinit var binding: ActivityStudentsEditBinding
@@ -99,6 +97,13 @@ class StudentsEditActivity : AppCompatActivity() {
             studentsEditListAdapter.notifyItemRangeChanged(0, it.size)
             binding.loadingStatus.visibility = View.GONE
         }
+
+        viewModel.updateStudentLiveData.observe(this) { (old, new) ->
+            val indexOf = viewModel.studentsList.indexOf(old)
+            viewModel.studentsList[indexOf] = new
+            studentsEditListAdapter.notifyItemChanged(indexOf)
+            binding.loadingStatus.visibility = View.GONE
+        }
     }
 
     private fun load() {
@@ -107,6 +112,7 @@ class StudentsEditActivity : AppCompatActivity() {
     }
 
     private fun addStudentFromInput() {
+        binding.loadingStatus.visibility = View.VISIBLE
         val text = binding.studentInput.text?.toString()
         if (text.isNullOrEmpty()) {
             return

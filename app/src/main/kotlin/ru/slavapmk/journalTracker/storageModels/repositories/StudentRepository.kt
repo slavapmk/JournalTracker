@@ -8,8 +8,8 @@ import ru.slavapmk.journalTracker.storageModels.entities.StudentEntity
 class StudentRepository(
     private val studentsDao: StudentsDao
 ) {
-    suspend fun insertStudent(studentEntity: StudentEntity) = withContext(Dispatchers.IO) {
-        studentsDao.insertStudent(studentEntity)
+    suspend fun insertStudent(studentEntity: StudentEntity): Int = withContext(Dispatchers.IO) {
+        studentsDao.insertStudent(studentEntity).toInt()
     }
 
     suspend fun deleteStudent(studentId: Int) = withContext(Dispatchers.IO) {

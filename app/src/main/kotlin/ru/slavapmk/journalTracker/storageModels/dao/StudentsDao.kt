@@ -8,7 +8,7 @@ import ru.slavapmk.journalTracker.storageModels.entities.StudentEntity
 @Dao
 interface StudentsDao {
     @Insert(entity = StudentEntity::class)
-    fun insertStudent(students: StudentEntity)
+    fun insertStudent(students: StudentEntity): Long
 
     @Query("DELETE FROM students_table WHERE id = :studentId")
     fun deleteStudent(studentId: Int)
