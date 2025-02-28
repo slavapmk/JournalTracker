@@ -86,6 +86,12 @@ class ScheduleFragment : Fragment() {
         }
 
         viewModel.mediatorLiveData.observe(viewLifecycleOwner) { loadData ->
+            if (loadData.semesters.isEmpty()) {
+                activity.setLoading(false)
+                binding.week.isVisible = true
+                return@observe
+            }
+
             var semesterIndex = loadData.semesters.indexOfFirst { it.id == viewModel.semesterId }
             if (semesterIndex == -1) {
                 semesterIndex = 0
@@ -103,10 +109,10 @@ class ScheduleFragment : Fragment() {
                     Semester(
                         semester.startDay,
                         semester.startMonth,
-                        semester.startMonth,
+                        semester.startYear,
                         semester.endDay,
                         semester.endMonth,
-                        semester.endMonth,
+                        semester.endYear,
                     )
                 )
             )
@@ -189,6 +195,7 @@ class ScheduleFragment : Fragment() {
                 }
             )
             binding.lessons.adapter?.notifyItemRangeChanged(0, viewModel.lessons.size)
+            activity.setLoading(false)
         }
     }
 
