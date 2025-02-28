@@ -47,9 +47,9 @@ class SemestersActivity : AppCompatActivity() {
                 viewModel.deleteSemester(semester)
             }, { semester ->
                 shared.edit {
-                    putString(
+                    putInt(
                         getString(R.string.semester_shared_id),
-                        semester.id.toString()
+                        semester.id!!
                     )
                 }
                 finish()

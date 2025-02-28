@@ -17,6 +17,11 @@ import androidx.room.PrimaryKey
             entity = TimeEntity::class,
             parentColumns = ["id"],
             childColumns = ["time_id"]
+        ),
+        ForeignKey(
+            entity = CampusEntity::class,
+            parentColumns = ["id"],
+            childColumns = ["campus_id"]
         )
     ]
 )
@@ -28,5 +33,8 @@ data class LessonInfoEntity(
     @ColumnInfo(name = "date_day") val dateDay: Int,
     @ColumnInfo(name = "date_month") val dateMonth: Int,
     @ColumnInfo(name = "date_year") val dateYear: Int,
-    @ColumnInfo(name = "time_id") val timeId: Int
+    @ColumnInfo(name = "time_id") val timeId: Int,
+    @ColumnInfo(name = "teacher") val teacher: String,
+    @ColumnInfo(name = "cabinet") val cabinet: Int,
+    @ColumnInfo(name = "campus_id") val campusId: Int,
 )

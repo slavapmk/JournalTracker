@@ -1,6 +1,7 @@
 package ru.slavapmk.journalTracker.ui
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -47,5 +48,13 @@ class MainActivity : AppCompatActivity() {
                 R.id.fragment_container
             ) as NavHostFragment).navController
         )
+    }
+
+    fun setLoading(loading: Boolean) {
+        binding.loadingStatus.visibility = if (loading) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
     }
 }

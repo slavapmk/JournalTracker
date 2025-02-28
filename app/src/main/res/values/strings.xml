@@ -30,7 +30,7 @@
     <string name="students_lesson_date" translatable="false">%02d.%02d.%02d</string>
     <string name="students_lesson_teacher" translatable="false">%s</string>
     <string name="schedule_week">%d week (%s)</string>
-    <string name="schedule_semester">%d semester</string>
+    <string name="schedule_semester">%s semester</string>
     <string name="schedule_select_week">Select week</string>
     <string name="schedule_current_date">Today</string>
     <string name="settings_group_name">Group name</string>
