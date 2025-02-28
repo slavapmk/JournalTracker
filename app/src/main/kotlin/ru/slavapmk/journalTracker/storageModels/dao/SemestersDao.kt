@@ -15,4 +15,7 @@ interface SemestersDao {
 
     @Query("DELETE FROM semesters_table WHERE id = :semesterId")
     fun deleteTime(semesterId: Int)
+
+    @Query("SELECT * FROM semesters_table")
+    fun getSemesters(): List<SemesterEntity>
 }

@@ -7,6 +7,7 @@ import ru.slavapmk.journalTracker.storageModels.dao.SemestersDao
 import ru.slavapmk.journalTracker.storageModels.dao.TimesDao
 import ru.slavapmk.journalTracker.storageModels.entities.CampusEntity
 import ru.slavapmk.journalTracker.storageModels.entities.SemesterEntity
+import ru.slavapmk.journalTracker.storageModels.entities.StudentEntity
 import ru.slavapmk.journalTracker.storageModels.entities.TimeEntity
 
 class SemesterRepository(
@@ -18,5 +19,9 @@ class SemesterRepository(
 
     suspend fun deleteSemester(semesterId: Int) = withContext(Dispatchers.IO) {
         semestersDao.deleteTime(semesterId)
+    }
+
+    suspend fun getSemesters(): List<SemesterEntity> = withContext(Dispatchers.IO) {
+        semestersDao.getSemesters()
     }
 }
