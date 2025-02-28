@@ -1,5 +1,7 @@
 package ru.slavapmk.journalTracker.viewModels
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,6 +17,7 @@ import ru.slavapmk.journalTracker.storageModels.entities.TimeEntity
 import java.util.Calendar
 import java.util.Date
 import java.util.GregorianCalendar
+
 
 data class LoadScheduleData(
     val semesters: List<SemesterEntity>,
@@ -32,7 +35,9 @@ operator fun SimpleDate.compareTo(other: SimpleDate): Int {
     return compareValuesBy(this, other, SimpleDate::year, SimpleDate::month, SimpleDate::day)
 }
 
-class ScheduleViewModel : ViewModel() {
+class ScheduleViewModel(
+    private val sharedPreferences: SharedPreferences
+) : ViewModel() {
     val lessons: MutableList<ScheduleListLesson> = mutableListOf()
     var semesters: List<SemesterEntity> = emptyList()
     var semesterId: Int? = null
@@ -107,13 +112,6 @@ class ScheduleViewModel : ViewModel() {
         }
     }
 
-    //    fun loadStudents() {
-//        viewModelScope.launch {
-//            studentsMutableLiveData.postValue(
-//                Dependencies.studentRepository.getStudents()
-//            )
-//        }
-//    }
     fun loadLessons() {
         viewModelScope.launch {
             val date = getDate()
@@ -145,6 +143,34 @@ class ScheduleViewModel : ViewModel() {
     }
 
     fun setDate(date: SimpleDate) {
+        sharedPreferences.edit().apply {
+            putInt(SELECTED_DAY, date.day)
+            putInt(SELECTED_MONTH, date.month)
+            putInt(SELECTED_YEAR, date.year)
+            apply()
+        }
         selectedDate = date
+    }
+
+    init {
+        selectedDate = if (
+            sharedPreferences.contains(SELECTED_DAY) &&
+            sharedPreferences.contains(SELECTED_MONTH) &&
+            sharedPreferences.contains(SELECTED_YEAR)
+        ) {
+            SimpleDate(
+                sharedPreferences.getInt(SELECTED_DAY, -1),
+                sharedPreferences.getInt(SELECTED_MONTH, -1),
+                sharedPreferences.getInt(SELECTED_YEAR, -1),
+            )
+        } else {
+            null
+        }
+    }
+
+    companion object {
+        const val SELECTED_DAY = "SELECTED_DAY"
+        const val SELECTED_MONTH = "SELECTED_MONTH"
+        const val SELECTED_YEAR = "SELECTED_YEAR"
     }
 }
