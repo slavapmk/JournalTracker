@@ -92,17 +92,18 @@ class StudentsEditActivity : AppCompatActivity() {
             }
             return@setOnEditorActionListener false
         }
-    }
 
-    private fun load() {
-        binding.loadingStatus.visibility = View.VISIBLE
-        viewModel.loadStudents()
         viewModel.studentsLiveData.observe(this) {
             viewModel.studentsList.clear()
             viewModel.studentsList.addAll(it)
             studentsEditListAdapter.notifyItemRangeChanged(0, it.size)
             binding.loadingStatus.visibility = View.GONE
         }
+    }
+
+    private fun load() {
+        binding.loadingStatus.visibility = View.VISIBLE
+        viewModel.loadStudents()
     }
 
     private fun addStudentFromInput() {
