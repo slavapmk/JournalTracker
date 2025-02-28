@@ -86,7 +86,11 @@ class ScheduleFragment : Fragment() {
         }
 
         viewModel.mediatorLiveData.observe(viewLifecycleOwner) { loadData ->
-            val semesterIndex = loadData.semesters.indexOfFirst { it.id == viewModel.semesterId }
+            var semesterIndex = loadData.semesters.indexOfFirst { it.id == viewModel.semesterId }
+            if (semesterIndex == -1) {
+                semesterIndex = 0
+                viewModel.semesterId = loadData.semesters[semesterIndex].id
+            }
             val semester = loadData.semesters[semesterIndex]
             binding.semester.text = getString(
                 R.string.schedule_semester,
