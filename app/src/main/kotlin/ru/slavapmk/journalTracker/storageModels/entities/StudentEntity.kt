@@ -1,4 +1,4 @@
-package ru.slavapmk.journalTracker.storageModels
+package ru.slavapmk.journalTracker.storageModels.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

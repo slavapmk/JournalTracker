@@ -1,10 +1,10 @@
-package ru.slavapmk.journalTracker.storageModels
+package ru.slavapmk.journalTracker.storageModels.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "semesters")
+@Entity(tableName = "semesters_table")
 data class SemesterEntity(
     @PrimaryKey(autoGenerate = true) val id: Int,
     @ColumnInfo(name = "start_date_day") val startDay: Int,

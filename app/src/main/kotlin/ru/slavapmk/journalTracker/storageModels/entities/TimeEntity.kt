@@ -1,4 +1,4 @@
-package ru.slavapmk.journalTracker.storageModels
+package ru.slavapmk.journalTracker.storageModels.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

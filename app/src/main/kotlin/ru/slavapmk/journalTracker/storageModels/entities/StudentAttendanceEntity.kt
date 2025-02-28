@@ -1,4 +1,4 @@
-package ru.slavapmk.journalTracker.storageModels
+package ru.slavapmk.journalTracker.storageModels.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -14,13 +14,13 @@ import androidx.room.PrimaryKey
             childColumns = ["student_id"]
         ),
         ForeignKey(
-            entity = LessonInfo::class,
+            entity = LessonInfoEntity::class,
             parentColumns = ["id"],
             childColumns = ["lesson_id"]
         )
     ]
 )
-data class StudentAttendance(
+data class StudentAttendanceEntity(
     @PrimaryKey(autoGenerate = true) val id: Int,
     @ColumnInfo(name = "student_id") val studentId: Int,
     @ColumnInfo(name = "lesson_id") val lessonId: Int,

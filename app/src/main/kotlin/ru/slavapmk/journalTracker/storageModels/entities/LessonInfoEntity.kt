@@ -1,4 +1,4 @@
-package ru.slavapmk.journalTracker.storageModels
+package ru.slavapmk.journalTracker.storageModels.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -20,7 +20,7 @@ import androidx.room.PrimaryKey
         )
     ]
 )
-data class LessonInfo(
+data class LessonInfoEntity(
     @PrimaryKey val id: Int,
     @ColumnInfo(name = "semester_id") val semesterId: Int,
     val name: String,
