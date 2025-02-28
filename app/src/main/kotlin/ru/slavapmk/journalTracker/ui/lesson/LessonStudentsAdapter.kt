@@ -28,6 +28,10 @@ class LessonStudentsAdapter(
         holder.visited.setOnCheckedChangeListener { _, isChecked ->
             student.visited = isChecked
         }
+        holder.itemView.setOnClickListener {
+            student.visited = !student.visited
+            holder.visited.isChecked = student.visited
+        }
     }
 }
 
