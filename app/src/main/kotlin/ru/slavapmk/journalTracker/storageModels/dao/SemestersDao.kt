@@ -3,10 +3,7 @@ package ru.slavapmk.journalTracker.storageModels.dao
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import ru.slavapmk.journalTracker.storageModels.entities.CampusEntity
 import ru.slavapmk.journalTracker.storageModels.entities.SemesterEntity
-import ru.slavapmk.journalTracker.storageModels.entities.TimeEntity
-import java.sql.Time
 
 @Dao
 interface SemestersDao {
@@ -16,6 +13,6 @@ interface SemestersDao {
     @Query("DELETE FROM semesters_table WHERE id = :semesterId")
     fun deleteTime(semesterId: Int)
 
-    @Query("SELECT * FROM semesters_table")
+    @Query("SELECT * FROM semesters_table ORDER by start_date_year, start_date_month, start_date_day")
     fun getSemesters(): List<SemesterEntity>
 }

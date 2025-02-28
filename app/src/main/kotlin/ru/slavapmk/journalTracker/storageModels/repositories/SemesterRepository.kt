@@ -2,13 +2,8 @@ package ru.slavapmk.journalTracker.storageModels.repositories
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import ru.slavapmk.journalTracker.storageModels.dao.CampusesDao
 import ru.slavapmk.journalTracker.storageModels.dao.SemestersDao
-import ru.slavapmk.journalTracker.storageModels.dao.TimesDao
-import ru.slavapmk.journalTracker.storageModels.entities.CampusEntity
 import ru.slavapmk.journalTracker.storageModels.entities.SemesterEntity
-import ru.slavapmk.journalTracker.storageModels.entities.StudentEntity
-import ru.slavapmk.journalTracker.storageModels.entities.TimeEntity
 
 class SemesterRepository(
     private val semestersDao: SemestersDao
