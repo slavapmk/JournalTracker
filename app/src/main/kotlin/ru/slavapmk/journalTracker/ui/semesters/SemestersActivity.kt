@@ -2,6 +2,7 @@ package ru.slavapmk.journalTracker.ui.semesters
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -24,6 +25,7 @@ class SemestersActivity : AppCompatActivity() {
     private val semestersAdapter by lazy {
         SemestersAdapter(
             viewModel.semesters, { semester ->
+                binding.loadingStatus.visibility = View.VISIBLE
                 val indexOf = viewModel.semesters.indexOf(semester)
                 val size = viewModel.semesters.size
                 viewModel.semesters.remove(semester)
@@ -33,6 +35,7 @@ class SemestersActivity : AppCompatActivity() {
                     indexOf,
                     updateCount
                 )
+                viewModel.deleteSemester(semester)
             }, {
                 finish()
             }
@@ -52,6 +55,11 @@ class SemestersActivity : AppCompatActivity() {
             insets
         }
 
+        init()
+        load()
+    }
+
+    private fun init() {
         binding.startDateInput.setOnClickListener {
             val calendar = Calendar.getInstance()
             val year = calendar.get(Calendar.YEAR)
@@ -129,6 +137,7 @@ class SemestersActivity : AppCompatActivity() {
         }
 
         binding.addButton.setOnClickListener {
+            binding.loadingStatus.visibility = View.VISIBLE
             if (
                 viewModel.startDay == null || viewModel.startMonth == null || viewModel.startYear == null ||
                 viewModel.endDay == null || viewModel.endMonth == null || viewModel.endYear == null
@@ -144,6 +153,7 @@ class SemestersActivity : AppCompatActivity() {
             }
 
             val element = Semester(
+                null,
                 viewModel.startDay!!,
                 viewModel.startMonth!!,
                 viewModel.startYear!!,
@@ -151,13 +161,7 @@ class SemestersActivity : AppCompatActivity() {
                 viewModel.endMonth!!,
                 viewModel.endYear!!,
             )
-            viewModel.semesters.add(element)
-            viewModel.semesters.sortWith(
-                compareBy(
-                    Semester::startYear, Semester::startMonth, Semester::startDay
-                )
-            )
-            val indexOf = viewModel.semesters.indexOf(element)
+            val indexOf = viewModel.addSemester(element)
             binding.semesters.adapter?.notifyItemInserted(indexOf)
             binding.semesters.adapter?.notifyItemRangeChanged(
                 indexOf, viewModel.semesters.size - indexOf
@@ -175,5 +179,28 @@ class SemestersActivity : AppCompatActivity() {
 
         binding.semesters.layoutManager = LinearLayoutManager(this)
         binding.semesters.adapter = semestersAdapter
+
+        viewModel.semestersLiveData.observe(this) {
+            viewModel.semesters.clear()
+            viewModel.semesters.addAll(it)
+            semestersAdapter.notifyItemRangeChanged(0, it.size)
+            binding.loadingStatus.visibility = View.GONE
+        }
+
+        viewModel.semesterUpdateLiveData.observe(this) { (old, new) ->
+            val indexOf = viewModel.semesters.indexOf(old)
+            viewModel.semesters[indexOf] = new
+            semestersAdapter.notifyItemChanged(indexOf)
+            binding.loadingStatus.visibility = View.GONE
+        }
+
+        viewModel.endDeleteLiveData.observe(this) {
+            binding.loadingStatus.visibility = View.GONE
+        }
+    }
+
+    private fun load() {
+        binding.loadingStatus.visibility = View.VISIBLE
+        viewModel.loadSemesters()
     }
 }

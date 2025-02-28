@@ -11,7 +11,7 @@ import java.sql.Time
 @Dao
 interface SemestersDao {
     @Insert(entity = SemesterEntity::class)
-    fun insertSemester(semester: SemesterEntity)
+    fun insertSemester(semester: SemesterEntity): Long
 
     @Query("DELETE FROM semesters_table WHERE id = :semesterId")
     fun deleteTime(semesterId: Int)

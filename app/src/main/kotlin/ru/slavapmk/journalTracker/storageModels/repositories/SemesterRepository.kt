@@ -13,8 +13,8 @@ import ru.slavapmk.journalTracker.storageModels.entities.TimeEntity
 class SemesterRepository(
     private val semestersDao: SemestersDao
 ) {
-    suspend fun insertSemester(semesterEntity: SemesterEntity) = withContext(Dispatchers.IO) {
-        semestersDao.insertSemester(semesterEntity)
+    suspend fun insertSemester(semesterEntity: SemesterEntity): Int = withContext(Dispatchers.IO) {
+        semestersDao.insertSemester(semesterEntity).toInt()
     }
 
     suspend fun deleteSemester(semesterId: Int) = withContext(Dispatchers.IO) {
