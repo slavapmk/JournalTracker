@@ -37,6 +37,7 @@ class StudentsEditActivity : AppCompatActivity() {
                 indexOf,
                 updateCount
             )
+            viewModel.deleteStudent(student)
         }
     }
 
@@ -103,14 +104,15 @@ class StudentsEditActivity : AppCompatActivity() {
             return
         }
         binding.studentInput.text?.clear()
-        viewModel.addStudent(
+        val insertIndex = viewModel.addStudent(
             StudentsEditListItem(
                 null,
                 text
             )
         )
-        studentsEditListAdapter.notifyItemInserted(
-            viewModel.studentsList.size - 1
+        studentsEditListAdapter.notifyItemInserted(insertIndex)
+        studentsEditListAdapter.notifyItemRangeChanged(
+            insertIndex, viewModel.studentsList.size - insertIndex
         )
     }
 }

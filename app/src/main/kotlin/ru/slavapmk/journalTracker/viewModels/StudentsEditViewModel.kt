@@ -28,8 +28,8 @@ class StudentsEditViewModel : ViewModel() {
         MutableLiveData()
     }
 
-    fun addStudent(new: StudentsEditListItem) {
-        studentsList.add(new)
+    fun addStudent(new: StudentsEditListItem): Int {
+        val add = studentsList.add(new)
         viewModelScope.launch {
             Dependencies.studentRepository.insertStudent(
                 StudentEntity(
@@ -37,6 +37,14 @@ class StudentsEditViewModel : ViewModel() {
                     new.name
                 )
             )
+        }
+        studentsList.sortBy { it.name }
+        return studentsList.indexOf(new)
+    }
+
+    fun deleteStudent(student: StudentsEditListItem) {
+        viewModelScope.launch {
+            Dependencies.studentRepository.deleteStudent(student.id!!)
         }
     }
 }
