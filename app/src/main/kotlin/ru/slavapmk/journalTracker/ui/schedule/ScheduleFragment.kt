@@ -47,6 +47,7 @@ class ScheduleFragment : Fragment() {
         binding = FragmentScheduleBinding.inflate(layoutInflater)
 
         init()
+        viewModel.sharedPreferences = shared
 
         return binding.root
     }
@@ -70,6 +71,11 @@ class ScheduleFragment : Fragment() {
         binding.semester.setOnClickListener {
             val intent = Intent(activity, SemestersActivity::class.java)
             activity.startActivity(intent)
+        }
+
+        binding.currentDay.setOnClickListener {
+            viewModel.setDate(null)
+            selectDate()
         }
 
         binding.lessons.layoutManager = LinearLayoutManager(requireContext())
@@ -152,6 +158,8 @@ class ScheduleFragment : Fragment() {
             binding.lessons.adapter?.notifyItemRangeChanged(0, viewModel.lessons.size)
             activity.setLoading(false)
         }
+
+        viewModel.loadDate()
     }
 
     private fun selectDate() {

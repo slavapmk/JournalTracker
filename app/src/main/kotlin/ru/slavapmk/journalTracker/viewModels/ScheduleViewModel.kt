@@ -1,6 +1,5 @@
 package ru.slavapmk.journalTracker.viewModels
 
-import android.content.Context
 import android.content.SharedPreferences
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -35,9 +34,7 @@ operator fun SimpleDate.compareTo(other: SimpleDate): Int {
     return compareValuesBy(this, other, SimpleDate::year, SimpleDate::month, SimpleDate::day)
 }
 
-class ScheduleViewModel(
-    private val sharedPreferences: SharedPreferences
-) : ViewModel() {
+class ScheduleViewModel : ViewModel() {
     val lessons: MutableList<ScheduleListLesson> = mutableListOf()
     var semesters: List<SemesterEntity> = emptyList()
     var semesterId: Int? = null
@@ -46,6 +43,7 @@ class ScheduleViewModel(
     var week: Week? = null
     val timesMap: MutableMap<Int, TimeEntity> = mutableMapOf()
     val campusesMap: MutableMap<Int, CampusEntity> = mutableMapOf()
+    var sharedPreferences: SharedPreferences? = null
 
     private val semestersMutableLiveData: MutableLiveData<List<SemesterEntity>> by lazy {
         MutableLiveData()
@@ -142,26 +140,36 @@ class ScheduleViewModel(
         }
     }
 
-    fun setDate(date: SimpleDate) {
-        sharedPreferences.edit().apply {
-            putInt(SELECTED_DAY, date.day)
-            putInt(SELECTED_MONTH, date.month)
-            putInt(SELECTED_YEAR, date.year)
-            apply()
+    fun setDate(date: SimpleDate?) {
+        if (date == null) {
+            sharedPreferences?.edit()?.apply {
+                remove(SELECTED_DAY)
+                remove(SELECTED_MONTH)
+                remove(SELECTED_YEAR)
+                apply()
+            }
+        } else {
+            sharedPreferences?.edit()?.apply {
+                putInt(SELECTED_DAY, date.day)
+                putInt(SELECTED_MONTH, date.month)
+                putInt(SELECTED_YEAR, date.year)
+                apply()
+            }
         }
         selectedDate = date
     }
 
-    init {
+    fun loadDate() {
         selectedDate = if (
-            sharedPreferences.contains(SELECTED_DAY) &&
-            sharedPreferences.contains(SELECTED_MONTH) &&
-            sharedPreferences.contains(SELECTED_YEAR)
+            sharedPreferences != null &&
+            sharedPreferences!!.contains(SELECTED_DAY) &&
+            sharedPreferences!!.contains(SELECTED_MONTH) &&
+            sharedPreferences!!.contains(SELECTED_YEAR)
         ) {
             SimpleDate(
-                sharedPreferences.getInt(SELECTED_DAY, -1),
-                sharedPreferences.getInt(SELECTED_MONTH, -1),
-                sharedPreferences.getInt(SELECTED_YEAR, -1),
+                sharedPreferences!!.getInt(SELECTED_DAY, -1),
+                sharedPreferences!!.getInt(SELECTED_MONTH, -1),
+                sharedPreferences!!.getInt(SELECTED_YEAR, -1),
             )
         } else {
             null
