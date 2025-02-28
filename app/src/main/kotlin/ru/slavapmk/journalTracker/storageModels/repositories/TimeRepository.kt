@@ -17,4 +17,8 @@ class TimeRepository(
     suspend fun deleteTime(timeId: Int) = withContext(Dispatchers.IO) {
         timesDao.deleteTime(timeId)
     }
+
+    suspend fun getTimes(): List<TimeEntity> = withContext(Dispatchers.IO) {
+        timesDao.getTimes()
+    }
 }

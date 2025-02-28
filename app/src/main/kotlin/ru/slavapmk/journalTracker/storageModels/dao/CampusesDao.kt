@@ -12,4 +12,7 @@ interface CampusesDao {
 
     @Query("DELETE FROM campuses_table WHERE id = :campusId")
     fun deleteCampus(campusId: Int)
+
+    @Query("SELECT * FROM campuses_table")
+    fun getCampuses(): List<CampusEntity>
 }

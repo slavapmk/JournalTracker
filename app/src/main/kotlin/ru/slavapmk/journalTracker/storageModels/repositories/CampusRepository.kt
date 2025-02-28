@@ -15,4 +15,8 @@ class CampusRepository(
     suspend fun deleteCampus(campusId: Int) = withContext(Dispatchers.IO) {
         campusesDao.deleteCampus(campusId)
     }
+
+    suspend fun getCampuses(): List<CampusEntity> = withContext(Dispatchers.IO) {
+        campusesDao.getCampuses()
+    }
 }

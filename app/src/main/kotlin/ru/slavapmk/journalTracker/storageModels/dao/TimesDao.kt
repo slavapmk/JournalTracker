@@ -12,4 +12,7 @@ interface TimesDao {
 
     @Query("DELETE FROM times_table WHERE id = :timeId")
     fun deleteTime(timeId: Int)
+
+    @Query("SELECT * FROM times_table")
+    fun getTimes(): List<TimeEntity>
 }

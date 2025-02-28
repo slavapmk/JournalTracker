@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.slavapmk.journalTracker.dataModels.schedule.ScheduleListLesson
+import ru.slavapmk.journalTracker.dataModels.selectWeek.Week
 import ru.slavapmk.journalTracker.storageModels.Dependencies
 import ru.slavapmk.journalTracker.storageModels.entities.CampusEntity
 import ru.slavapmk.journalTracker.storageModels.entities.LessonInfoEntity
@@ -16,8 +17,6 @@ import java.util.Date
 
 data class LoadScheduleData(
     val semesters: List<SemesterEntity>,
-//    val students: List<StudentEntity>,
-    val lessons: List<LessonInfoEntity>,
     val times: List<TimeEntity>,
     val campuses: List<CampusEntity>
 )
@@ -30,15 +29,10 @@ class ScheduleViewModel : ViewModel() {
     }.build().time
     val lessons: MutableList<ScheduleListLesson> = mutableListOf()
     var semesterId: Int? = null
+    val weeks: MutableList<Week> = mutableListOf()
     var week: Int? = null
 
     private val semestersMutableLiveData: MutableLiveData<List<SemesterEntity>> by lazy {
-        MutableLiveData()
-    }
-//    private val studentsMutableLiveData: MutableLiveData<List<StudentEntity>> by lazy {
-//        MutableLiveData()
-//    }
-    private val lessonsMutableLiveData: MutableLiveData<List<LessonInfoEntity>> by lazy {
         MutableLiveData()
     }
     private val timesMutableLiveData: MutableLiveData<List<TimeEntity>> by lazy {
@@ -48,21 +42,25 @@ class ScheduleViewModel : ViewModel() {
         MutableLiveData()
     }
 
+    //    private val studentsMutableLiveData: MutableLiveData<List<StudentEntity>> by lazy {
+//        MutableLiveData()
+//    }
+//    private val lessonsMutableLiveData: MutableLiveData<List<LessonInfoEntity>> by lazy {
+//        MutableLiveData()
+//    }
+
     val mediatorLiveData = MediatorLiveData<LoadScheduleData>().apply {
         var semesters: List<SemesterEntity>? = null
 //        var students: List<StudentEntity>? = null
-        var lessons: List<LessonInfoEntity>? = null
+//        var lessons: List<LessonInfoEntity>? = null
         var times: List<TimeEntity>? = null
         var campuses: List<CampusEntity>? = null
         fun update() {
-            if (
-                semesters != null && lessons != null && times != null
-                && campuses != null
-            ) {
+            if (semesters != null && times != null && campuses != null) {
                 value = LoadScheduleData(
                     semesters!!,
 //                    students!!,
-                    lessons!!,
+//                    lessons!!,
                     times!!,
                     campuses!!
                 )
@@ -76,10 +74,10 @@ class ScheduleViewModel : ViewModel() {
 //            students = value
 //            update()
 //        }
-        addSource(lessonsMutableLiveData) { value ->
-            lessons = value
-            update()
-        }
+//        addSource(lessonsMutableLiveData) { value ->
+//            lessons = value
+//            update()
+//        }
         addSource(timesMutableLiveData) { value ->
             times = value
             update()
@@ -97,8 +95,22 @@ class ScheduleViewModel : ViewModel() {
             )
         }
     }
+    fun loadTimes() {
+        viewModelScope.launch {
+            timesMutableLiveData.postValue(
+                Dependencies.timeRepository.getTimes()
+            )
+        }
+    }
+    fun loadCampuses() {
+        viewModelScope.launch {
+            campusesMutableLiveData.postValue(
+                Dependencies.campusRepository.getCampuses()
+            )
+        }
+    }
 
-//    fun loadStudents() {
+    //    fun loadStudents() {
 //        viewModelScope.launch {
 //            studentsMutableLiveData.postValue(
 //                Dependencies.studentRepository.getStudents()
@@ -108,7 +120,7 @@ class ScheduleViewModel : ViewModel() {
 //    fun loadLessons() {
 //        viewModelScope.launch {
 //            lessonsMutableLiveData.postValue(
-//                Dependencies.lessonInfoRepository.getStudents()
+//                Dependencies.lessonInfoRepository.getLessons()
 //            )
 //        }
 //    }

@@ -11,15 +11,25 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.slavapmk.journalTracker.R
+import ru.slavapmk.journalTracker.dataModels.campuses.Campus
 import ru.slavapmk.journalTracker.dataModels.schedule.ScheduleListLesson
+import ru.slavapmk.journalTracker.dataModels.selectWeek.Semester
+import ru.slavapmk.journalTracker.dataModels.selectWeek.Week
 import ru.slavapmk.journalTracker.databinding.FragmentScheduleBinding
+import ru.slavapmk.journalTracker.storageModels.entities.CampusEntity
+import ru.slavapmk.journalTracker.storageModels.entities.LessonInfoEntity
+import ru.slavapmk.journalTracker.storageModels.entities.TimeEntity
 import ru.slavapmk.journalTracker.ui.MainActivity
 import ru.slavapmk.journalTracker.ui.lesson.LessonActivity
 import ru.slavapmk.journalTracker.ui.lessonEdit.LessonEditActivity
 import ru.slavapmk.journalTracker.ui.selectWeek.SelectWeekActivity
 import ru.slavapmk.journalTracker.ui.semesters.SemestersActivity
+import ru.slavapmk.journalTracker.utils.generateWeeks
 import ru.slavapmk.journalTracker.viewModels.LoadScheduleData
 import ru.slavapmk.journalTracker.viewModels.ScheduleViewModel
+import java.sql.Time
+import java.time.DayOfWeek
+import java.time.LocalDate
 
 class ScheduleFragment : Fragment() {
     private lateinit var binding: FragmentScheduleBinding
@@ -87,18 +97,18 @@ class ScheduleFragment : Fragment() {
                 }
             )
 
-            updateLessons(loadData)
-            activity.setLoading(false)
+//            updateLessons(loadData)
         }
     }
 
-    private fun updateLessons(loadData: LoadScheduleData) {
-        val timesMap = loadData.times.associateBy { it.id }
-        val campusesMap = loadData.campuses.associateBy { it.id }
-
+    private fun updateLessons(
+        lessons: List<LessonInfoEntity>,
+        timesMap: Map<Int, TimeEntity>,
+        campusesMap: Map<Int, CampusEntity>
+    ) {
         viewModel.lessons.clear()
         viewModel.lessons.addAll(
-            loadData.lessons.map { lessonEntity ->
+            lessons.map { lessonEntity ->
                 val time = timesMap[lessonEntity.timeId]
                 ScheduleListLesson(
                     lessonEntity.id,
@@ -125,6 +135,8 @@ class ScheduleFragment : Fragment() {
         }
 
         viewModel.loadSemesters()
+        viewModel.loadCampuses()
+        viewModel.loadTimes()
 
         binding.semester.text = getString(
             R.string.schedule_semester,

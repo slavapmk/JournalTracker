@@ -18,4 +18,10 @@ interface LessonsInfoDao {
 
     @Query("DELETE FROM lessons_table WHERE id = :lessonId")
     fun deleteLesson(lessonId: Int)
+
+//    @Query("SELECT * FROM lessons_table")
+//    fun getLessons(): List<LessonInfoEntity>
+
+    @Query("SELECT * FROM lessons_table WHERE date_day = :day AND date_month = :month AND date_year = :year")
+    fun getLessonsByDate(day: Int, month: Int, year: Int): List<LessonInfoEntity>
 }
