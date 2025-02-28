@@ -14,6 +14,7 @@ import ru.slavapmk.journalTracker.storageModels.entities.SemesterEntity
 import ru.slavapmk.journalTracker.storageModels.entities.TimeEntity
 import java.util.Calendar
 import java.util.Date
+import java.util.GregorianCalendar
 
 data class LoadScheduleData(
     val semesters: List<SemesterEntity>,
@@ -21,16 +22,24 @@ data class LoadScheduleData(
     val campuses: List<CampusEntity>
 )
 
+data class SimpleDate(
+    val day: Int,
+    val month: Int,
+    val year: Int
+)
+
+operator fun SimpleDate.compareTo(other: SimpleDate): Int {
+    return compareValuesBy(this, other, SimpleDate::year, SimpleDate::month, SimpleDate::day)
+}
+
 class ScheduleViewModel : ViewModel() {
-    var currentDate: Date = Calendar.Builder().apply {
-        set(Calendar.YEAR, 2024)
-        set(Calendar.MONTH, 9)
-        set(Calendar.DATE, 1)
-    }.build().time
     val lessons: MutableList<ScheduleListLesson> = mutableListOf()
     var semesterId: Int? = null
     val weeks: MutableList<Week> = mutableListOf()
-    var week: Int? = null
+    private var selectedDate: SimpleDate? = null
+    var week: Week? = null
+    val timesMap: MutableMap<Int, TimeEntity> = mutableMapOf()
+    val campusesMap: MutableMap<Int, CampusEntity> = mutableMapOf()
 
     private val semestersMutableLiveData: MutableLiveData<List<SemesterEntity>> by lazy {
         MutableLiveData()
@@ -42,25 +51,18 @@ class ScheduleViewModel : ViewModel() {
         MutableLiveData()
     }
 
-    //    private val studentsMutableLiveData: MutableLiveData<List<StudentEntity>> by lazy {
-//        MutableLiveData()
-//    }
-//    private val lessonsMutableLiveData: MutableLiveData<List<LessonInfoEntity>> by lazy {
-//        MutableLiveData()
-//    }
+    val lessonsMutableLiveData: MutableLiveData<List<LessonInfoEntity>> by lazy {
+        MutableLiveData()
+    }
 
     val mediatorLiveData = MediatorLiveData<LoadScheduleData>().apply {
         var semesters: List<SemesterEntity>? = null
-//        var students: List<StudentEntity>? = null
-//        var lessons: List<LessonInfoEntity>? = null
         var times: List<TimeEntity>? = null
         var campuses: List<CampusEntity>? = null
         fun update() {
             if (semesters != null && times != null && campuses != null) {
                 value = LoadScheduleData(
                     semesters!!,
-//                    students!!,
-//                    lessons!!,
                     times!!,
                     campuses!!
                 )
@@ -70,14 +72,6 @@ class ScheduleViewModel : ViewModel() {
             semesters = value
             update()
         }
-//        addSource(studentsMutableLiveData) { value ->
-//            students = value
-//            update()
-//        }
-//        addSource(lessonsMutableLiveData) { value ->
-//            lessons = value
-//            update()
-//        }
         addSource(timesMutableLiveData) { value ->
             times = value
             update()
@@ -95,6 +89,7 @@ class ScheduleViewModel : ViewModel() {
             )
         }
     }
+
     fun loadTimes() {
         viewModelScope.launch {
             timesMutableLiveData.postValue(
@@ -102,6 +97,7 @@ class ScheduleViewModel : ViewModel() {
             )
         }
     }
+
     fun loadCampuses() {
         viewModelScope.launch {
             campusesMutableLiveData.postValue(
@@ -117,11 +113,37 @@ class ScheduleViewModel : ViewModel() {
 //            )
 //        }
 //    }
-//    fun loadLessons() {
-//        viewModelScope.launch {
-//            lessonsMutableLiveData.postValue(
-//                Dependencies.lessonInfoRepository.getLessons()
-//            )
-//        }
-//    }
+    fun loadLessons() {
+        viewModelScope.launch {
+            val date = getDate()
+            lessonsMutableLiveData.postValue(
+                Dependencies.lessonInfoRepository.getLessonsByDate(
+                    date.day,
+                    date.month,
+                    date.year
+                )
+            )
+        }
+    }
+
+    fun getDate(): SimpleDate {
+        if (selectedDate == null) {
+            val calendar: Calendar = GregorianCalendar.getInstance().apply {
+                time = Date()
+            }
+            val date = SimpleDate(
+                calendar[Calendar.DAY_OF_MONTH],
+                calendar[Calendar.MONTH] + 1,
+                calendar[Calendar.YEAR]
+            )
+            setDate(date)
+            return date
+        } else {
+            return selectedDate!!
+        }
+    }
+
+    fun setDate(date: SimpleDate) {
+        selectedDate = date
+    }
 }

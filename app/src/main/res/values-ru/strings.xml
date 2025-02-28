@@ -46,4 +46,6 @@
     <string name="export_semester">Экспорт семестра</string>
     <string name="week_format_type_even_uneven">Чётный / Нечётный</string>
     <string name="week_format_type_up_down">Верхняя / Нижняя</string>
+    <string name="week_type_even">Чётная</string>
+    <string name="week_type_uneven">Нечётная</string>
 </resources>
