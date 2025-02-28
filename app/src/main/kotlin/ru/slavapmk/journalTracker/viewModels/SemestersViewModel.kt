@@ -34,11 +34,11 @@ class SemestersViewModel : ViewModel() {
             val semesters = Dependencies.semesterRepository.getSemesters().map {
                 Semester(
                     it.id,
-                    it.startMonth,
                     it.startDay,
+                    it.startMonth,
                     it.startYear,
-                    it.endMonth,
                     it.endDay,
+                    it.endMonth,
                     it.endYear
                 )
             }
