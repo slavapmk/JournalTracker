@@ -74,4 +74,6 @@
     <string name="week_format_type_up_down">Up / Down</string>
     <string name="attendance_format_type_plus_minus" translatable="false">+ / -</string>
     <string name="attendance_format_type_skip_hours" translatable="false">• / 2</string>
+    <string name="shared_id" translatable="false">RU.SLAVAPMK.JOURNALTRACKER_VGHDFGDZVUHYFIUJHIOVHGYDZUIFHVDVO_SHARED</string>
+    <string name="semester_shared_id" translatable="false">SEMESTER_ID</string>
 </resources>

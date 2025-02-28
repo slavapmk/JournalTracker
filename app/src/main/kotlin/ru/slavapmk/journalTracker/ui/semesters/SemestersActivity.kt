@@ -1,12 +1,15 @@
 package ru.slavapmk.journalTracker.ui.semesters
 
 import android.app.DatePickerDialog
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.edit
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,6 +25,12 @@ class SemestersActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySemestersBinding
     val viewModel by viewModels<SemestersViewModel>()
 
+    private val shared: SharedPreferences by lazy {
+        getSharedPreferences(
+            getString(R.string.shared_id), Context.MODE_PRIVATE
+        )
+    }
+
     private val semestersAdapter by lazy {
         SemestersAdapter(
             viewModel.semesters, { semester ->
@@ -36,7 +45,13 @@ class SemestersActivity : AppCompatActivity() {
                     updateCount
                 )
                 viewModel.deleteSemester(semester)
-            }, {
+            }, { semester ->
+                shared.edit {
+                    putString(
+                        getString(R.string.semester_shared_id),
+                        semester.id.toString()
+                    )
+                }
                 finish()
             }
         )
