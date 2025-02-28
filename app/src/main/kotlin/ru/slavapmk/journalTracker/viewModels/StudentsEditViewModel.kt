@@ -29,7 +29,7 @@ class StudentsEditViewModel : ViewModel() {
     }
 
     fun addStudent(new: StudentsEditListItem): Int {
-        val add = studentsList.add(new)
+        studentsList.add(new)
         viewModelScope.launch {
             Dependencies.studentRepository.insertStudent(
                 StudentEntity(

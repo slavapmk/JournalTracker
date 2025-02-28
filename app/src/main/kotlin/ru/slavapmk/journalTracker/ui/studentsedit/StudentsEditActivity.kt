@@ -49,6 +49,17 @@ class StudentsEditActivity : AppCompatActivity() {
         binding = ActivityStudentsEditBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 5)
+            insets
+        }
+
+        init()
+        load()
+    }
+
+    private fun init() {
         binding.studentInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
@@ -62,12 +73,6 @@ class StudentsEditActivity : AppCompatActivity() {
         })
         binding.studentInput.setText(viewModel.studentName)
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 5)
-            insets
-        }
-
         binding.studentsList.layoutManager = LinearLayoutManager(this)
         binding.studentsList.adapter = studentsEditListAdapter
 
@@ -77,7 +82,7 @@ class StudentsEditActivity : AppCompatActivity() {
             }
             addStudentFromInput()
             this.currentFocus?.let { view ->
-                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                val imm = getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
                 imm?.hideSoftInputFromWindow(view.windowToken, 0)
             }
         }
@@ -87,7 +92,9 @@ class StudentsEditActivity : AppCompatActivity() {
             }
             return@setOnEditorActionListener false
         }
+    }
 
+    private fun load() {
         binding.loadingStatus.visibility = View.VISIBLE
         viewModel.loadStudents()
         viewModel.studentsLiveData.observe(this) {
