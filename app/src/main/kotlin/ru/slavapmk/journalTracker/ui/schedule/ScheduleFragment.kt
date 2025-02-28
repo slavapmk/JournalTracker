@@ -15,9 +15,7 @@ import ru.slavapmk.journalTracker.R
 import ru.slavapmk.journalTracker.dataModels.schedule.ScheduleListLesson
 import ru.slavapmk.journalTracker.dataModels.selectWeek.Semester
 import ru.slavapmk.journalTracker.databinding.FragmentScheduleBinding
-import ru.slavapmk.journalTracker.storageModels.entities.CampusEntity
-import ru.slavapmk.journalTracker.storageModels.entities.LessonInfoEntity
-import ru.slavapmk.journalTracker.storageModels.entities.TimeEntity
+import ru.slavapmk.journalTracker.storageModels.entities.SemesterEntity
 import ru.slavapmk.journalTracker.ui.MainActivity
 import ru.slavapmk.journalTracker.ui.lesson.LessonActivity
 import ru.slavapmk.journalTracker.ui.lessonEdit.LessonEditActivity
@@ -91,13 +89,14 @@ class ScheduleFragment : Fragment() {
                 binding.week.isVisible = true
                 return@observe
             }
+            viewModel.semesters = loadData.semesters
 
-            var semesterIndex = loadData.semesters.indexOfFirst { it.id == viewModel.semesterId }
+            var semesterIndex = viewModel.semesters.indexOfFirst { it.id == viewModel.semesterId }
             if (semesterIndex == -1) {
                 semesterIndex = 0
-                viewModel.semesterId = loadData.semesters[semesterIndex].id
+                viewModel.semesterId = viewModel.semesters[semesterIndex].id
             }
-            val semester = loadData.semesters[semesterIndex]
+            val semester = viewModel.semesters[semesterIndex]
             binding.semester.text = getString(
                 R.string.schedule_semester,
                 String.format(Locale.getDefault(), "%02d", semesterIndex + 1)
@@ -116,51 +115,7 @@ class ScheduleFragment : Fragment() {
                     )
                 )
             )
-            val selectedDate = viewModel.getDate()
-
-            var week = viewModel.weeks.find { week ->
-                val startDate = SimpleDate(
-                    week.startDay,
-                    week.startMonth,
-                    week.startYear
-                )
-                val endDate = SimpleDate(
-                    week.endDay,
-                    week.endMonth,
-                    week.endYear
-                )
-                return@find startDate <= selectedDate && selectedDate <= endDate
-            }
-            if (week == null) {
-                val startSemester = SimpleDate(
-                    semester.startDay,
-                    semester.startMonth,
-                    semester.startYear
-                )
-                val endSemester = SimpleDate(
-                    semester.endDay,
-                    semester.endMonth,
-                    semester.endYear
-                )
-                if (selectedDate <= startSemester) {
-                    week = viewModel.weeks[0]
-                    viewModel.setDate(startSemester)
-                } else {
-                    week = viewModel.weeks.last()
-                    viewModel.setDate(endSemester)
-                }
-            }
-            viewModel.week = week
-            val weekOrder = viewModel.weeks.indexOf(viewModel.week) + 1
-            binding.week.text = getString(
-                R.string.schedule_week,
-                weekOrder,
-                when (weekOrder % 2) {
-                    0 -> getString(R.string.week_type_even)
-                    else -> getString(R.string.week_type_uneven)
-                }
-            )
-            binding.week.isVisible = true
+            selectDate()
 
             viewModel.timesMap.clear()
             viewModel.timesMap.putAll(
@@ -197,6 +152,60 @@ class ScheduleFragment : Fragment() {
             binding.lessons.adapter?.notifyItemRangeChanged(0, viewModel.lessons.size)
             activity.setLoading(false)
         }
+    }
+
+    private fun selectDate() {
+        val semester: SemesterEntity = viewModel.semesters.find {
+            it.id == viewModel.semesterId
+        } ?: viewModel.semesters.last().also {
+            viewModel.semesterId = it.id
+        }
+
+        val selectedDate = viewModel.getDate()
+
+        var week = viewModel.weeks.find { week ->
+            val startDate = SimpleDate(
+                week.startDay,
+                week.startMonth,
+                week.startYear
+            )
+            val endDate = SimpleDate(
+                week.endDay,
+                week.endMonth,
+                week.endYear
+            )
+            return@find startDate <= selectedDate && selectedDate <= endDate
+        }
+        if (week == null) {
+            val startSemester = SimpleDate(
+                semester.startDay,
+                semester.startMonth,
+                semester.startYear
+            )
+            val endSemester = SimpleDate(
+                semester.endDay,
+                semester.endMonth,
+                semester.endYear
+            )
+            if (selectedDate <= startSemester) {
+                week = viewModel.weeks[0]
+                viewModel.setDate(startSemester)
+            } else {
+                week = viewModel.weeks.last()
+                viewModel.setDate(endSemester)
+            }
+        }
+        viewModel.week = week
+        val weekOrder = viewModel.weeks.indexOf(viewModel.week) + 1
+        binding.week.text = getString(
+            R.string.schedule_week,
+            weekOrder,
+            when (weekOrder % 2) {
+                0 -> getString(R.string.week_type_even)
+                else -> getString(R.string.week_type_uneven)
+            }
+        )
+        binding.week.isVisible = true
     }
 
     private fun load() {

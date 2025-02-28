@@ -34,6 +34,7 @@ operator fun SimpleDate.compareTo(other: SimpleDate): Int {
 
 class ScheduleViewModel : ViewModel() {
     val lessons: MutableList<ScheduleListLesson> = mutableListOf()
+    var semesters: List<SemesterEntity> = emptyList()
     var semesterId: Int? = null
     val weeks: MutableList<Week> = mutableListOf()
     private var selectedDate: SimpleDate? = null
