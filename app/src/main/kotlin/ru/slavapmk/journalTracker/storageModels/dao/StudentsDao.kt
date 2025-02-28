@@ -3,10 +3,7 @@ package ru.slavapmk.journalTracker.storageModels.dao
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import ru.slavapmk.journalTracker.storageModels.entities.CampusEntity
 import ru.slavapmk.journalTracker.storageModels.entities.StudentEntity
-import ru.slavapmk.journalTracker.storageModels.entities.TimeEntity
-import java.sql.Time
 
 @Dao
 interface StudentsDao {
@@ -15,4 +12,7 @@ interface StudentsDao {
 
     @Query("DELETE FROM students_table WHERE id = :studentId")
     fun deleteStudent(studentId: Int)
+
+    @Query("SELECT * FROM students_table ORDER by name")
+    fun getStudents(): List<StudentEntity>
 }

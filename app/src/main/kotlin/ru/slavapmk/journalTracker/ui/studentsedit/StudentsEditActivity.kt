@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.KeyEvent
+import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.enableEdgeToEdge
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import ru.slavapmk.journalTracker.R
 import ru.slavapmk.journalTracker.databinding.ActivityStudentsEditBinding
 import ru.slavapmk.journalTracker.dataModels.studentsEdit.StudentsEditListItem
+import ru.slavapmk.journalTracker.storageModels.Dependencies
 import ru.slavapmk.journalTracker.viewModels.StudentsEditViewModel
 import ru.slavapmk.journalTracker.ui.MainActivity.Companion.fmanager
 
@@ -84,6 +86,15 @@ class StudentsEditActivity : AppCompatActivity() {
             }
             return@setOnEditorActionListener false
         }
+
+        binding.loadingStatus.visibility = View.VISIBLE
+        viewModel.loadStudents()
+        viewModel.studentsLiveData.observe(this) {
+            viewModel.studentsList.clear()
+            viewModel.studentsList.addAll(it)
+            studentsEditListAdapter.notifyItemRangeChanged(0, it.size)
+            binding.loadingStatus.visibility = View.GONE
+        }
     }
 
     private fun addStudentFromInput() {
@@ -92,8 +103,9 @@ class StudentsEditActivity : AppCompatActivity() {
             return
         }
         binding.studentInput.text?.clear()
-        viewModel.studentsList.add(
+        viewModel.addStudent(
             StudentsEditListItem(
+                null,
                 text
             )
         )

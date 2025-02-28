@@ -9,6 +9,11 @@ import ru.slavapmk.journalTracker.storageModels.entities.StudentAttendanceEntity
 import ru.slavapmk.journalTracker.storageModels.entities.StudentEntity
 import ru.slavapmk.journalTracker.storageModels.entities.TimeEntity
 import ru.slavapmk.journalTracker.storageModels.dao.CampusesDao
+import ru.slavapmk.journalTracker.storageModels.dao.LessonsInfoDao
+import ru.slavapmk.journalTracker.storageModels.dao.SemestersDao
+import ru.slavapmk.journalTracker.storageModels.dao.StudentsAttendanceDao
+import ru.slavapmk.journalTracker.storageModels.dao.StudentsDao
+import ru.slavapmk.journalTracker.storageModels.dao.TimesDao
 
 @Database(
     version = 1,
@@ -22,5 +27,10 @@ import ru.slavapmk.journalTracker.storageModels.dao.CampusesDao
     ]
 )
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun getLessonsDao(): CampusesDao
+    abstract fun getLessonsDao(): LessonsInfoDao
+    abstract fun getTimesDao(): TimesDao
+    abstract fun getStudentsDao(): StudentsDao
+    abstract fun getSemestersDao(): SemestersDao
+    abstract fun getAttendanceDao(): StudentsAttendanceDao
+    abstract fun getCampusDao(): CampusesDao
 }
