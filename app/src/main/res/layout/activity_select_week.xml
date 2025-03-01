@@ -11,24 +11,27 @@
         android:id="@+id/weeks"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         tools:listitem="@layout/item_week" />
 
     <FrameLayout
         android:id="@+id/loading_status"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:clickable="true"
-        android:visibility="gone"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:background="@color/item_texta"
+        android:clickable="true"
+        android:elevation="100dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:elevation="100dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
         <ProgressBar
             android:layout_width="100dp"
             android:layout_height="100dp"

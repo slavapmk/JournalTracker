@@ -89,6 +89,14 @@ class ScheduleFragment : Fragment() {
         load()
     }
 
+    override fun onStop() {
+        super.onStop()
+        val sharedWeekIdKey = getString(R.string.week_shared_id)
+        shared.edit {
+            remove(sharedWeekIdKey)
+        }
+    }
+
     private fun initDays() {
         binding.monday.dayOfWeek.text = getString(R.string.day_monday)
         binding.tuesday.dayOfWeek.text = getString(R.string.day_tuesday)
@@ -222,9 +230,6 @@ class ScheduleFragment : Fragment() {
                 viewModel.week = viewModel.weeks[weekIndex]
                 setWeekName()
                 initDays()
-                shared.edit {
-                    remove(sharedWeekIdKey)
-                }
             }
 
             viewModel.timesMap.clear()
