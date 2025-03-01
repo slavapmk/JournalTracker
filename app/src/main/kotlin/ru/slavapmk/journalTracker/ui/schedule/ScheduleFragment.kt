@@ -253,11 +253,13 @@ class ScheduleFragment : Fragment() {
         binding.previousButton.setOnClickListener {
             viewModel.week = viewModel.weeks[viewModel.weeks.indexOf(viewModel.week) - 1]
             initDays()
+            setWeekName()
         }
 
         binding.nextButton.setOnClickListener {
             viewModel.week = viewModel.weeks[viewModel.weeks.indexOf(viewModel.week) + 1]
             initDays()
+            setWeekName()
         }
 
         viewModel.loadDate()
@@ -305,6 +307,12 @@ class ScheduleFragment : Fragment() {
             }
         }
         viewModel.week = week
+        setWeekName()
+        binding.week.isVisible = true
+        initDays()
+    }
+
+    private fun setWeekName() {
         val weekOrder = viewModel.weeks.indexOf(viewModel.week) + 1
         binding.week.text = getString(
             R.string.schedule_week,
@@ -314,8 +322,6 @@ class ScheduleFragment : Fragment() {
                 else -> getString(R.string.week_type_uneven)
             }
         )
-        binding.week.isVisible = true
-        initDays()
     }
 
     private fun load() {
