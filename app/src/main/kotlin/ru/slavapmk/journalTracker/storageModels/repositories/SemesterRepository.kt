@@ -19,4 +19,8 @@ class SemesterRepository(
     suspend fun getSemesters(): List<SemesterEntity> = withContext(Dispatchers.IO) {
         semestersDao.getSemesters()
     }
+
+    suspend fun getSemester(semesterId: Int): SemesterEntity = withContext(Dispatchers.IO) {
+        semestersDao.getSemester(semesterId)
+    }
 }
