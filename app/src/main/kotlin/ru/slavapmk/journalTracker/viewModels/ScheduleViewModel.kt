@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.slavapmk.journalTracker.dataModels.schedule.ScheduleListLesson
 import ru.slavapmk.journalTracker.dataModels.selectWeek.Week
+import ru.slavapmk.journalTracker.dataModels.settings.WeeksFormats
 import ru.slavapmk.journalTracker.storageModels.Dependencies
 import ru.slavapmk.journalTracker.storageModels.entities.CampusEntity
 import ru.slavapmk.journalTracker.storageModels.entities.LessonInfoEntity
@@ -46,6 +47,8 @@ operator fun SimpleDate.compareTo(other: SimpleDate): Int {
 }
 
 class ScheduleViewModel : ViewModel() {
+    var sharedPreferences: SharedPreferences? = null
+
     val lessons: MutableList<ScheduleListLesson> = mutableListOf()
     var semesters: List<SemesterEntity> = emptyList()
     var semesterId: Int? = null
@@ -54,7 +57,6 @@ class ScheduleViewModel : ViewModel() {
     var week: Week? = null
     val timesMap: MutableMap<Int, TimeEntity> = mutableMapOf()
     val campusesMap: MutableMap<Int, CampusEntity> = mutableMapOf()
-    var sharedPreferences: SharedPreferences? = null
 
     private val semestersMutableLiveData: MutableLiveData<List<SemesterEntity>> by lazy {
         MutableLiveData()
@@ -187,6 +189,17 @@ class ScheduleViewModel : ViewModel() {
         }
     }
 
+    val weekFormat: WeeksFormats
+        get() = when (sharedPreferences!!.getString(WEEK_FORMAT_KEY, EVEN_UNEVEN_VALUE_KEY)) {
+            EVEN_UNEVEN_VALUE_KEY -> WeeksFormats.EVEN_UNEVEN
+            UP_DOWN_VALUE_KEY -> WeeksFormats.UP_DOWN
+            DOWN_UP_VALUE_KEY -> WeeksFormats.DOWN_UP
+            else -> throw IllegalStateException()
+        }
+
+    val weekTypes: Int
+        get() = sharedPreferences!!.getInt(WEEK_TYPES_KEY, 1)
+
     fun parseWeek(): List<ItemDate>? = week?.let { weekToList(it) }
 
     private fun weekToList(week: Week): List<ItemDate> {
@@ -208,8 +221,13 @@ class ScheduleViewModel : ViewModel() {
     }
 
     companion object {
-        const val SELECTED_DAY = "SELECTED_DAY"
-        const val SELECTED_MONTH = "SELECTED_MONTH"
-        const val SELECTED_YEAR = "SELECTED_YEAR"
+        private const val SELECTED_DAY = "SELECTED_DAY"
+        private const val SELECTED_MONTH = "SELECTED_MONTH"
+        private const val SELECTED_YEAR = "SELECTED_YEAR"
+        private const val WEEK_TYPES_KEY = "WEEK_TYPES_KEY"
+        private const val WEEK_FORMAT_KEY = "WEEK_FORMAT_KEY"
+        private const val EVEN_UNEVEN_VALUE_KEY = "EVEN_UNEVEN"
+        private const val UP_DOWN_VALUE_KEY = "UP_DOWN"
+        private const val DOWN_UP_VALUE_KEY = "DOWN_UP"
     }
 }

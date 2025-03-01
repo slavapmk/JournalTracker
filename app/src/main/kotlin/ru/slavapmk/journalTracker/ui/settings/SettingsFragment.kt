@@ -43,9 +43,12 @@ class SettingsFragment : Fragment() {
 
         viewModel.sharedPreferences = shared
 
-        init()
-
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        init()
     }
 
     private fun init() {
@@ -96,24 +99,26 @@ class SettingsFragment : Fragment() {
 
         val weeksFormatTypes = listOf(
             getString(R.string.week_format_type_even_uneven),
-            getString(R.string.week_format_type_up_down)
+            getString(R.string.week_format_type_up_down),
+            getString(R.string.week_format_type_down_up)
         )
         binding.weeksFormatInput.setText(
             when (viewModel.weekFormat) {
                 WeeksFormats.EVEN_UNEVEN -> weeksFormatTypes[0]
                 WeeksFormats.UP_DOWN -> weeksFormatTypes[1]
+                WeeksFormats.DOWN_UP -> weeksFormatTypes[2]
                 null -> ""
             }
         )
         val weeksAdapter = ArrayAdapter(
             requireContext(), android.R.layout.simple_dropdown_item_1line, weeksFormatTypes
         )
-        val weeksFormatInput = binding.weeksFormatInput
-        weeksFormatInput.setAdapter(weeksAdapter)
-        weeksFormatInput.setOnItemClickListener { _, _, position, _ ->
+        binding.weeksFormatInput.setAdapter(weeksAdapter)
+        binding.weeksFormatInput.setOnItemClickListener { _, _, position, _ ->
             when (position) {
                 0 -> viewModel.weekFormat = WeeksFormats.EVEN_UNEVEN
                 1 -> viewModel.weekFormat = WeeksFormats.UP_DOWN
+                2 -> viewModel.weekFormat = WeeksFormats.DOWN_UP
                 else -> throw IllegalStateException()
             }
         }

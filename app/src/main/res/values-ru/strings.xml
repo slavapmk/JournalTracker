@@ -27,6 +27,7 @@
     <string name="export_save_png">Сохранить PNG</string>
     <string name="export_open_png">Открыть PNG</string>
     <string name="schedule_week">%d неделя (%s)</string>
+    <string name="schedule_week_single">%d неделя</string>
     <string name="schedule_semester">%s семестр</string>
     <string name="schedule_select_week">Неделя</string>
     <string name="schedule_current_date">Сегодня</string>
@@ -48,6 +49,7 @@
     <string name="week_format_type_up_down">Верхняя / Нижняя</string>
     <string name="week_type_even">Чётная</string>
     <string name="week_type_uneven">Нечётная</string>
+    <string name="week_type_down">Нижняя</string>
     <string name="day_monday">ПН</string>
     <string name="day_tuesday">ВТ</string>
     <string name="day_wednesday">СР</string>
@@ -68,5 +70,7 @@
     <string name="month_november">НОЯ</string>
     <string name="month_december">ДЕК</string>
     <string name="schedule_select_semester">Семестр</string>
+    <string name="week_type_up">Верхняя</string>
+    <string name="week_format_type_down_up">Нижняя / Верхняя</string>
 
 </resources>

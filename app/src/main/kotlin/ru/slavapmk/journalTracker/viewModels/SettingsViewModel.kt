@@ -13,6 +13,7 @@ class SettingsViewModel : ViewModel() {
         get() = when (sharedPreferences.getString(WEEK_FORMAT_KEY, EVEN_UNEVEN_VALUE_KEY)) {
             EVEN_UNEVEN_VALUE_KEY -> WeeksFormats.EVEN_UNEVEN
             UP_DOWN_VALUE_KEY -> WeeksFormats.UP_DOWN
+            DOWN_UP_VALUE_KEY -> WeeksFormats.DOWN_UP
             else -> null
         }
         set(value) {
@@ -22,6 +23,7 @@ class SettingsViewModel : ViewModel() {
                     when (value) {
                         WeeksFormats.EVEN_UNEVEN -> EVEN_UNEVEN_VALUE_KEY
                         WeeksFormats.UP_DOWN -> UP_DOWN_VALUE_KEY
+                        WeeksFormats.DOWN_UP -> DOWN_UP_VALUE_KEY
                         null -> {
                             remove(WEEK_FORMAT_KEY)
                             return
@@ -79,5 +81,6 @@ class SettingsViewModel : ViewModel() {
         private const val SKIP_HOURS_VALUE_KEY = "SKIP_HOURS"
         private const val EVEN_UNEVEN_VALUE_KEY = "EVEN_UNEVEN"
         private const val UP_DOWN_VALUE_KEY = "UP_DOWN"
+        private const val DOWN_UP_VALUE_KEY = "DOWN_UP"
     }
 }

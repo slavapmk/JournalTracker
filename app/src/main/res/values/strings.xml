@@ -30,6 +30,7 @@
     <string name="students_lesson_date" translatable="false">%02d.%02d.%02d</string>
     <string name="students_lesson_teacher" translatable="false">%s</string>
     <string name="schedule_week">%d week (%s)</string>
+    <string name="schedule_week_single">%d week</string>
     <string name="schedule_semester">%s semester</string>
     <string name="schedule_select_week">Week</string>
     <string name="schedule_current_date">Today</string>
@@ -79,6 +80,8 @@
     <string name="week_shared_id" translatable="false">WEEK_INDEX</string>
     <string name="week_type_even">Even</string>
     <string name="week_type_uneven">Uneven</string>
+    <string name="week_type_up">Up</string>
+    <string name="week_type_down">Down</string>
     <string name="day_monday">MON</string>
     <string name="day_tuesday">TUE</string>
     <string name="day_wednesday">WED</string>
@@ -99,5 +102,5 @@
     <string name="month_november">NOV</string>
     <string name="month_december">DEC</string>
     <string name="schedule_select_semester">Semester</string>
-
+    <string name="week_format_type_down_up">Down / Up</string>
 </resources>

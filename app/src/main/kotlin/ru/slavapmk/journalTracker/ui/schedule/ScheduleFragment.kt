@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import ru.slavapmk.journalTracker.R
 import ru.slavapmk.journalTracker.dataModels.schedule.ScheduleListLesson
 import ru.slavapmk.journalTracker.dataModels.selectWeek.Semester
+import ru.slavapmk.journalTracker.dataModels.settings.WeeksFormats
 import ru.slavapmk.journalTracker.databinding.FragmentScheduleBinding
 import ru.slavapmk.journalTracker.storageModels.entities.SemesterEntity
 import ru.slavapmk.journalTracker.ui.MainActivity
@@ -77,8 +78,6 @@ class ScheduleFragment : Fragment() {
 
         binding = FragmentScheduleBinding.inflate(layoutInflater)
 
-        init()
-        initDays()
         viewModel.sharedPreferences = shared
 
         return binding.root
@@ -87,6 +86,8 @@ class ScheduleFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         load()
+        init()
+        initDays()
     }
 
     override fun onStop() {
@@ -332,14 +333,32 @@ class ScheduleFragment : Fragment() {
 
     private fun setWeekName() {
         val weekOrder = viewModel.weeks.indexOf(viewModel.week) + 1
-        binding.week.text = getString(
-            R.string.schedule_week,
-            weekOrder,
-            when (weekOrder % 2) {
-                0 -> getString(R.string.week_type_even)
-                else -> getString(R.string.week_type_uneven)
+        binding.week.text = when (viewModel.weekTypes) {
+            1 -> {
+                getString(
+                    R.string.schedule_week_single,
+                    weekOrder
+                )
             }
-        )
+            else -> {
+                getString(
+                    R.string.schedule_week,
+                    weekOrder,
+                    when (weekOrder % 2) {
+                        0 -> when (viewModel.weekFormat) {
+                            WeeksFormats.EVEN_UNEVEN -> getString(R.string.week_type_even)
+                            WeeksFormats.UP_DOWN -> getString(R.string.week_type_up)
+                            WeeksFormats.DOWN_UP -> getString(R.string.week_type_down)
+                        }
+                        else -> when (viewModel.weekFormat) {
+                            WeeksFormats.EVEN_UNEVEN -> getString(R.string.week_type_uneven)
+                            WeeksFormats.UP_DOWN -> getString(R.string.week_type_down)
+                            WeeksFormats.DOWN_UP -> getString(R.string.week_type_up)
+                        }
+                    }
+                )
+            }
+        }
     }
 
     private fun load() {
