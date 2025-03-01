@@ -1,6 +1,8 @@
 package ru.slavapmk.journalTracker.ui.settings
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -8,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import ru.slavapmk.journalTracker.R
@@ -25,6 +28,12 @@ class SettingsFragment : Fragment() {
     private val activity: MainActivity by lazy { requireActivity() as MainActivity }
     val viewModel by viewModels<SettingsViewModel>()
 
+    private val shared: SharedPreferences by lazy {
+        activity.getSharedPreferences(
+            getString(R.string.shared_id), Context.MODE_PRIVATE
+        )
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,6 +41,14 @@ class SettingsFragment : Fragment() {
         super.onCreate(savedInstanceState)
         binding = FragmentSettingsBinding.inflate(layoutInflater)
 
+        viewModel.sharedPreferences = shared
+
+        init()
+
+        return binding.root
+    }
+
+    private fun init() {
         binding.lessonsButton.setOnClickListener {
             val intent = Intent(activity, TimeEditActivity::class.java)
             activity.startActivity(intent)
@@ -61,22 +78,32 @@ class SettingsFragment : Fragment() {
         binding.groupInput.setText(viewModel.groupName)
 
 
+        binding.weeksInput.setText(
+            getString(
+                R.string.settings_weeks_types, viewModel.weekTypes
+            )
+        )
+        updateFormatVisiblity()
         val weeksCountTypes = listOf("1", "2")
         val weeksCountAdapter = ArrayAdapter(
             requireContext(), android.R.layout.simple_dropdown_item_1line, weeksCountTypes
         )
-        val weeksCountInput = binding.weeksInput
-        weeksCountInput.setAdapter(weeksCountAdapter)
-        weeksCountInput.setOnItemClickListener { _, _, position, _ ->
-            position + 1
+        binding.weeksInput.setAdapter(weeksCountAdapter)
+        binding.weeksInput.setOnItemClickListener { _, _, position, _ ->
+            viewModel.weekTypes = position + 1
+            updateFormatVisiblity()
         }
-        binding.studentsFormatInput.setText(
-            getString(R.string.settings_weeks_types, viewModel.weekTypes)
-        )
 
         val weeksFormatTypes = listOf(
             getString(R.string.week_format_type_even_uneven),
             getString(R.string.week_format_type_up_down)
+        )
+        binding.weeksFormatInput.setText(
+            when (viewModel.weekFormat) {
+                WeeksFormats.EVEN_UNEVEN -> weeksFormatTypes[0]
+                WeeksFormats.UP_DOWN -> weeksFormatTypes[1]
+                null -> ""
+            }
         )
         val weeksAdapter = ArrayAdapter(
             requireContext(), android.R.layout.simple_dropdown_item_1line, weeksFormatTypes
@@ -90,17 +117,17 @@ class SettingsFragment : Fragment() {
                 else -> throw IllegalStateException()
             }
         }
-        binding.weeksFormatInput.setText(
-            when (viewModel.weekFormat) {
-                WeeksFormats.EVEN_UNEVEN -> weeksFormatTypes[0]
-                WeeksFormats.UP_DOWN -> weeksFormatTypes[1]
-                null -> ""
-            }
-        )
 
         val attendanceFormatTypes = listOf(
             getString(R.string.attendance_format_type_plus_minus),
             getString(R.string.attendance_format_type_skip_hours)
+        )
+        binding.studentsFormatInput.setText(
+            when (viewModel.attendanceFormat) {
+                AttendanceFormats.PLUS_MINUS -> attendanceFormatTypes[0]
+                AttendanceFormats.SKIP_HOURS -> attendanceFormatTypes[1]
+                null -> ""
+            }
         )
         val attendanceAdapter = ArrayAdapter(
             requireContext(), android.R.layout.simple_dropdown_item_1line, attendanceFormatTypes
@@ -114,14 +141,13 @@ class SettingsFragment : Fragment() {
                 else -> throw IllegalStateException()
             }
         }
-        binding.studentsFormatInput.setText(
-            when (viewModel.attendanceFormat) {
-                AttendanceFormats.PLUS_MINUS -> attendanceFormatTypes[0]
-                AttendanceFormats.SKIP_HOURS -> attendanceFormatTypes[1]
-                null -> ""
-            }
-        )
+    }
 
-        return binding.root
+    private fun updateFormatVisiblity() {
+        binding.weeksFormatField.isVisible = when (viewModel.weekTypes) {
+            1 -> false
+            2 -> true
+            else -> throw IllegalStateException()
+        }
     }
 }
