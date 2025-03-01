@@ -48,4 +48,11 @@
     <string name="week_format_type_up_down">Верхняя / Нижняя</string>
     <string name="week_type_even">Чётная</string>
     <string name="week_type_uneven">Нечётная</string>
+    <string name="day_monday">ПН</string>
+    <string name="day_tuesday">ВТ</string>
+    <string name="day_wednesday">СР</string>
+    <string name="day_thurday">ЧТ</string>
+    <string name="day_friday">ПТ</string>
+    <string name="day_saturday">СБ</string>
+    <string name="day_sunday">ВС</string>
 </resources>

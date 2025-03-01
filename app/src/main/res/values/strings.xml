@@ -78,4 +78,11 @@
     <string name="semester_shared_id" translatable="false">SEMESTER_ID</string>
     <string name="week_type_even">Even</string>
     <string name="week_type_uneven">Uneven</string>
+    <string name="day_monday">MON</string>
+    <string name="day_tuesday">TUE</string>
+    <string name="day_wednesday">WED</string>
+    <string name="day_thurday">THU</string>
+    <string name="day_friday">FRI</string>
+    <string name="day_saturday">SAT</string>
+    <string name="day_sunday">SUN</string>
 </resources>

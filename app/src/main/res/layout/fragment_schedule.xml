@@ -39,7 +39,7 @@
         android:layout_height="120dp"
         android:layout_marginHorizontal="10dp"
         android:layout_marginTop="10dp"
-        android:background="@drawable/item_day_stroke_background"
+        android:background="@drawable/day_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/week">
@@ -58,59 +58,68 @@
             tools:ignore="UselessParent">
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/previous_button"
                 android:layout_width="45dp"
-                android:layout_height="75dp"
+                android:layout_height="80dp"
                 android:insetLeft="0dp"
-                android:insetTop="15dp"
+                android:insetTop="17dp"
                 android:insetRight="0dp"
-                android:insetBottom="15dp"
+                android:insetBottom="18dp"
                 app:icon="@drawable/baseline_arrow_back_24"
                 app:iconGravity="textEnd"
                 app:iconPadding="0dp"
                 app:iconSize="20dp" />
 
             <include
+                android:id="@+id/monday"
                 layout="@layout/item_date"
                 android:layout_width="33dp"
-                android:layout_height="75dp" />
+                android:layout_height="80dp" />
 
             <include
+                android:id="@+id/tuesday"
                 layout="@layout/item_date"
                 android:layout_width="33dp"
-                android:layout_height="75dp" />
+                android:layout_height="80dp" />
 
             <include
+                android:id="@+id/wednesday"
                 layout="@layout/item_date"
                 android:layout_width="33dp"
-                android:layout_height="75dp" />
+                android:layout_height="80dp" />
 
             <include
+                android:id="@+id/thursday"
                 layout="@layout/item_date"
                 android:layout_width="33dp"
-                android:layout_height="75dp" />
+                android:layout_height="80dp" />
 
             <include
+                android:id="@+id/friday"
                 layout="@layout/item_date"
                 android:layout_width="33dp"
-                android:layout_height="75dp" />
+                android:layout_height="80dp" />
 
             <include
+                android:id="@+id/saturday"
                 layout="@layout/item_date"
                 android:layout_width="33dp"
-                android:layout_height="75dp" />
+                android:layout_height="80dp" />
 
             <include
+                android:id="@+id/sunday"
                 layout="@layout/item_date"
                 android:layout_width="33dp"
-                android:layout_height="75dp" />
+                android:layout_height="80dp" />
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/next_button"
                 android:layout_width="45dp"
-                android:layout_height="75dp"
+                android:layout_height="80dp"
                 android:insetLeft="0dp"
-                android:insetTop="15dp"
+                android:insetTop="17dp"
                 android:insetRight="0dp"
-                android:insetBottom="15dp"
+                android:insetBottom="18dp"
                 app:icon="@drawable/baseline_arrow_forward_24"
                 app:iconGravity="textEnd"
                 app:iconPadding="0dp"

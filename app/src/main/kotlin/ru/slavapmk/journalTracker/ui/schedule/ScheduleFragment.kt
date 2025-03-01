@@ -38,6 +38,18 @@ class ScheduleFragment : Fragment() {
         )
     }
 
+    val dates by lazy {
+        listOf(
+            binding.monday,
+            binding.tuesday,
+            binding.wednesday,
+            binding.thursday,
+            binding.friday,
+            binding.saturday,
+            binding.sunday
+        )
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -47,6 +59,7 @@ class ScheduleFragment : Fragment() {
         binding = FragmentScheduleBinding.inflate(layoutInflater)
 
         init()
+        initDays()
         viewModel.sharedPreferences = shared
 
         return binding.root
@@ -55,6 +68,29 @@ class ScheduleFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         load()
+    }
+
+    private fun initDays() {
+        binding.monday.dayOfWeek.text = getString(R.string.day_monday)
+        binding.tuesday.dayOfWeek.text = getString(R.string.day_tuesday)
+        binding.wednesday.dayOfWeek.text = getString(R.string.day_wednesday)
+        binding.thursday.dayOfWeek.text = getString(R.string.day_thurday)
+        binding.friday.dayOfWeek.text = getString(R.string.day_friday)
+        binding.saturday.dayOfWeek.text = getString(R.string.day_saturday)
+        binding.sunday.dayOfWeek.text = getString(R.string.day_sunday)
+
+        for (date in dates) {
+            date.root.setOnClickListener {
+                unselectDates()
+                date.selected.visibility = View.VISIBLE
+            }
+        }
+    }
+
+    private fun unselectDates() {
+        for (date in dates) {
+            date.selected.visibility = View.GONE
+        }
     }
 
     private fun init() {
