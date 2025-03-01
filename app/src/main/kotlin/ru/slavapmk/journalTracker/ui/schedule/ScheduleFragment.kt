@@ -86,7 +86,6 @@ class ScheduleFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         load()
-//        binding.friday.date.text = "231"
     }
 
     private fun updateDays() {
@@ -104,6 +103,7 @@ class ScheduleFragment : Fragment() {
 
         val parseWeek = viewModel.parseWeek()
         val selectedDate: SimpleDate = viewModel.getDate()
+        val nowDate = viewModel.nowDate()
         for ((i, date) in dates().withIndex()) {
             if (parseWeek != null) {
                 val dayItemDate: ItemDate = parseWeek[i]
@@ -124,6 +124,15 @@ class ScheduleFragment : Fragment() {
                     date.selected.visibility = View.VISIBLE
                 } else {
                     date.selected.visibility = View.GONE
+                }
+                if (
+                    nowDate.day == dayItemDate.day &&
+                    nowDate.month - 1 == dayItemDate.month &&
+                    nowDate.year == dayItemDate.year
+                ) {
+                    date.nowDate.visibility = View.VISIBLE
+                } else {
+                    date.nowDate.visibility = View.GONE
                 }
                 date.root.setOnClickListener {
                     shared.edit {

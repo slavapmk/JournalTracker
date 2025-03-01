@@ -7,12 +7,21 @@
     android:clickable="true">
 
     <View
+        android:id="@+id/now_date"
+        android:layout_width="10dp"
+        android:layout_height="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@drawable/now_foreground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <View
         android:id="@+id/selected"
         android:layout_width="0dp"
         android:layout_height="5dp"
         android:background="@drawable/day_foreground"
-        android:clickable="false"
         android:visibility="gone"
+        android:clickable="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
