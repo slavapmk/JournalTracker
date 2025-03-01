@@ -130,6 +130,8 @@ class ScheduleFragment : Fragment() {
                             dayItemDate.year
                         )
                     )
+                    activity.setLoading(true)
+                    viewModel.loadLessons()
                 }
             } else {
                 date.root.visibility = View.INVISIBLE
