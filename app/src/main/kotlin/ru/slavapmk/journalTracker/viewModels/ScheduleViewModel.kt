@@ -14,7 +14,6 @@ import ru.slavapmk.journalTracker.storageModels.entities.LessonInfoEntity
 import ru.slavapmk.journalTracker.storageModels.entities.SemesterEntity
 import ru.slavapmk.journalTracker.storageModels.entities.TimeEntity
 import java.time.LocalDate
-import java.time.temporal.ChronoUnit
 import java.time.temporal.WeekFields
 import java.util.Calendar
 import java.util.Date

@@ -97,6 +97,9 @@ class ScheduleFragment : Fragment() {
         binding.saturday.dayOfWeek.text = getString(R.string.day_saturday)
         binding.sunday.dayOfWeek.text = getString(R.string.day_sunday)
 
+        binding.nextButton.isEnabled = viewModel.weeks.indexOf(viewModel.week) != viewModel.weeks.size - 1
+        binding.previousButton.isEnabled = viewModel.weeks.indexOf(viewModel.week) != 0
+
         val parseWeek = viewModel.parseWeek()
         val selectedDate: SimpleDate = viewModel.getDate()
         for ((i, date) in dates.withIndex()) {
@@ -245,6 +248,16 @@ class ScheduleFragment : Fragment() {
             )
             binding.lessons.adapter?.notifyItemRangeChanged(0, viewModel.lessons.size)
             activity.setLoading(false)
+        }
+
+        binding.previousButton.setOnClickListener {
+            viewModel.week = viewModel.weeks[viewModel.weeks.indexOf(viewModel.week) - 1]
+            initDays()
+        }
+
+        binding.nextButton.setOnClickListener {
+            viewModel.week = viewModel.weeks[viewModel.weeks.indexOf(viewModel.week) + 1]
+            initDays()
         }
 
         viewModel.loadDate()
