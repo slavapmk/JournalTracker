@@ -141,19 +141,24 @@ class ScheduleViewModel : ViewModel() {
 
     fun getDate(): SimpleDate {
         if (selectedDate == null) {
-            val calendar: Calendar = GregorianCalendar.getInstance().apply {
-                time = Date()
-            }
-            val date = SimpleDate(
-                calendar[Calendar.DAY_OF_MONTH],
-                calendar[Calendar.MONTH] + 1,
-                calendar[Calendar.YEAR]
-            )
+            val date = nowDate()
             setDate(date)
             return date
         } else {
             return selectedDate!!
         }
+    }
+
+    fun nowDate(): SimpleDate {
+        val calendar: Calendar = GregorianCalendar.getInstance().apply {
+            time = Date()
+        }
+        val date = SimpleDate(
+            calendar[Calendar.DAY_OF_MONTH],
+            calendar[Calendar.MONTH] + 1,
+            calendar[Calendar.YEAR]
+        )
+        return date
     }
 
     fun setDate(date: SimpleDate?) {
