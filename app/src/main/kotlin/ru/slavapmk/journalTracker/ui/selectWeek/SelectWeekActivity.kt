@@ -59,7 +59,7 @@ class SelectWeekActivity : AppCompatActivity() {
         binding.weeks.adapter = SelectWeekAdapter(viewModel.weeks) { week ->
             shared.edit {
                 putInt(
-                    getString(R.string.semester_shared_id),
+                    getString(R.string.week_shared_id),
                     viewModel.weeks.indexOf(week)
                 )
             }

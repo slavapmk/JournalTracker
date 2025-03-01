@@ -76,6 +76,7 @@
     <string name="attendance_format_type_skip_hours" translatable="false">• / 2</string>
     <string name="shared_id" translatable="false">RU.SLAVAPMK.JOURNALTRACKER_VGHDFGDZVUHYFIUJHIOVHGYDZUIFHVDVO_SHARED</string>
     <string name="semester_shared_id" translatable="false">SEMESTER_ID</string>
+    <string name="week_shared_id" translatable="false">WEEK_INDEX</string>
     <string name="week_type_even">Even</string>
     <string name="week_type_uneven">Uneven</string>
     <string name="day_monday">MON</string>

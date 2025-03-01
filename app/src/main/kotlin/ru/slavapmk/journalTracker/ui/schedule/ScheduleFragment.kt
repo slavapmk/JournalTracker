@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.edit
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -215,6 +216,17 @@ class ScheduleFragment : Fragment() {
             )
             selectDate()
 
+            val sharedWeekIdKey = getString(R.string.week_shared_id)
+            if (shared.contains(sharedWeekIdKey)) {
+                val weekIndex = shared.getInt(sharedWeekIdKey, 0)
+                viewModel.week = viewModel.weeks[weekIndex]
+                setWeekName()
+                initDays()
+                shared.edit {
+                    remove(sharedWeekIdKey)
+                }
+            }
+
             viewModel.timesMap.clear()
             viewModel.timesMap.putAll(
                 loadData.times.associateBy { it.id }
@@ -327,9 +339,9 @@ class ScheduleFragment : Fragment() {
 
     private fun load() {
         activity.setLoading(true)
-        val key = getString(R.string.semester_shared_id)
-        if (shared.contains(key)) {
-            viewModel.semesterId = shared.getInt(key, -1)
+        val semesterSharedIdKey = getString(R.string.semester_shared_id)
+        if (shared.contains(semesterSharedIdKey)) {
+            viewModel.semesterId = shared.getInt(semesterSharedIdKey, -1)
         }
 
         viewModel.loadSemesters()
