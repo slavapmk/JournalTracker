@@ -152,12 +152,10 @@ class SemestersActivity : AppCompatActivity() {
         }
 
         binding.addButton.setOnClickListener {
-            binding.loadingStatus.visibility = View.VISIBLE
             if (
                 viewModel.startDay == null || viewModel.startMonth == null || viewModel.startYear == null ||
                 viewModel.endDay == null || viewModel.endMonth == null || viewModel.endYear == null
             ) {
-                binding.loadingStatus.visibility = View.GONE
                 return@setOnClickListener
             }
 
@@ -165,10 +163,10 @@ class SemestersActivity : AppCompatActivity() {
                 viewModel.endYear!! * 10000 + viewModel.endMonth!! * 100 + viewModel.endDay!! <=
                 viewModel.startYear!! * 10000 + viewModel.startMonth!! * 100 + viewModel.startDay!!
             ) {
-                binding.loadingStatus.visibility = View.GONE
                 return@setOnClickListener
             }
 
+            binding.loadingStatus.visibility = View.VISIBLE
             val element = Semester(
                 null,
                 viewModel.startDay!!,
