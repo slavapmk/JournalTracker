@@ -55,4 +55,17 @@
     <string name="day_friday">ПТ</string>
     <string name="day_saturday">СБ</string>
     <string name="day_sunday">ВС</string>
+    <string name="month_january">ЯНВ</string>
+    <string name="month_february">ФЕВ</string>
+    <string name="month_march">МАР</string>
+    <string name="month_april">АПР</string>
+    <string name="month_may">МАЙ</string>
+    <string name="month_june">ИЮН</string>
+    <string name="month_july">ИЮЛ</string>
+    <string name="month_august">АВГ</string>
+    <string name="month_september">СЕН</string>
+    <string name="month_october">ОКТ</string>
+    <string name="month_november">НОЯ</string>
+    <string name="month_december">ДЕК</string>
+
 </resources>

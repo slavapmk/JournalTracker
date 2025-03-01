@@ -22,6 +22,7 @@ import ru.slavapmk.journalTracker.ui.lessonEdit.LessonEditActivity
 import ru.slavapmk.journalTracker.ui.selectWeek.SelectWeekActivity
 import ru.slavapmk.journalTracker.ui.semesters.SemestersActivity
 import ru.slavapmk.journalTracker.utils.generateWeeks
+import ru.slavapmk.journalTracker.viewModels.ItemDate
 import ru.slavapmk.journalTracker.viewModels.ScheduleViewModel
 import ru.slavapmk.journalTracker.viewModels.SimpleDate
 import ru.slavapmk.journalTracker.viewModels.compareTo
@@ -47,6 +48,23 @@ class ScheduleFragment : Fragment() {
             binding.friday,
             binding.saturday,
             binding.sunday
+        )
+    }
+
+    private val monthsStrings by lazy {
+        listOf(
+            getString(R.string.month_january),
+            getString(R.string.month_february),
+            getString(R.string.month_march),
+            getString(R.string.month_april),
+            getString(R.string.month_may),
+            getString(R.string.month_june),
+            getString(R.string.month_july),
+            getString(R.string.month_august),
+            getString(R.string.month_september),
+            getString(R.string.month_october),
+            getString(R.string.month_november),
+            getString(R.string.month_december)
         )
     }
 
@@ -79,10 +97,42 @@ class ScheduleFragment : Fragment() {
         binding.saturday.dayOfWeek.text = getString(R.string.day_saturday)
         binding.sunday.dayOfWeek.text = getString(R.string.day_sunday)
 
-        for (date in dates) {
-            date.root.setOnClickListener {
-                unselectDates()
-                date.selected.visibility = View.VISIBLE
+        val parseWeek = viewModel.parseWeek()
+        val selectedDate: SimpleDate = viewModel.getDate()
+        for ((i, date) in dates.withIndex()) {
+            if (parseWeek != null) {
+                val dayItemDate: ItemDate = parseWeek[i]
+                if (dayItemDate.contains) {
+                    date.root.visibility = View.VISIBLE
+                } else {
+                    date.root.visibility = View.INVISIBLE
+                }
+                date.date.text = getString(
+                    R.string.item_date_date, dayItemDate.day
+                )
+                date.month.text = monthsStrings[dayItemDate.month]
+                if (
+                    selectedDate.day == dayItemDate.day &&
+                    selectedDate.month - 1 == dayItemDate.month &&
+                    selectedDate.year == dayItemDate.year
+                ) {
+                    date.selected.visibility = View.VISIBLE
+                } else {
+                    date.selected.visibility = View.GONE
+                }
+                date.root.setOnClickListener {
+                    unselectDates()
+                    date.selected.visibility = View.VISIBLE
+                    viewModel.setDate(
+                        SimpleDate(
+                            dayItemDate.day,
+                            dayItemDate.month + 1,
+                            dayItemDate.year
+                        )
+                    )
+                }
+            } else {
+                date.root.visibility = View.INVISIBLE
             }
         }
     }
@@ -250,6 +300,7 @@ class ScheduleFragment : Fragment() {
             }
         )
         binding.week.isVisible = true
+        initDays()
     }
 
     private fun load() {

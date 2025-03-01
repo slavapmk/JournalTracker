@@ -13,9 +13,13 @@ import ru.slavapmk.journalTracker.storageModels.entities.CampusEntity
 import ru.slavapmk.journalTracker.storageModels.entities.LessonInfoEntity
 import ru.slavapmk.journalTracker.storageModels.entities.SemesterEntity
 import ru.slavapmk.journalTracker.storageModels.entities.TimeEntity
+import java.time.LocalDate
+import java.time.temporal.ChronoUnit
+import java.time.temporal.WeekFields
 import java.util.Calendar
 import java.util.Date
 import java.util.GregorianCalendar
+import java.util.Locale
 
 
 data class LoadScheduleData(
@@ -28,6 +32,14 @@ data class SimpleDate(
     val day: Int,
     val month: Int,
     val year: Int
+)
+
+data class ItemDate(
+    val day: Int,
+    val month: Int,
+    val year: Int,
+    val dayOfWeek: Int,
+    val contains: Boolean = true
 )
 
 operator fun SimpleDate.compareTo(other: SimpleDate): Int {
@@ -173,6 +185,26 @@ class ScheduleViewModel : ViewModel() {
             )
         } else {
             null
+        }
+    }
+
+    fun parseWeek(): List<ItemDate>? = week?.let { weekToList(it) }
+
+    private fun weekToList(week: Week): List<ItemDate> {
+        val startDate = LocalDate.of(week.startYear, week.startMonth, week.startDay)
+        val endDate = LocalDate.of(week.endYear, week.endMonth, week.endDay)
+        val weekStart = startDate.with(WeekFields.of(Locale.getDefault()).firstDayOfWeek)
+
+        return (0..6).map { offset ->
+            val currentDate = weekStart.plusDays(offset.toLong())
+            val contains = !currentDate.isBefore(startDate) && !currentDate.isAfter(endDate)
+            ItemDate(
+                day = currentDate.dayOfMonth,
+                month = (currentDate.monthValue - 1) % 12,
+                year = currentDate.year,
+                dayOfWeek = (currentDate.dayOfWeek.value - 1) % 7,
+                contains = contains
+            )
         }
     }
 
