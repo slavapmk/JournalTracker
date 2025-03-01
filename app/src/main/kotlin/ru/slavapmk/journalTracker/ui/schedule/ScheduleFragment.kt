@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.edit
-import androidx.core.view.isVisible
+import androidx.core.view.isInvisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -41,17 +41,15 @@ class ScheduleFragment : Fragment() {
         )
     }
 
-    val dates by lazy {
-        listOf(
-            binding.monday,
-            binding.tuesday,
-            binding.wednesday,
-            binding.thursday,
-            binding.friday,
-            binding.saturday,
-            binding.sunday
-        )
-    }
+    fun dates() = listOf(
+        binding.monday,
+        binding.tuesday,
+        binding.wednesday,
+        binding.thursday,
+        binding.friday,
+        binding.saturday,
+        binding.sunday
+    )
 
     private val monthsStrings by lazy {
         listOf(
@@ -80,25 +78,18 @@ class ScheduleFragment : Fragment() {
 
         viewModel.sharedPreferences = shared
 
+        init()
+
         return binding.root
     }
 
     override fun onResume() {
         super.onResume()
         load()
-        init()
-        initDays()
+//        binding.friday.date.text = "231"
     }
 
-    override fun onStop() {
-        super.onStop()
-        val sharedWeekIdKey = getString(R.string.week_shared_id)
-        shared.edit {
-            remove(sharedWeekIdKey)
-        }
-    }
-
-    private fun initDays() {
+    private fun updateDays() {
         binding.monday.dayOfWeek.text = getString(R.string.day_monday)
         binding.tuesday.dayOfWeek.text = getString(R.string.day_tuesday)
         binding.wednesday.dayOfWeek.text = getString(R.string.day_wednesday)
@@ -113,7 +104,7 @@ class ScheduleFragment : Fragment() {
 
         val parseWeek = viewModel.parseWeek()
         val selectedDate: SimpleDate = viewModel.getDate()
-        for ((i, date) in dates.withIndex()) {
+        for ((i, date) in dates().withIndex()) {
             if (parseWeek != null) {
                 val dayItemDate: ItemDate = parseWeek[i]
                 if (dayItemDate.contains) {
@@ -135,6 +126,9 @@ class ScheduleFragment : Fragment() {
                     date.selected.visibility = View.GONE
                 }
                 date.root.setOnClickListener {
+                    shared.edit {
+                        remove(getString(R.string.week_shared_id))
+                    }
                     unselectDates()
                     date.selected.visibility = View.VISIBLE
                     viewModel.setDate(
@@ -154,7 +148,7 @@ class ScheduleFragment : Fragment() {
     }
 
     private fun unselectDates() {
-        for (date in dates) {
+        for (date in dates()) {
             date.selected.visibility = View.GONE
         }
     }
@@ -177,7 +171,7 @@ class ScheduleFragment : Fragment() {
 
         binding.currentDay.setOnClickListener {
             viewModel.setDate(null)
-            selectDate()
+            selectDateAndUpdateDays()
         }
 
         binding.lessons.layoutManager = LinearLayoutManager(requireContext())
@@ -194,7 +188,7 @@ class ScheduleFragment : Fragment() {
         viewModel.mediatorLiveData.observe(viewLifecycleOwner) { loadData ->
             if (loadData.semesters.isEmpty()) {
                 activity.setLoading(false)
-                binding.week.isVisible = true
+                binding.week.isInvisible = false
                 return@observe
             }
             viewModel.semesters = loadData.semesters
@@ -223,14 +217,14 @@ class ScheduleFragment : Fragment() {
                     )
                 )
             )
-            selectDate()
+            selectDateAndUpdateDays()
 
             val sharedWeekIdKey = getString(R.string.week_shared_id)
             if (shared.contains(sharedWeekIdKey)) {
                 val weekIndex = shared.getInt(sharedWeekIdKey, 0)
                 viewModel.week = viewModel.weeks[weekIndex]
-                setWeekName()
-                initDays()
+                updateWeekTitle()
+                updateDays()
             }
 
             viewModel.timesMap.clear()
@@ -271,17 +265,21 @@ class ScheduleFragment : Fragment() {
 
         binding.previousButton.setOnClickListener {
             viewModel.week = viewModel.weeks[viewModel.weeks.indexOf(viewModel.week) - 1]
-            initDays()
-            setWeekName()
+            updateDays()
+            updateWeekTitle()
         }
 
         binding.nextButton.setOnClickListener {
             viewModel.week = viewModel.weeks[viewModel.weeks.indexOf(viewModel.week) + 1]
-            initDays()
-            setWeekName()
+            updateDays()
+            updateWeekTitle()
         }
+    }
 
-        viewModel.loadDate()
+    private fun selectDateAndUpdateDays() {
+        selectDate()
+        updateWeekTitle()
+        updateDays()
     }
 
     private fun selectDate() {
@@ -326,12 +324,10 @@ class ScheduleFragment : Fragment() {
             }
         }
         viewModel.week = week
-        setWeekName()
-        binding.week.isVisible = true
-        initDays()
+        binding.week.isInvisible = false
     }
 
-    private fun setWeekName() {
+    private fun updateWeekTitle() {
         val weekOrder = viewModel.weeks.indexOf(viewModel.week) + 1
         binding.week.text = when (viewModel.weekTypes) {
             1 -> {
@@ -340,6 +336,7 @@ class ScheduleFragment : Fragment() {
                     weekOrder
                 )
             }
+
             else -> {
                 getString(
                     R.string.schedule_week,
@@ -350,6 +347,7 @@ class ScheduleFragment : Fragment() {
                             WeeksFormats.UP_DOWN -> getString(R.string.week_type_up)
                             WeeksFormats.DOWN_UP -> getString(R.string.week_type_down)
                         }
+
                         else -> when (viewModel.weekFormat) {
                             WeeksFormats.EVEN_UNEVEN -> getString(R.string.week_type_uneven)
                             WeeksFormats.UP_DOWN -> getString(R.string.week_type_down)
@@ -363,6 +361,8 @@ class ScheduleFragment : Fragment() {
 
     private fun load() {
         activity.setLoading(true)
+        viewModel.loadDate()
+
         val semesterSharedIdKey = getString(R.string.semester_shared_id)
         if (shared.contains(semesterSharedIdKey)) {
             viewModel.semesterId = shared.getInt(semesterSharedIdKey, -1)
@@ -376,6 +376,6 @@ class ScheduleFragment : Fragment() {
             R.string.schedule_semester,
             viewModel.semesterId?.toString() ?: "?"
         )
-        binding.week.isVisible = false
+        binding.week.isInvisible = false
     }
 }

@@ -83,6 +83,9 @@ class ScheduleViewModel : ViewModel() {
                     times!!,
                     campuses!!
                 )
+                semesters = null
+                times = null
+                campuses = null
             }
         }
         addSource(semestersMutableLiveData) { value ->
