@@ -97,7 +97,8 @@ class ScheduleFragment : Fragment() {
         binding.saturday.dayOfWeek.text = getString(R.string.day_saturday)
         binding.sunday.dayOfWeek.text = getString(R.string.day_sunday)
 
-        binding.nextButton.isEnabled = viewModel.weeks.indexOf(viewModel.week) != viewModel.weeks.size - 1
+        binding.nextButton.isEnabled =
+            viewModel.weeks.indexOf(viewModel.week) != viewModel.weeks.size - 1
         binding.previousButton.isEnabled = viewModel.weeks.indexOf(viewModel.week) != 0
 
         val parseWeek = viewModel.parseWeek()
@@ -159,7 +160,7 @@ class ScheduleFragment : Fragment() {
             activity.startActivity(intent)
         }
 
-        binding.semester.setOnClickListener {
+        binding.selectSemester.setOnClickListener {
             val intent = Intent(activity, SemestersActivity::class.java)
             activity.startActivity(intent)
         }

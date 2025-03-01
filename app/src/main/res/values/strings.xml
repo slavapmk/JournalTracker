@@ -31,7 +31,7 @@
     <string name="students_lesson_teacher" translatable="false">%s</string>
     <string name="schedule_week">%d week (%s)</string>
     <string name="schedule_semester">%s semester</string>
-    <string name="schedule_select_week">Select week</string>
+    <string name="schedule_select_week">Week</string>
     <string name="schedule_current_date">Today</string>
     <string name="settings_group_name">Group name</string>
     <string name="settings_weeks_types_title">Week types</string>
@@ -97,5 +97,6 @@
     <string name="month_october">OCT</string>
     <string name="month_november">NOV</string>
     <string name="month_december">DEC</string>
+    <string name="schedule_select_semester">Semester</string>
 
 </resources>

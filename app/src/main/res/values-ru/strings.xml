@@ -28,7 +28,7 @@
     <string name="export_open_png">Открыть PNG</string>
     <string name="schedule_week">%d неделя (%s)</string>
     <string name="schedule_semester">%s семестр</string>
-    <string name="schedule_select_week">Выбрать неделю</string>
+    <string name="schedule_select_week">Неделя</string>
     <string name="schedule_current_date">Сегодня</string>
     <string name="settings_group_name">Название группы</string>
     <string name="settings_weeks_types_title">Кол-во тип недель</string>
@@ -67,5 +67,6 @@
     <string name="month_october">ОКТ</string>
     <string name="month_november">НОЯ</string>
     <string name="month_december">ДЕК</string>
+    <string name="schedule_select_semester">Семестр</string>
 
 </resources>
