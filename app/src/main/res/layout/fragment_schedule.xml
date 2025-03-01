@@ -22,11 +22,11 @@
         android:id="@+id/semester"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="?android:attr/selectableItemBackground"
-        android:focusable="true"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
+        android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
+        android:focusable="true"
         android:text="@string/schedule_semester"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -45,13 +45,12 @@
         app:layout_constraintTop_toBottomOf="@id/week">
 
         <GridLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:columnCount="9"
             android:orientation="horizontal"
             android:useDefaultMargins="true"
-
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -59,8 +58,10 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/previous_button"
-                android:layout_width="45dp"
+                android:layout_width="0dp"
                 android:layout_height="80dp"
+                android:layout_column="0"
+                android:layout_columnWeight="1"
                 android:insetLeft="0dp"
                 android:insetTop="17dp"
                 android:insetRight="0dp"
@@ -73,49 +74,65 @@
             <include
                 android:id="@+id/monday"
                 layout="@layout/item_date"
-                android:layout_width="33dp"
-                android:layout_height="80dp" />
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_column="1"
+                android:layout_columnWeight="1" />
 
             <include
                 android:id="@+id/tuesday"
                 layout="@layout/item_date"
-                android:layout_width="33dp"
-                android:layout_height="80dp" />
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_column="2"
+                android:layout_columnWeight="1" />
 
             <include
                 android:id="@+id/wednesday"
                 layout="@layout/item_date"
-                android:layout_width="33dp"
-                android:layout_height="80dp" />
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_column="3"
+                android:layout_columnWeight="1" />
 
             <include
                 android:id="@+id/thursday"
                 layout="@layout/item_date"
-                android:layout_width="33dp"
-                android:layout_height="80dp" />
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_column="4"
+                android:layout_columnWeight="1" />
 
             <include
                 android:id="@+id/friday"
                 layout="@layout/item_date"
-                android:layout_width="33dp"
-                android:layout_height="80dp" />
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_column="5"
+                android:layout_columnWeight="1" />
 
             <include
                 android:id="@+id/saturday"
                 layout="@layout/item_date"
-                android:layout_width="33dp"
-                android:layout_height="80dp" />
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_column="6"
+                android:layout_columnWeight="1" />
 
             <include
                 android:id="@+id/sunday"
                 layout="@layout/item_date"
-                android:layout_width="33dp"
-                android:layout_height="80dp" />
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_column="7"
+                android:layout_columnWeight="1" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/next_button"
-                android:layout_width="45dp"
+                android:layout_width="0dp"
                 android:layout_height="80dp"
+                android:layout_column="8"
+                android:layout_columnWeight="1"
                 android:insetLeft="0dp"
                 android:insetTop="17dp"
                 android:insetRight="0dp"
@@ -134,7 +151,6 @@
         android:layout_width="0dp"
         android:layout_height="55dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="15dp"
         android:layout_marginEnd="10dp"
         android:insetLeft="0dp"
         android:insetTop="0dp"
