@@ -8,8 +8,8 @@ import ru.slavapmk.journalTracker.storageModels.entities.CampusEntity
 class CampusRepository(
     private val campusesDao: CampusesDao
 ) {
-    suspend fun insertCampus(campusEntity: CampusEntity) = withContext(Dispatchers.IO) {
-        campusesDao.insertCampus(campusEntity)
+    suspend fun insertCampus(campusEntity: CampusEntity):Int = withContext(Dispatchers.IO) {
+        campusesDao.insertCampus(campusEntity).toInt()
     }
 
     suspend fun deleteCampus(campusId: Int) = withContext(Dispatchers.IO) {

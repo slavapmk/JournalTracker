@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.slavapmk.journalTracker.R
 import ru.slavapmk.journalTracker.dataModels.campuses.Campus
@@ -23,7 +24,7 @@ class CampusEditActivity : AppCompatActivity() {
         CampusesAdapter(viewModel.campuses) {
             val indexOf = viewModel.campuses.indexOf(it)
             val size = viewModel.campuses.size
-            viewModel.campuses.remove(it)
+            viewModel.deleteCampus(it)
             binding.campuses.adapter?.notifyItemRemoved(indexOf)
             binding.campuses.adapter?.notifyItemRangeChanged(
                 indexOf, size - indexOf
@@ -45,6 +46,16 @@ class CampusEditActivity : AppCompatActivity() {
             insets
         }
 
+        init()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setLoading(true)
+        viewModel.loadCampuses()
+    }
+
+    private fun init() {
         binding.codenameInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
@@ -67,8 +78,9 @@ class CampusEditActivity : AppCompatActivity() {
             if (viewModel.codename == "" || viewModel.name == "") {
                 return@setOnClickListener
             }
-            viewModel.campuses.add(
+            viewModel.addCampus(
                 Campus(
+                    0,
                     viewModel.codename,
                     viewModel.name
                 )
@@ -86,5 +98,25 @@ class CampusEditActivity : AppCompatActivity() {
 
         binding.campuses.layoutManager = LinearLayoutManager(this)
         binding.campuses.adapter = campusesAdapter
+
+        viewModel.campusesLiveData.observe(this) {
+            setLoading(false)
+
+            viewModel.campuses.clear()
+            viewModel.campuses.addAll(it)
+            binding.campuses.adapter?.notifyItemRangeChanged(
+                0, it.size
+            )
+        }
+
+        viewModel.campusUpdateLiveData.observe(this) { (old, new) ->
+            val indexOf = viewModel.campuses.indexOf(old)
+            viewModel.campuses[indexOf] = new
+            binding.campuses.adapter?.notifyItemChanged(indexOf)
+        }
+    }
+
+    fun setLoading(loading: Boolean) {
+        binding.loadingStatus.isVisible = loading
     }
 }

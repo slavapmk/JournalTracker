@@ -8,7 +8,7 @@ import ru.slavapmk.journalTracker.storageModels.entities.CampusEntity
 @Dao
 interface CampusesDao {
     @Insert(entity = CampusEntity::class)
-    fun insertCampus(campus: CampusEntity)
+    fun insertCampus(campus: CampusEntity): Long
 
     @Query("DELETE FROM campuses_table WHERE id = :campusId")
     fun deleteCampus(campusId: Int)
