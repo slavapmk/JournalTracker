@@ -231,9 +231,15 @@ class ScheduleFragment : Fragment() {
             val sharedWeekIdKey = getString(R.string.week_shared_id)
             if (shared.contains(sharedWeekIdKey)) {
                 val weekIndex = shared.getInt(sharedWeekIdKey, 0)
-                viewModel.week = viewModel.weeks[weekIndex]
-                updateWeekTitle()
-                updateDays()
+                if (weekIndex >= viewModel.weeks.size) {
+                    shared.edit {
+                        remove(sharedWeekIdKey)
+                    }
+                } else {
+                    viewModel.week = viewModel.weeks[weekIndex]
+                    updateWeekTitle()
+                    updateDays()
+                }
             }
 
             viewModel.timesMap.clear()
