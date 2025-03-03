@@ -30,8 +30,8 @@ class SelectWeekActivity : AppCompatActivity() {
     }
 
     private val semesterId: Int? by lazy {
-        if (shared.contains(SharedKeys.SEMESTER_SHARED_ID)) {
-            shared.getInt(SharedKeys.SEMESTER_SHARED_ID, -1)
+        if (shared.contains(SharedKeys.SEMESTER_ID)) {
+            shared.getInt(SharedKeys.SEMESTER_ID, -1)
         } else {
             null
         }

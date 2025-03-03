@@ -106,6 +106,6 @@
     <string name="notification_content" translatable="false">%1$s</string>
     <string name="dialog_update_reject">Do not update</string>
     <string name="dialog_update_accept">Update all</string>
-    <string name="dialog_update_content">All subsequent pairs on that day and time will also be processed.</string>
+    <string name="dialog_update_content">All subsequent pairs on that day and time will be processed as well.\nIf there are conflicts, the data will be replaced with new ones.</string>
     <string name="dialog_update_title">Apply for subsequent ones?</string>
 </resources>

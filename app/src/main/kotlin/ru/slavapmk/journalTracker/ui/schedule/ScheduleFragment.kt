@@ -165,8 +165,11 @@ class ScheduleFragment : Fragment() {
 
     private fun init() {
         binding.addLessonButton.setOnClickListener {
-            val intent = Intent(activity, LessonEditActivity::class.java)
-            activity.startActivity(intent)
+            activity.startActivity(
+                Intent(activity, LessonEditActivity::class.java).apply {
+
+                }
+            )
         }
 
         binding.selectWeek.setOnClickListener {
@@ -190,7 +193,7 @@ class ScheduleFragment : Fragment() {
         ) { lesson ->
             startActivity(
                 Intent(activity, LessonActivity::class.java).apply {
-                    putExtra("LESSON_ID", lesson.id)
+                    putExtra(SharedKeys.SELECTED_LESSON, lesson.id)
                 }
             )
         }
@@ -378,8 +381,8 @@ class ScheduleFragment : Fragment() {
         activity.setLoading(true)
         viewModel.loadDate()
 
-        if (shared.contains(SharedKeys.SEMESTER_SHARED_ID)) {
-            viewModel.semesterId = shared.getInt(SharedKeys.SEMESTER_SHARED_ID, -1)
+        if (shared.contains(SharedKeys.SEMESTER_ID)) {
+            viewModel.semesterId = shared.getInt(SharedKeys.SEMESTER_ID, -1)
         }
 
         viewModel.loadSemesters()

@@ -49,7 +49,7 @@ class SemestersActivity : AppCompatActivity() {
             }, { semester ->
                 shared.edit {
                     putInt(
-                        SharedKeys.SEMESTER_SHARED_ID,
+                        SharedKeys.SEMESTER_ID,
                         semester.id!!
                     )
                 }

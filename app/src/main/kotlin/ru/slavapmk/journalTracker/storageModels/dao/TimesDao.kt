@@ -13,6 +13,6 @@ interface TimesDao {
     @Query("DELETE FROM times_table WHERE id = :timeId")
     fun deleteTime(timeId: Int)
 
-    @Query("SELECT * FROM times_table")
+    @Query("SELECT * FROM times_table ORDER by start_hour, start_minute")
     fun getTimes(): List<TimeEntity>
 }
