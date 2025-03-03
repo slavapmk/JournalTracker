@@ -19,6 +19,7 @@ import ru.slavapmk.journalTracker.dataModels.settings.WeeksFormats
 import ru.slavapmk.journalTracker.databinding.FragmentScheduleBinding
 import ru.slavapmk.journalTracker.storageModels.entities.SemesterEntity
 import ru.slavapmk.journalTracker.ui.MainActivity
+import ru.slavapmk.journalTracker.ui.SharedKeys
 import ru.slavapmk.journalTracker.ui.lesson.LessonActivity
 import ru.slavapmk.journalTracker.ui.lessonEdit.LessonEditActivity
 import ru.slavapmk.journalTracker.ui.selectWeek.SelectWeekActivity
@@ -37,7 +38,7 @@ class ScheduleFragment : Fragment() {
 
     private val shared: SharedPreferences by lazy {
         activity.getSharedPreferences(
-            getString(R.string.shared_id), Context.MODE_PRIVATE
+            SharedKeys.SHARED_APP_ID, Context.MODE_PRIVATE
         )
     }
 
@@ -136,7 +137,7 @@ class ScheduleFragment : Fragment() {
                 }
                 date.root.setOnClickListener {
                     shared.edit {
-                        remove(getString(R.string.week_shared_id))
+                        remove(SharedKeys.WEEK_SHARED_ID)
                     }
                     unselectDates()
                     date.selected.visibility = View.VISIBLE
@@ -228,12 +229,11 @@ class ScheduleFragment : Fragment() {
             )
             selectDateAndUpdateDays()
 
-            val sharedWeekIdKey = getString(R.string.week_shared_id)
-            if (shared.contains(sharedWeekIdKey)) {
-                val weekIndex = shared.getInt(sharedWeekIdKey, 0)
+            if (shared.contains(SharedKeys.WEEK_SHARED_ID)) {
+                val weekIndex = shared.getInt(SharedKeys.WEEK_SHARED_ID, 0)
                 if (weekIndex >= viewModel.weeks.size) {
                     shared.edit {
-                        remove(sharedWeekIdKey)
+                        remove(SharedKeys.WEEK_SHARED_ID)
                     }
                 } else {
                     viewModel.week = viewModel.weeks[weekIndex]
@@ -378,9 +378,8 @@ class ScheduleFragment : Fragment() {
         activity.setLoading(true)
         viewModel.loadDate()
 
-        val semesterSharedIdKey = getString(R.string.semester_shared_id)
-        if (shared.contains(semesterSharedIdKey)) {
-            viewModel.semesterId = shared.getInt(semesterSharedIdKey, -1)
+        if (shared.contains(SharedKeys.SEMESTER_SHARED_ID)) {
+            viewModel.semesterId = shared.getInt(SharedKeys.SEMESTER_SHARED_ID, -1)
         }
 
         viewModel.loadSemesters()

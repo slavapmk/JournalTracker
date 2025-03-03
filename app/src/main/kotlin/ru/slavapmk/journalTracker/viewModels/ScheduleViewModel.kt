@@ -14,6 +14,7 @@ import ru.slavapmk.journalTracker.storageModels.entities.CampusEntity
 import ru.slavapmk.journalTracker.storageModels.entities.LessonInfoEntity
 import ru.slavapmk.journalTracker.storageModels.entities.SemesterEntity
 import ru.slavapmk.journalTracker.storageModels.entities.TimeEntity
+import ru.slavapmk.journalTracker.ui.SharedKeys
 import java.time.LocalDate
 import java.time.temporal.WeekFields
 import java.util.Calendar
@@ -164,16 +165,16 @@ class ScheduleViewModel : ViewModel() {
     fun setDate(date: SimpleDate?) {
         if (date == null) {
             sharedPreferences?.edit()?.apply {
-                remove(SELECTED_DAY)
-                remove(SELECTED_MONTH)
-                remove(SELECTED_YEAR)
+                remove(SharedKeys.SELECTED_DAY)
+                remove(SharedKeys.SELECTED_MONTH)
+                remove(SharedKeys.SELECTED_YEAR)
                 apply()
             }
         } else {
             sharedPreferences?.edit()?.apply {
-                putInt(SELECTED_DAY, date.day)
-                putInt(SELECTED_MONTH, date.month)
-                putInt(SELECTED_YEAR, date.year)
+                putInt(SharedKeys.SELECTED_DAY, date.day)
+                putInt(SharedKeys.SELECTED_MONTH, date.month)
+                putInt(SharedKeys.SELECTED_YEAR, date.year)
                 apply()
             }
         }
@@ -183,14 +184,14 @@ class ScheduleViewModel : ViewModel() {
     fun loadDate() {
         selectedDate = if (
             sharedPreferences != null &&
-            sharedPreferences!!.contains(SELECTED_DAY) &&
-            sharedPreferences!!.contains(SELECTED_MONTH) &&
-            sharedPreferences!!.contains(SELECTED_YEAR)
+            sharedPreferences!!.contains(SharedKeys.SELECTED_DAY) &&
+            sharedPreferences!!.contains(SharedKeys.SELECTED_MONTH) &&
+            sharedPreferences!!.contains(SharedKeys.SELECTED_YEAR)
         ) {
             SimpleDate(
-                sharedPreferences!!.getInt(SELECTED_DAY, -1),
-                sharedPreferences!!.getInt(SELECTED_MONTH, -1),
-                sharedPreferences!!.getInt(SELECTED_YEAR, -1),
+                sharedPreferences!!.getInt(SharedKeys.SELECTED_DAY, -1),
+                sharedPreferences!!.getInt(SharedKeys.SELECTED_MONTH, -1),
+                sharedPreferences!!.getInt(SharedKeys.SELECTED_YEAR, -1),
             )
         } else {
             null
@@ -198,15 +199,15 @@ class ScheduleViewModel : ViewModel() {
     }
 
     val weekFormat: WeeksFormats
-        get() = when (sharedPreferences!!.getString(WEEK_FORMAT_KEY, EVEN_UNEVEN_VALUE_KEY)) {
-            EVEN_UNEVEN_VALUE_KEY -> WeeksFormats.EVEN_UNEVEN
-            UP_DOWN_VALUE_KEY -> WeeksFormats.UP_DOWN
-            DOWN_UP_VALUE_KEY -> WeeksFormats.DOWN_UP
+        get() = when (sharedPreferences!!.getString(SharedKeys.WEEK_FORMAT_KEY, SharedKeys.EVEN_UNEVEN_VALUE_KEY)) {
+            SharedKeys.EVEN_UNEVEN_VALUE_KEY -> WeeksFormats.EVEN_UNEVEN
+            SharedKeys.UP_DOWN_VALUE_KEY -> WeeksFormats.UP_DOWN
+            SharedKeys.DOWN_UP_VALUE_KEY -> WeeksFormats.DOWN_UP
             else -> throw IllegalStateException()
         }
 
     val weekTypes: Int
-        get() = sharedPreferences!!.getInt(WEEK_TYPES_KEY, 1)
+        get() = sharedPreferences!!.getInt(SharedKeys.WEEK_TYPES_KEY, 1)
 
     fun parseWeek(): List<ItemDate>? = week?.let { weekToList(it) }
 
@@ -229,13 +230,5 @@ class ScheduleViewModel : ViewModel() {
     }
 
     companion object {
-        private const val SELECTED_DAY = "SELECTED_DAY"
-        private const val SELECTED_MONTH = "SELECTED_MONTH"
-        private const val SELECTED_YEAR = "SELECTED_YEAR"
-        private const val WEEK_TYPES_KEY = "WEEK_TYPES_KEY"
-        private const val WEEK_FORMAT_KEY = "WEEK_FORMAT_KEY"
-        private const val EVEN_UNEVEN_VALUE_KEY = "EVEN_UNEVEN"
-        private const val UP_DOWN_VALUE_KEY = "UP_DOWN"
-        private const val DOWN_UP_VALUE_KEY = "DOWN_UP"
     }
 }

@@ -9,7 +9,6 @@ import androidx.fragment.app.viewModels
 import ru.slavapmk.journalTracker.R
 import ru.slavapmk.journalTracker.databinding.FragmentExportBinding
 import ru.slavapmk.journalTracker.ui.MainActivity
-import ru.slavapmk.journalTracker.viewModels.ExportPagerAdapter
 import ru.slavapmk.journalTracker.viewModels.ExportViewModel
 
 class ExportFragment : Fragment() {

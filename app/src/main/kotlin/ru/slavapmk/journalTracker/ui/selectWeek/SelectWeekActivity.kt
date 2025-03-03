@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import ru.slavapmk.journalTracker.R
 import ru.slavapmk.journalTracker.databinding.ActivitySelectWeekBinding
 import ru.slavapmk.journalTracker.ui.MainActivity.Companion.fmanager
+import ru.slavapmk.journalTracker.ui.SharedKeys
 import ru.slavapmk.journalTracker.utils.generateWeeks
 import ru.slavapmk.journalTracker.viewModels.SelectWeekViewModel
 
@@ -24,13 +25,13 @@ class SelectWeekActivity : AppCompatActivity() {
 
     private val shared: SharedPreferences by lazy {
         getSharedPreferences(
-            getString(R.string.shared_id), Context.MODE_PRIVATE
+            SharedKeys.SHARED_APP_ID, Context.MODE_PRIVATE
         )
     }
 
     private val semesterId: Int? by lazy {
-        if (shared.contains(getString(R.string.semester_shared_id))) {
-            shared.getInt(getString(R.string.semester_shared_id), -1)
+        if (shared.contains(SharedKeys.SEMESTER_SHARED_ID)) {
+            shared.getInt(SharedKeys.SEMESTER_SHARED_ID, -1)
         } else {
             null
         }
@@ -59,7 +60,7 @@ class SelectWeekActivity : AppCompatActivity() {
         binding.weeks.adapter = SelectWeekAdapter(viewModel.weeks) { week ->
             shared.edit {
                 putInt(
-                    getString(R.string.week_shared_id),
+                    SharedKeys.WEEK_SHARED_ID,
                     viewModel.weeks.indexOf(week)
                 )
             }

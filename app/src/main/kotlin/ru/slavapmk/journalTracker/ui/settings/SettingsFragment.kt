@@ -18,6 +18,7 @@ import ru.slavapmk.journalTracker.dataModels.settings.AttendanceFormats
 import ru.slavapmk.journalTracker.dataModels.settings.WeeksFormats
 import ru.slavapmk.journalTracker.databinding.FragmentSettingsBinding
 import ru.slavapmk.journalTracker.ui.MainActivity
+import ru.slavapmk.journalTracker.ui.SharedKeys
 import ru.slavapmk.journalTracker.ui.campusEdit.CampusEditActivity
 import ru.slavapmk.journalTracker.ui.studentsedit.StudentsEditActivity
 import ru.slavapmk.journalTracker.ui.timeEdit.TimeEditActivity
@@ -30,7 +31,7 @@ class SettingsFragment : Fragment() {
 
     private val shared: SharedPreferences by lazy {
         activity.getSharedPreferences(
-            getString(R.string.shared_id), Context.MODE_PRIVATE
+            SharedKeys.SHARED_APP_ID, Context.MODE_PRIVATE
         )
     }
 

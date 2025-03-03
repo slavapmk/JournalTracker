@@ -53,7 +53,7 @@
     <string name="item_lesson_name" translatable="false">%1$s (%2$s)</string>
     <string name="item_lesson_teacher" translatable="false">%1$s</string>
     <string name="item_semester_order" translatable="false">%1$d.</string>
-    <string name="item_semester_dates" translatable="false">%1$02d.%2$02d.%1$02d - %3$02d.%4$02d.%5$02d</string>
+    <string name="item_semester_dates" translatable="false">%1$02d.%2$02d.%3$02d - %4$02d.%5$02d.%6$02d</string>
     <string name="item_student_order" translatable="false">%1$d.</string>
     <string name="item_student_name" translatable="false">%1$s</string>
     <string name="item_edit_student_order" translatable="false">%1$d.</string>
@@ -75,9 +75,6 @@
     <string name="week_format_type_up_down">Up / Down</string>
     <string name="attendance_format_type_plus_minus" translatable="false">+ / -</string>
     <string name="attendance_format_type_skip_hours" translatable="false">• / 2</string>
-    <string name="shared_id" translatable="false">RU.SLAVAPMK.JOURNALTRACKER_VGHDFGDZVUHYFIUJHIOVHGYDZUIFHVDVO_SHARED</string>
-    <string name="semester_shared_id" translatable="false">SEMESTER_ID</string>
-    <string name="week_shared_id" translatable="false">WEEK_INDEX</string>
     <string name="week_type_even">Even</string>
     <string name="week_type_uneven">Uneven</string>
     <string name="week_type_up">Up</string>

@@ -18,6 +18,7 @@ import ru.slavapmk.journalTracker.dataModels.semesters.Semester
 import ru.slavapmk.journalTracker.databinding.ActivitySemestersBinding
 import ru.slavapmk.journalTracker.viewModels.SemestersViewModel
 import ru.slavapmk.journalTracker.ui.MainActivity.Companion.fmanager
+import ru.slavapmk.journalTracker.ui.SharedKeys
 import java.util.Calendar
 import java.util.Locale
 
@@ -27,7 +28,7 @@ class SemestersActivity : AppCompatActivity() {
 
     private val shared: SharedPreferences by lazy {
         getSharedPreferences(
-            getString(R.string.shared_id), Context.MODE_PRIVATE
+            SharedKeys.SHARED_APP_ID, Context.MODE_PRIVATE
         )
     }
 
@@ -48,7 +49,7 @@ class SemestersActivity : AppCompatActivity() {
             }, { semester ->
                 shared.edit {
                     putInt(
-                        getString(R.string.semester_shared_id),
+                        SharedKeys.SEMESTER_SHARED_ID,
                         semester.id!!
                     )
                 }
