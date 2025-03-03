@@ -103,4 +103,12 @@
     <string name="month_december">DEC</string>
     <string name="schedule_select_semester">Semester</string>
     <string name="week_format_type_down_up">Down / Up</string>
+    <string name="notification_title_tools">Notification title</string>
+    <string name="notification_content_tools">Notification content</string>
+    <string name="notification_title" translatable="false">%s</string>
+    <string name="notification_content" translatable="false">%s</string>
+    <string name="dialog_update_reject">Do not update</string>
+    <string name="dialog_update_accept">Update all</string>
+    <string name="dialog_update_content">All subsequent pairs on that day and time will also be processed.</string>
+    <string name="dialog_update_title">Apply for subsequent ones?</string>
 </resources>

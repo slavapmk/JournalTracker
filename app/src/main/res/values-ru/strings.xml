@@ -72,5 +72,11 @@
     <string name="schedule_select_semester">Семестр</string>
     <string name="week_type_up">Верхняя</string>
     <string name="week_format_type_down_up">Нижняя / Верхняя</string>
+    <string name="notification_title_tools">Заголовок уведомления</string>
+    <string name="notification_content_tools">Содержимое уведомления</string>
+    <string name="dialog_update_reject">Не обновлять</string>
+    <string name="dialog_update_accept">Обновить все</string>
+    <string name="dialog_update_title">Применить для последующих?</string>
+    <string name="dialog_update_content">Все последующие пары в этот день и время будут также обработаны</string>
 
 </resources>

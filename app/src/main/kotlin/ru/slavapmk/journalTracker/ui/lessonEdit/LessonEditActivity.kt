@@ -3,6 +3,7 @@ package ru.slavapmk.journalTracker.ui.lessonEdit
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import ru.slavapmk.journalTracker.dataModels.lessonEdit.LessonEditInfo
@@ -80,7 +81,14 @@ class LessonEditActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable?) {}
         })
         binding.addButton.setOnClickListener {
-            finish()
+            LessonUpdateDialog(
+                {
+                    Toast.makeText(this, "gerwdsqw", Toast.LENGTH_SHORT).show()
+                }, {
+                    Toast.makeText(this, "njvekfdsnkl", Toast.LENGTH_SHORT).show()
+                }
+            ).show(supportFragmentManager.beginTransaction(), "update_lessons_dialog")
+//            finish()
         }
 
         binding.nameInput.setText(viewModel.info.name)
