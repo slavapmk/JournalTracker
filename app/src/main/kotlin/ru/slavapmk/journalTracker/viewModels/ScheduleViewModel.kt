@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 import ru.slavapmk.journalTracker.dataModels.schedule.ScheduleListLesson
 import ru.slavapmk.journalTracker.dataModels.selectWeek.Week
 import ru.slavapmk.journalTracker.dataModels.settings.WeeksFormats
-import ru.slavapmk.journalTracker.storageModels.Dependencies
+import ru.slavapmk.journalTracker.storageModels.StorageDependencies
 import ru.slavapmk.journalTracker.storageModels.entities.CampusEntity
 import ru.slavapmk.journalTracker.storageModels.entities.LessonInfoEntity
 import ru.slavapmk.journalTracker.storageModels.entities.SemesterEntity
@@ -106,7 +106,7 @@ class ScheduleViewModel : ViewModel() {
     fun loadSemesters() {
         viewModelScope.launch {
             semestersMutableLiveData.postValue(
-                Dependencies.semesterRepository.getSemesters()
+                StorageDependencies.semesterRepository.getSemesters()
             )
         }
     }
@@ -114,7 +114,7 @@ class ScheduleViewModel : ViewModel() {
     fun loadTimes() {
         viewModelScope.launch {
             timesMutableLiveData.postValue(
-                Dependencies.timeRepository.getTimes()
+                StorageDependencies.timeRepository.getTimes()
             )
         }
     }
@@ -122,7 +122,7 @@ class ScheduleViewModel : ViewModel() {
     fun loadCampuses() {
         viewModelScope.launch {
             campusesMutableLiveData.postValue(
-                Dependencies.campusRepository.getCampuses()
+                StorageDependencies.campusRepository.getCampuses()
             )
         }
     }
@@ -131,7 +131,7 @@ class ScheduleViewModel : ViewModel() {
         viewModelScope.launch {
             val date = getDate()
             lessonsMutableLiveData.postValue(
-                Dependencies.lessonInfoRepository.getLessonsByDate(
+                StorageDependencies.lessonInfoRepository.getLessonsByDate(
                     date.day,
                     date.month,
                     date.year

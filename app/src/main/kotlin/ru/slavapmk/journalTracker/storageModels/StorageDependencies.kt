@@ -2,7 +2,6 @@ package ru.slavapmk.journalTracker.storageModels
 
 import android.content.Context
 import androidx.room.Room
-import ru.slavapmk.journalTracker.storageModels.dao.StudentsAttendanceDao
 import ru.slavapmk.journalTracker.storageModels.repositories.CampusRepository
 import ru.slavapmk.journalTracker.storageModels.repositories.LessonInfoRepository
 import ru.slavapmk.journalTracker.storageModels.repositories.SemesterRepository
@@ -10,7 +9,7 @@ import ru.slavapmk.journalTracker.storageModels.repositories.StudentAttendanceRe
 import ru.slavapmk.journalTracker.storageModels.repositories.StudentRepository
 import ru.slavapmk.journalTracker.storageModels.repositories.TimeRepository
 
-object Dependencies {
+object StorageDependencies {
     private lateinit var applicationContext: Context
 
     fun init(context: Context) {

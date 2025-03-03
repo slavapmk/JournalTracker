@@ -5,13 +5,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.slavapmk.journalTracker.dataModels.studentsEdit.StudentsEditListItem
-import ru.slavapmk.journalTracker.storageModels.Dependencies
+import ru.slavapmk.journalTracker.storageModels.StorageDependencies
 import ru.slavapmk.journalTracker.storageModels.entities.StudentEntity
 
 class StudentsEditViewModel : ViewModel() {
     fun loadStudents() {
         viewModelScope.launch {
-            val students = Dependencies.studentRepository.getStudents().map {
+            val students = StorageDependencies.studentRepository.getStudents().map {
                 StudentsEditListItem(
                     it.id,
                     it.name
@@ -35,7 +35,7 @@ class StudentsEditViewModel : ViewModel() {
     fun addStudent(insert: StudentsEditListItem): Int {
         studentsList.add(insert)
         viewModelScope.launch {
-            val id = Dependencies.studentRepository.insertStudent(
+            val id = StorageDependencies.studentRepository.insertStudent(
                 StudentEntity(
                     0,
                     insert.name
@@ -56,7 +56,7 @@ class StudentsEditViewModel : ViewModel() {
 
     fun deleteStudent(student: StudentsEditListItem) {
         viewModelScope.launch {
-            Dependencies.studentRepository.deleteStudent(student.id!!)
+            StorageDependencies.studentRepository.deleteStudent(student.id!!)
         }
     }
 }

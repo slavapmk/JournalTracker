@@ -14,7 +14,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import ru.slavapmk.journalTracker.R
 import ru.slavapmk.journalTracker.databinding.ActivityMainBinding
-import ru.slavapmk.journalTracker.storageModels.Dependencies
+import ru.slavapmk.journalTracker.storageModels.StorageDependencies
 import ru.slavapmk.journalTracker.viewModels.MainActivityViewModel
 
 class MainActivity : AppCompatActivity() {
@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        Dependencies.init(applicationContext)
+        StorageDependencies.init(applicationContext)
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         fmanager = supportFragmentManager

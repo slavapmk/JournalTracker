@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.slavapmk.journalTracker.dataModels.semesters.Semester
-import ru.slavapmk.journalTracker.storageModels.Dependencies
+import ru.slavapmk.journalTracker.storageModels.StorageDependencies
 import ru.slavapmk.journalTracker.storageModels.entities.SemesterEntity
 
 class SemestersViewModel : ViewModel() {
@@ -31,7 +31,7 @@ class SemestersViewModel : ViewModel() {
 
     fun loadSemesters() {
         viewModelScope.launch {
-            val semesters = Dependencies.semesterRepository.getSemesters().map {
+            val semesters = StorageDependencies.semesterRepository.getSemesters().map {
                 Semester(
                     it.id,
                     it.startDay,
@@ -54,7 +54,7 @@ class SemestersViewModel : ViewModel() {
             )
         )
         viewModelScope.launch {
-            val id = Dependencies.semesterRepository.insertSemester(
+            val id = StorageDependencies.semesterRepository.insertSemester(
                 SemesterEntity(
                     0,
                     insert.startDay,
@@ -77,7 +77,7 @@ class SemestersViewModel : ViewModel() {
 
     fun deleteSemester(semester: Semester) {
         viewModelScope.launch {
-            Dependencies.semesterRepository.deleteSemester(
+            StorageDependencies.semesterRepository.deleteSemester(
                 semester.id!!
             )
             endDeleteLiveData.postValue(Unit)

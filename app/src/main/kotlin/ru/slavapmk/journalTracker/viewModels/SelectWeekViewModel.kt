@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.slavapmk.journalTracker.dataModels.selectWeek.Semester
 import ru.slavapmk.journalTracker.dataModels.selectWeek.Week
-import ru.slavapmk.journalTracker.storageModels.Dependencies
+import ru.slavapmk.journalTracker.storageModels.StorageDependencies
 
 class SelectWeekViewModel : ViewModel() {
     var semester: Semester? = null
@@ -18,7 +18,7 @@ class SelectWeekViewModel : ViewModel() {
 
     fun loadSemester(semesterId: Int) {
         viewModelScope.launch {
-            val semesterEntity = Dependencies.semesterRepository.getSemester(semesterId)
+            val semesterEntity = StorageDependencies.semesterRepository.getSemester(semesterId)
             semesterMutableLiveData.postValue(
                 Semester(
                     semesterEntity.startDay,

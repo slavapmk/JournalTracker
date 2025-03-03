@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.slavapmk.journalTracker.dataModels.campuses.Campus
-import ru.slavapmk.journalTracker.storageModels.Dependencies
+import ru.slavapmk.journalTracker.storageModels.StorageDependencies
 import ru.slavapmk.journalTracker.storageModels.entities.CampusEntity
 
 class CampusEditViewModel : ViewModel() {
@@ -19,7 +19,7 @@ class CampusEditViewModel : ViewModel() {
     fun loadCampuses() {
         viewModelScope.launch {
             campusesLiveData.postValue(
-                Dependencies.campusRepository.getCampuses().map {
+                StorageDependencies.campusRepository.getCampuses().map {
                     Campus(it.id, it.codename, it.name)
                 }
             )
@@ -29,7 +29,7 @@ class CampusEditViewModel : ViewModel() {
     fun addCampus(campus: Campus) {
         campuses.add(campus)
         viewModelScope.launch {
-            val insertId = Dependencies.campusRepository.insertCampus(
+            val insertId = StorageDependencies.campusRepository.insertCampus(
                 CampusEntity(
                     0,
                     campus.codename,
@@ -45,7 +45,7 @@ class CampusEditViewModel : ViewModel() {
     fun deleteCampus(delete: Campus) {
         campuses.remove(delete)
         viewModelScope.launch {
-            Dependencies.campusRepository.deleteCampus(
+            StorageDependencies.campusRepository.deleteCampus(
                 delete.id
             )
         }
