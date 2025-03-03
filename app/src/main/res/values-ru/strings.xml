@@ -26,9 +26,9 @@
     <string name="export_share_png">Поделиться PNG</string>
     <string name="export_save_png">Сохранить PNG</string>
     <string name="export_open_png">Открыть PNG</string>
-    <string name="schedule_week">%d неделя (%s)</string>
-    <string name="schedule_week_single">%d неделя</string>
-    <string name="schedule_semester">%s семестр</string>
+    <string name="schedule_week">%1$d неделя (%2$s)</string>
+    <string name="schedule_week_single">%1$d неделя</string>
+    <string name="schedule_semester">%1$s семестр</string>
     <string name="schedule_select_week">Неделя</string>
     <string name="schedule_current_date">Сегодня</string>
     <string name="settings_group_name">Название группы</string>
@@ -38,7 +38,7 @@
     <string name="settings_edit_timetable">Редактор занятий</string>
     <string name="settings_edit_campuses">Редактор корпусов</string>
     <string name="settings_edit_students">Редактор учащихся</string>
-    <string name="item_lesson_cabinet">Ауд.: %d (%s)</string>
+    <string name="item_lesson_cabinet">Ауд.: %1$d (%2$s)</string>
     <string name="bar_item_schedule">Расписание</string>
     <string name="bar_item_export">Экспорт</string>
     <string name="bar_item_settings">Настройки</string>
@@ -78,5 +78,4 @@
     <string name="dialog_update_accept">Обновить все</string>
     <string name="dialog_update_title">Применить для последующих?</string>
     <string name="dialog_update_content">Все последующие пары в этот день и время будут также обработаны</string>
-
 </resources>

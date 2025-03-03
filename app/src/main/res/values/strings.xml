@@ -26,12 +26,12 @@
     <string name="export_share_png">Share PNG</string>
     <string name="export_save_png">Save PNG</string>
     <string name="export_open_png">Open PNG</string>
-    <string name="students_lesson_name" translatable="false">%d. %s (%s)</string>
-    <string name="students_lesson_date" translatable="false">%02d.%02d.%02d</string>
+    <string name="students_lesson_name" translatable="false">%1$d. %2$s (%3$s)</string>
+    <string name="students_lesson_date" translatable="false">%1$02d.%2$02d.%3$02d</string>
     <string name="students_lesson_teacher" translatable="false">%s</string>
-    <string name="schedule_week">%d week (%s)</string>
-    <string name="schedule_week_single">%d week</string>
-    <string name="schedule_semester">%s semester</string>
+    <string name="schedule_week">%1$d week (%2$s)</string>
+    <string name="schedule_week_single">%1$d week</string>
+    <string name="schedule_semester">%1$s semester</string>
     <string name="schedule_select_week">Week</string>
     <string name="schedule_current_date">Today</string>
     <string name="settings_group_name">Group name</string>
@@ -41,27 +41,27 @@
     <string name="settings_edit_timetable">Edit timetable</string>
     <string name="settings_edit_campuses">Edit campuses</string>
     <string name="settings_edit_students">Edit students</string>
-    <string name="item_campus_order" translatable="false">%d</string>
-    <string name="item_campus_codename" translatable="false">%s</string>
-    <string name="item_campus_name" translatable="false">%s</string>
-    <string name="item_date_weekday" translatable="false">%s</string>
-    <string name="item_date_date" translatable="false">%d</string>
-    <string name="item_date_month" translatable="false">%s</string>
-    <string name="item_lesson_order" translatable="false">%d.</string>
-    <string name="item_lesson_times" translatable="false">%02d:%02d - %02d:%02d</string>
-    <string name="item_lesson_cabinet">Cab.: %d (%s)</string>
-    <string name="item_lesson_name" translatable="false">%s (%s)</string>
-    <string name="item_lesson_teacher" translatable="false">%s</string>
-    <string name="item_semester_order" translatable="false">%d.</string>
-    <string name="item_semester_dates" translatable="false">%02d.%02d.%02d - %02d.%02d.%02d</string>
-    <string name="item_student_order" translatable="false">%d.</string>
-    <string name="item_student_name" translatable="false">%s</string>
-    <string name="item_edit_student_order" translatable="false">%d.</string>
-    <string name="item_edit_student_name" translatable="false">%s</string>
-    <string name="item_edit_time_order" translatable="false">%d.</string>
-    <string name="item_edit_time" translatable="false">%02d:%02d - %02d:%02d</string>
-    <string name="item_week_order" translatable="false">%02d.</string>
-    <string name="item_week_dates" translatable="false">%02d.%02d.%02d - %02d.%02d.%02d</string>
+    <string name="item_campus_order" translatable="false">%1$d</string>
+    <string name="item_campus_codename" translatable="false">%1$s</string>
+    <string name="item_campus_name" translatable="false">%1$s</string>
+    <string name="item_date_weekday" translatable="false">%1$s</string>
+    <string name="item_date_date" translatable="false">%1$d</string>
+    <string name="item_date_month" translatable="false">%1$s</string>
+    <string name="item_lesson_order" translatable="false">%1$d.</string>
+    <string name="item_lesson_times" translatable="false">%1$02d:%2$02d - %3$02d:%4$02d</string>
+    <string name="item_lesson_cabinet">Cab.: %1$d (%2$s)</string>
+    <string name="item_lesson_name" translatable="false">%1$s (%2$s)</string>
+    <string name="item_lesson_teacher" translatable="false">%1$s</string>
+    <string name="item_semester_order" translatable="false">%1$d.</string>
+    <string name="item_semester_dates" translatable="false">%1$02d.%2$02d.%1$02d - %3$02d.%4$02d.%5$02d</string>
+    <string name="item_student_order" translatable="false">%1$d.</string>
+    <string name="item_student_name" translatable="false">%1$s</string>
+    <string name="item_edit_student_order" translatable="false">%1$d.</string>
+    <string name="item_edit_student_name" translatable="false">%1$s</string>
+    <string name="item_edit_time_order" translatable="false">%1$d.</string>
+    <string name="item_edit_time" translatable="false">%1$02d:%2$02d - %3$02d:%4$02d</string>
+    <string name="item_week_order" translatable="false">%1$02d.</string>
+    <string name="item_week_dates" translatable="false">%1$02d.%2$02d.%3$02d - %4$02d.%5$02d.%6$02d</string>
     <string name="campus_codename">Codename</string>
     <string name="export_tab_day">Day</string>
     <string name="bar_item_schedule">Schedule</string>
@@ -70,7 +70,7 @@
     <string name="export_day">Export day</string>
     <string name="export_week">Export week</string>
     <string name="export_semester">Export semester</string>
-    <string name="settings_weeks_types" translatable="false">%d</string>
+    <string name="settings_weeks_types" translatable="false">%1$d</string>
     <string name="week_format_type_even_uneven">Even / Uneven</string>
     <string name="week_format_type_up_down">Up / Down</string>
     <string name="attendance_format_type_plus_minus" translatable="false">+ / -</string>
@@ -105,8 +105,8 @@
     <string name="week_format_type_down_up">Down / Up</string>
     <string name="notification_title_tools">Notification title</string>
     <string name="notification_content_tools">Notification content</string>
-    <string name="notification_title" translatable="false">%s</string>
-    <string name="notification_content" translatable="false">%s</string>
+    <string name="notification_title" translatable="false">%1$s</string>
+    <string name="notification_content" translatable="false">%1$s</string>
     <string name="dialog_update_reject">Do not update</string>
     <string name="dialog_update_accept">Update all</string>
     <string name="dialog_update_content">All subsequent pairs on that day and time will also be processed.</string>
