@@ -34,6 +34,7 @@ class EditLessonViewModel : ViewModel() {
         sharedPreferences!!.getInt(SharedKeys.WEEK_TYPES_KEY, 1)
     }
 
+    val savingStatusLiveData: MutableLiveData<Unit> by lazy { MutableLiveData() }
     val lessonLiveData: MutableLiveData<LessonInfoEntity> by lazy { MutableLiveData() }
     private val timesLiveData: MutableLiveData<List<TimeEntity>> by lazy { MutableLiveData() }
     private val semestersLiveData: MutableLiveData<List<SemesterEntity>> by lazy { MutableLiveData() }
@@ -173,6 +174,7 @@ class EditLessonViewModel : ViewModel() {
                 )
             }
             StorageDependencies.lessonInfoRepository.insertLessons(addLessons)
+            savingStatusLiveData.postValue(Unit)
         }
     }
 
@@ -215,6 +217,7 @@ class EditLessonViewModel : ViewModel() {
                     addLesson.campusId
                 )
             }
+            savingStatusLiveData.postValue(Unit)
         }
     }
 }

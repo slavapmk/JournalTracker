@@ -22,6 +22,9 @@ class LessonEditActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLessonEditBinding
     val viewModel by viewModels<EditLessonViewModel>()
+    val editMode by lazy {
+        intent.hasExtra(LESSON_ID)
+    }
 
     private val shared: SharedPreferences by lazy {
         getSharedPreferences(
@@ -94,12 +97,11 @@ class LessonEditActivity : AppCompatActivity() {
         binding.addButton.setOnClickListener {
             LessonUpdateDialog(
                 {
-                    Toast.makeText(this, "gerwdsqw", Toast.LENGTH_SHORT).show()
+                    addLessons(false)
                 }, {
-                    Toast.makeText(this, "njvekfdsnkl", Toast.LENGTH_SHORT).show()
+                    addLessons(true)
                 }
             ).show(supportFragmentManager.beginTransaction(), "update_lessons_dialog")
-//            finish()
         }
 
         init()
@@ -140,10 +142,14 @@ class LessonEditActivity : AppCompatActivity() {
             })
             setLoading(false)
         }
+        viewModel.savingStatusLiveData.observe(this) {
+            setLoading(false)
+            finish()
+        }
     }
 
     private fun initLesson() {
-        if (intent.hasExtra(LESSON_ID)) {
+        if (editMode) {
             val id = intent.getIntExtra(LESSON_ID, -1)
             viewModel.loadLesson(id)
         } else {
@@ -183,6 +189,15 @@ class LessonEditActivity : AppCompatActivity() {
             }
         )
         binding.typeInput.setText(viewModel.info.typeName ?: "")
+    }
+
+    private fun addLessons(updateNext: Boolean) {
+        setLoading(true)
+        if (editMode) {
+            viewModel.updateLessons(updateNext)
+        } else {
+            viewModel.addNewLesson(updateNext)
+        }
     }
 
     private fun setLoading(loading: Boolean) {
