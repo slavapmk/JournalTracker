@@ -33,7 +33,9 @@ class LessonStudentsAdapter(
 
         holder.visitingInput.setText(student.attendance.displayNameRes)
         val entries = StudentAttendance.entries
-        val visitTypes = entries.map { it.displayNameRes }
+        val visitTypes = entries.map {
+            holder.context.getString(it.displayNameRes)
+        }
         val adapter = ArrayAdapter(
             holder.context, android.R.layout.simple_dropdown_item_1line, visitTypes
         )

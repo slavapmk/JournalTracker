@@ -116,4 +116,5 @@
     <string name="attendance_sick">S</string>
     <string name="attendance_sick_with_certificate">S/R</string>
     <string name="attendance_respectfull_pass">-/R</string>
+    <string name="skip_reason">Skip reason</string>
 </resources>

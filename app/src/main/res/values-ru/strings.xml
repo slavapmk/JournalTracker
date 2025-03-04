@@ -86,4 +86,5 @@
     <string name="attendance_sick">Б</string>
     <string name="attendance_sick_with_certificate">Б/У</string>
     <string name="attendance_respectfull_pass">-/У</string>
+    <string name="skip_reason">Причина пропуска</string>
 </resources>
