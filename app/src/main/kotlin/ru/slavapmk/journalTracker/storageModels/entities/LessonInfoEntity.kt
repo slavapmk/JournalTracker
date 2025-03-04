@@ -26,7 +26,7 @@ import androidx.room.PrimaryKey
     ]
 )
 data class LessonInfoEntity(
-    @PrimaryKey val id: Int,
+    @PrimaryKey(autoGenerate = true) val id: Int,
     @ColumnInfo(name = "semester_id") val semesterId: Int,
     val name: String,
     val type: String,
@@ -37,4 +37,17 @@ data class LessonInfoEntity(
     @ColumnInfo(name = "teacher") val teacher: String,
     @ColumnInfo(name = "cabinet") val cabinet: Int,
     @ColumnInfo(name = "campus_id") val campusId: Int,
+)
+
+data class InsertLesson(
+    @ColumnInfo(name = "semester_id") val semesterId: Int,
+    val name: String,
+    val type: String,
+    @ColumnInfo(name = "date_day") val dateDay: Int,
+    @ColumnInfo(name = "date_month") val dateMonth: Int,
+    @ColumnInfo(name = "date_year") val dateYear: Int,
+    @ColumnInfo(name = "time_id") val timeId: Int,
+    @ColumnInfo(name = "teacher") val teacher: String,
+    @ColumnInfo(name = "cabinet") val cabinet: Int,
+    @ColumnInfo(name = "campus_id") val campusId: Int
 )

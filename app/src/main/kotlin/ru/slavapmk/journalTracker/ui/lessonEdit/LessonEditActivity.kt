@@ -47,6 +47,8 @@ class LessonEditActivity : AppCompatActivity() {
         binding = ActivityLessonEditBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        viewModel.sharedPreferences = shared
+
         loadData()
 
         binding.addButton.setOnClickListener {

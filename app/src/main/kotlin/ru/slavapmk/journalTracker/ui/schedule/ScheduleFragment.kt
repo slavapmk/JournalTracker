@@ -301,6 +301,9 @@ class ScheduleFragment : Fragment() {
     }
 
     private fun selectDate() {
+        if (viewModel.semesters.isEmpty() || viewModel.weeks.isEmpty()) {
+            return
+        }
         val semester: SemesterEntity = viewModel.semesters.find {
             it.id == viewModel.semesterId
         } ?: viewModel.semesters.last().also {

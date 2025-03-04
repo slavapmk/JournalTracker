@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 import ru.slavapmk.journalTracker.dataModels.lessonEdit.LessonEditInfo
 import ru.slavapmk.journalTracker.storageModels.StorageDependencies
 import ru.slavapmk.journalTracker.storageModels.entities.CampusEntity
+import ru.slavapmk.journalTracker.storageModels.entities.InsertLesson
 import ru.slavapmk.journalTracker.storageModels.entities.LessonInfoEntity
 import ru.slavapmk.journalTracker.storageModels.entities.SemesterEntity
 import ru.slavapmk.journalTracker.storageModels.entities.TimeEntity
@@ -148,8 +149,7 @@ class EditLessonViewModel : ViewModel() {
             mutableListOf(date)
         }
         val addLessons = resultDates.map {
-            LessonInfoEntity(
-                0,
+            InsertLesson(
                 semester!!.id,
                 info.name!!,
                 info.typeName!!,
@@ -184,8 +184,7 @@ class EditLessonViewModel : ViewModel() {
             mutableListOf(date)
         }
         val addLessons = resultDates.map {
-            LessonInfoEntity(
-                0,
+            InsertLesson(
                 semester!!.id,
                 info.name!!,
                 info.typeName!!,

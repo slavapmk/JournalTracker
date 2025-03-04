@@ -3,6 +3,7 @@ package ru.slavapmk.journalTracker.storageModels.dao
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import ru.slavapmk.journalTracker.storageModels.entities.InsertLesson
 import ru.slavapmk.journalTracker.storageModels.entities.LessonInfoEntity
 
 @Dao
@@ -11,7 +12,7 @@ interface LessonsInfoDao {
     fun insertLesson(lesson: LessonInfoEntity)
 
     @Insert(entity = LessonInfoEntity::class)
-    fun insertLessons(lessons: List<LessonInfoEntity>)
+    fun insertLessons(lessons: List<InsertLesson>)
 
     @Query("DELETE FROM lessons_table WHERE id = :lessonId")
     fun deleteLesson(lessonId: Int)

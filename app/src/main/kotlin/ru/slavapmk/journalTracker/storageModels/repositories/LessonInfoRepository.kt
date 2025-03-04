@@ -3,6 +3,7 @@ package ru.slavapmk.journalTracker.storageModels.repositories
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.slavapmk.journalTracker.storageModels.dao.LessonsInfoDao
+import ru.slavapmk.journalTracker.storageModels.entities.InsertLesson
 import ru.slavapmk.journalTracker.storageModels.entities.LessonInfoEntity
 
 class LessonInfoRepository(
@@ -13,7 +14,7 @@ class LessonInfoRepository(
     }
 
     suspend fun insertLessons(
-        lessonInfoEntities: List<LessonInfoEntity>
+        lessonInfoEntities: List<InsertLesson>
     ) = withContext(Dispatchers.IO) {
         lessonsInfoDao.insertLessons(lessonInfoEntities)
     }
