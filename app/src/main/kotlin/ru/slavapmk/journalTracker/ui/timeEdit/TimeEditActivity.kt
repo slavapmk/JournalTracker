@@ -27,7 +27,7 @@ class TimeEditActivity : AppCompatActivity() {
             onDelete = {
                 val index = viewModel.timeList.indexOf(it)
                 val size = viewModel.timeList.size
-                viewModel.timeList.remove(it)
+                viewModel.delTime(it)
                 binding.times.adapter?.notifyItemRemoved(index)
                 binding.times.adapter?.notifyItemRangeChanged(
                     index, size - index
@@ -103,19 +103,14 @@ class TimeEditActivity : AppCompatActivity() {
             ) {
                 return@setOnClickListener
             }
-            val addItem = TimeEditItem(
-                viewModel.startHours,
-                viewModel.startMinutes,
-                viewModel.endHours,
-                viewModel.endMinutes
+            val insertIndex = viewModel.addTime(
+                TimeEditItem(
+                    viewModel.startHours,
+                    viewModel.startMinutes,
+                    viewModel.endHours,
+                    viewModel.endMinutes
+                )
             )
-            viewModel.timeList.add(
-                addItem
-            )
-            viewModel.timeList.sortBy {
-                it.startHours * 60 + it.startMinutes
-            }
-            val insertIndex = viewModel.timeList.indexOf(addItem)
             timeEditAdapter.notifyItemInserted(insertIndex)
             timeEditAdapter.notifyItemRangeChanged(
                 insertIndex, viewModel.timeList.size - insertIndex
