@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.slavapmk.journalTracker.R
 import ru.slavapmk.journalTracker.dataModels.timeEdit.TimeEditItem
@@ -44,6 +45,29 @@ class TimeEditActivity : AppCompatActivity() {
         binding = ActivityTimeEditBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 5)
+            insets
+        }
+
+        loadData()
+    }
+
+    private fun loadData() {
+        setLoading(true)
+        viewModel.loadTimes()
+        viewModel.timeLiveData.observe(this) {
+            setLoading(false)
+            viewModel.timeList.apply {
+                clear()
+                addAll(it)
+            }
+            initInputs()
+        }
+    }
+
+    private fun initInputs() {
         binding.startTimeInput.setOnClickListener {
             val calendar = Calendar.getInstance()
             val hour = calendar.get(Calendar.HOUR_OF_DAY)
@@ -140,11 +164,9 @@ class TimeEditActivity : AppCompatActivity() {
                 )
             )
         }
+    }
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 5)
-            insets
-        }
+    fun setLoading(loading: Boolean) {
+        binding.loadingStatus.isVisible = loading
     }
 }

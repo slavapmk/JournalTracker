@@ -1,5 +1,6 @@
 package ru.slavapmk.journalTracker.viewModels
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
@@ -13,6 +14,8 @@ class TimeEditViewModel : ViewModel() {
     var endHours: Int = -1
     var endMinutes: Int = -1
     var timeList: MutableList<TimeEditItem> = mutableListOf()
+
+    val timeLiveData: MutableLiveData<List<TimeEditItem>> by lazy { MutableLiveData() }
 
     fun addTime(item: TimeEditItem): Int {
         timeList.add(item)
@@ -44,6 +47,21 @@ class TimeEditViewModel : ViewModel() {
                 item.startMinutes,
                 item.endHours,
                 item.endMinutes
+            )
+        }
+    }
+
+    fun loadTimes() {
+        viewModelScope.launch {
+            timeLiveData.postValue(
+                StorageDependencies.timeRepository.getTimes().map {
+                    TimeEditItem(
+                        it.startHour,
+                        it.startMinute,
+                        it.endHour,
+                        it.endMinute
+                    )
+                }
             )
         }
     }
