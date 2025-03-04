@@ -186,6 +186,8 @@ class ScheduleFragment : Fragment() {
         binding.currentDay.setOnClickListener {
             viewModel.setDate(null)
             selectDateAndUpdateDays()
+            activity.setLoading(true)
+            viewModel.loadLessons()
         }
 
         binding.lessons.layoutManager = LinearLayoutManager(requireContext())
