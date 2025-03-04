@@ -11,6 +11,7 @@ import ru.slavapmk.journalTracker.R
 import ru.slavapmk.journalTracker.databinding.ActivityLessonBinding
 import ru.slavapmk.journalTracker.ui.lessonEdit.LessonEditActivity
 import ru.slavapmk.journalTracker.ui.MainActivity.Companion.fmanager
+import ru.slavapmk.journalTracker.ui.SharedKeys
 import ru.slavapmk.journalTracker.viewModels.LessonViewModel
 
 class LessonActivity : AppCompatActivity() {
@@ -41,10 +42,10 @@ class LessonActivity : AppCompatActivity() {
 
         binding.lessonTeacher.text = viewModel.info.teacher
 
-        val lessonId = if (!intent.hasExtra("LESSON_ID")) {
+        val lessonId = if (!intent.hasExtra(SharedKeys.SELECTED_LESSON)) {
             throw RuntimeException("Lesson id not catch")
         } else {
-            intent.getIntExtra("LESSON_ID", -1)
+            intent.getIntExtra(SharedKeys.SELECTED_LESSON, -1)
         }
 
         binding.lessonTimes.text = getString(
@@ -59,7 +60,7 @@ class LessonActivity : AppCompatActivity() {
         binding.editButton.setOnClickListener {
             startActivity(
                 Intent(this, LessonEditActivity::class.java).apply {
-                    putExtra("LESSON_ID", lessonId)
+                    putExtra(SharedKeys.SELECTED_LESSON, lessonId)
                 }
             )
         }
