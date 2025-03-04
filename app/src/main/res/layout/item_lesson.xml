@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="150dp"
+    android:layout_height="130dp"
     android:layout_marginHorizontal="10dp"
     android:layout_marginBottom="20dp"
     android:background="@drawable/item_background_clickable"
@@ -16,7 +16,7 @@
         android:layout_marginTop="20dp"
         android:text="@string/item_lesson_order"
         android:textColor="@color/item_text"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -28,7 +28,7 @@
         android:layout_marginStart="20dp"
         android:text="@string/item_lesson_times"
         android:textColor="@color/item_text"
-        android:textSize="20sp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@id/order_field"
         app:layout_constraintStart_toEndOf="@id/order_field" />
 
@@ -39,7 +39,7 @@
         android:layout_marginEnd="20dp"
         android:text="@string/item_lesson_cabinet"
         android:textColor="@color/item_text"
-        android:textSize="20sp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@id/order_field"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -50,7 +50,7 @@
         android:layout_marginBottom="20dp"
         android:text="@string/item_lesson_name"
         android:textColor="@color/item_text"
-        android:textSize="25sp"
+        android:textSize="21sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@id/order_field"
@@ -63,7 +63,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="@string/item_lesson_teacher"
-        android:textSize="18sp"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="@id/title"
         app:layout_constraintTop_toBottomOf="@id/title" />
 
