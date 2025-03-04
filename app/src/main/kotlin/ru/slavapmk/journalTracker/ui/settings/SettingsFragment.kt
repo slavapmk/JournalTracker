@@ -116,10 +116,10 @@ class SettingsFragment : Fragment() {
         )
         binding.weeksFormatInput.setAdapter(weeksAdapter)
         binding.weeksFormatInput.setOnItemClickListener { _, _, position, _ ->
-            when (position) {
-                0 -> viewModel.weekFormat = WeeksFormats.EVEN_UNEVEN
-                1 -> viewModel.weekFormat = WeeksFormats.UP_DOWN
-                2 -> viewModel.weekFormat = WeeksFormats.DOWN_UP
+            viewModel.weekFormat = when (position) {
+                0 -> WeeksFormats.EVEN_UNEVEN
+                1 -> WeeksFormats.UP_DOWN
+                2 -> WeeksFormats.DOWN_UP
                 else -> throw IllegalStateException()
             }
         }
@@ -141,9 +141,9 @@ class SettingsFragment : Fragment() {
         val attendanceFormatInput = binding.studentsFormatInput
         attendanceFormatInput.setAdapter(attendanceAdapter)
         attendanceFormatInput.setOnItemClickListener { _, _, position, _ ->
-            when (position) {
-                0 -> viewModel.attendanceFormat = AttendanceFormats.PLUS_MINUS
-                1 -> viewModel.attendanceFormat = AttendanceFormats.SKIP_HOURS
+            viewModel.attendanceFormat = when (position) {
+                0 -> AttendanceFormats.PLUS_MINUS
+                1 -> AttendanceFormats.SKIP_HOURS
                 else -> throw IllegalStateException()
             }
         }
