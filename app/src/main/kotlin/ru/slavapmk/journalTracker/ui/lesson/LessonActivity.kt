@@ -54,9 +54,9 @@ class LessonActivity : AppCompatActivity() {
             viewModel.info.endHour, viewModel.info.endMinute
         )
         binding.students.layoutManager = LinearLayoutManager(this)
-        binding.students.adapter = LessonStudentsAdapter(
-            viewModel.info.students
-        )
+        binding.students.adapter = LessonStudentsAdapter(viewModel.info.students) {
+
+        }
         binding.editButton.setOnClickListener {
             startActivity(
                 Intent(this, LessonEditActivity::class.java).apply {

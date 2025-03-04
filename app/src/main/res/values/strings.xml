@@ -111,4 +111,9 @@
     <string name="type_lection">L</string>
     <string name="type_practise">P</string>
     <string name="type_laboratory">Lab</string>
+    <string name="attendance_visit">+</string>
+    <string name="attendance_skip">-</string>
+    <string name="attendance_sick">S</string>
+    <string name="attendance_sick_with_certificate">S/R</string>
+    <string name="attendance_respectfull_pass">-/R</string>
 </resources>

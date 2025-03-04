@@ -81,4 +81,9 @@
     <string name="type_lection">Л</string>
     <string name="type_practise">П</string>
     <string name="type_laboratory">ЛБ</string>
+    <string name="attendance_visit">+</string>
+    <string name="attendance_skip">-</string>
+    <string name="attendance_sick">Б</string>
+    <string name="attendance_sick_with_certificate">Б/У</string>
+    <string name="attendance_respectfull_pass">-/У</string>
 </resources>

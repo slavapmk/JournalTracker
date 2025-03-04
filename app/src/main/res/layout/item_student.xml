@@ -39,7 +39,7 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/visitingLayout"
+        android:id="@+id/visiting_layout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="100dp"
         android:layout_height="50dp"
@@ -51,7 +51,7 @@
         app:layout_constraintTop_toTopOf="@id/order">
 
         <AutoCompleteTextView
-            android:id="@+id/campus_input"
+            android:id="@+id/visiting_input"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:inputType="none"
@@ -61,9 +61,8 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/description"
+        android:id="@+id/description_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -77,6 +76,7 @@
         app:layout_constraintTop_toBottomOf="@id/order">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/description_input"
             android:layout_width="match_parent"
             android:textSize="12sp"
             android:layout_height="wrap_content" />
