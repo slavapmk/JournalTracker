@@ -78,4 +78,7 @@
     <string name="dialog_update_accept">Обновить все</string>
     <string name="dialog_update_title">Применить для последующих?</string>
     <string name="dialog_update_content">Все последующие пары в этот день и время будут обработаны также.\nПри возникновении конфликтов данные заменяться новыми</string>
+    <string name="type_lection">Л</string>
+    <string name="type_practise">П</string>
+    <string name="type_laboratory">ЛБ</string>
 </resources>

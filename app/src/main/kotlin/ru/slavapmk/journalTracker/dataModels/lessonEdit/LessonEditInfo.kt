@@ -7,5 +7,5 @@ data class LessonEditInfo(
     var typeName: String?,
     var teacher: String?,
     var cabinet: Int?,
-    var campusName: String?,
+    var campusId: Int?,
 )

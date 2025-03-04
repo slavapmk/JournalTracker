@@ -108,4 +108,7 @@
     <string name="dialog_update_accept">Update all</string>
     <string name="dialog_update_content">All subsequent pairs on that day and time will be processed as well.\nIf there are conflicts, the data will be replaced with new ones.</string>
     <string name="dialog_update_title">Apply for subsequent ones?</string>
+    <string name="type_lection">L</string>
+    <string name="type_practise">P</string>
+    <string name="type_laboratory">Lab</string>
 </resources>

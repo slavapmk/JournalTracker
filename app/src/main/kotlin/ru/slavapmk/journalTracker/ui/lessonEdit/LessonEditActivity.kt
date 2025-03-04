@@ -6,9 +6,10 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.widget.Toast
+import android.widget.ArrayAdapter
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import ru.slavapmk.journalTracker.R
 import ru.slavapmk.journalTracker.dataModels.lessonEdit.LessonEditInfo
 import ru.slavapmk.journalTracker.databinding.ActivityLessonEditBinding
 import ru.slavapmk.journalTracker.ui.SharedKeys
@@ -32,6 +33,14 @@ class LessonEditActivity : AppCompatActivity() {
         )
     }
 
+    private val lessonTypes by lazy {
+        mutableListOf(
+            getString(R.string.type_lection),
+            getString(R.string.type_practise),
+            getString(R.string.type_laboratory)
+        )
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -40,68 +49,28 @@ class LessonEditActivity : AppCompatActivity() {
 
         loadData()
 
-        binding.nameInput.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewModel.info.name = s.toString()
-            }
-
-            override fun afterTextChanged(s: Editable?) {}
-        })
-        binding.teacherInput.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewModel.info.teacher = s.toString()
-            }
-
-            override fun afterTextChanged(s: Editable?) {}
-        })
-        binding.cabinetInput.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewModel.info.cabinet = s.toString().toInt()
-            }
-
-            override fun afterTextChanged(s: Editable?) {}
-        })
-        binding.campusInput.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewModel.info.campusName = s.toString()
-            }
-
-            override fun afterTextChanged(s: Editable?) {}
-        })
-        binding.orderInput.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewModel.info.index = s.toString().toInt() - 1
-            }
-
-            override fun afterTextChanged(s: Editable?) {}
-        })
-        binding.typeInput.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewModel.info.typeName = s.toString()
-            }
-
-            override fun afterTextChanged(s: Editable?) {}
-        })
         binding.addButton.setOnClickListener {
+            if (
+                viewModel.info.name.isNullOrEmpty() ||
+                viewModel.info.typeName.isNullOrEmpty() ||
+                viewModel.info.teacher.isNullOrEmpty() ||
+                viewModel.info.index == null ||
+                viewModel.info.cabinet == null ||
+                viewModel.info.campusId == null
+            ) {
+                return@setOnClickListener
+            }
+
             LessonUpdateDialog(
                 {
                     addLessons(false)
                 }, {
                     addLessons(true)
                 }
-            ).show(supportFragmentManager.beginTransaction(), "update_lessons_dialog")
+            ).show(
+                supportFragmentManager.beginTransaction(),
+                "update_lessons_dialog"
+            )
         }
 
         init()
@@ -137,9 +106,10 @@ class LessonEditActivity : AppCompatActivity() {
                     entity.type,
                     entity.teacher,
                     entity.cabinet,
-                    viewModel.campuses.find { it.id == entity.campusId }!!.name
+                    entity.campusId
                 )
             })
+            initInputs()
             setLoading(false)
         }
         viewModel.savingStatusLiveData.observe(this) {
@@ -159,6 +129,87 @@ class LessonEditActivity : AppCompatActivity() {
                     0, null, null, null, null, null, null
                 )
             )
+            initInputs()
+        }
+    }
+
+    private fun initInputs() {
+        binding.nameInput.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (s?.toString().isNullOrBlank()) {
+                    return
+                }
+                viewModel.info.name = s.toString()
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
+        binding.teacherInput.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (s?.toString().isNullOrBlank()) {
+                    return
+                }
+                viewModel.info.teacher = s.toString()
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
+        binding.cabinetInput.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (s?.toString().isNullOrBlank()) {
+                    return
+                }
+                viewModel.info.cabinet = s.toString().toInt()
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
+
+        val campusNames = viewModel.campuses.map {
+            it.name
+        }
+        viewModel.info.campusId?.let {
+            binding.campusInput.setText(
+                viewModel.campuses.find { it.id == viewModel.info.campusId }!!.name
+            )
+        }
+        val campusesAdapter = ArrayAdapter(
+            this, android.R.layout.simple_dropdown_item_1line, campusNames
+        )
+        binding.campusInput.setAdapter(campusesAdapter)
+        binding.campusInput.setOnItemClickListener { _, _, position, _ ->
+            viewModel.info.campusId = viewModel.campuses[position].id
+        }
+
+        val timeNames = List(viewModel.times.size) { index -> (index + 1).toString() }
+        binding.orderInput.setText(
+            if (viewModel.info.index != null) {
+                String.format("%s", viewModel.info.index!! + 1)
+            } else {
+                ""
+            }
+        )
+        val timesAdapter = ArrayAdapter(
+            this, android.R.layout.simple_dropdown_item_1line, timeNames
+        )
+        binding.orderInput.setAdapter(timesAdapter)
+        binding.orderInput.setOnItemClickListener { _, _, position, _ ->
+            viewModel.info.index = position
+        }
+
+        binding.typeInput.setText(viewModel.info.typeName ?: "")
+        val typesAdapter = ArrayAdapter(
+            this, android.R.layout.simple_dropdown_item_1line, lessonTypes
+        )
+        binding.typeInput.setAdapter(typesAdapter)
+        binding.typeInput.setOnItemClickListener { _, _, position, _ ->
+            viewModel.info.typeName = lessonTypes[position]
         }
     }
 
@@ -180,15 +231,6 @@ class LessonEditActivity : AppCompatActivity() {
                 String.format("%s", viewModel.info.cabinet)
             }
         )
-        binding.campusInput.setText(viewModel.info.campusName ?: "")
-        binding.orderInput.setText(
-            if (viewModel.info.index != null) {
-                String.format("%s", viewModel.info.index!! + 1)
-            } else {
-                ""
-            }
-        )
-        binding.typeInput.setText(viewModel.info.typeName ?: "")
     }
 
     private fun addLessons(updateNext: Boolean) {

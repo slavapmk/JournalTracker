@@ -159,9 +159,7 @@ class EditLessonViewModel : ViewModel() {
                 times[info.index!!].id,
                 info.teacher!!,
                 info.cabinet!!,
-                campuses.find { campusEntity ->
-                    campusEntity.name == info.campusName
-                }!!.id
+                info.campusId!!
             )
         }
         viewModelScope.launch {
@@ -197,9 +195,7 @@ class EditLessonViewModel : ViewModel() {
                 times[info.index!!].id,
                 info.teacher!!,
                 info.cabinet!!,
-                campuses.find { campusEntity ->
-                    campusEntity.name == info.campusName
-                }!!.id
+                info.campusId!!
             )
         }
         viewModelScope.launch {
