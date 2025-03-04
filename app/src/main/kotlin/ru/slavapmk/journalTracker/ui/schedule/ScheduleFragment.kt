@@ -11,6 +11,7 @@ import androidx.core.content.edit
 import androidx.core.view.isInvisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.slavapmk.journalTracker.R
 import ru.slavapmk.journalTracker.dataModels.schedule.ScheduleListLesson
@@ -259,25 +260,29 @@ class ScheduleFragment : Fragment() {
         }
 
         viewModel.lessonsMutableLiveData.observe(viewLifecycleOwner) { lessons ->
+            val newList = lessons.map { lessonEntity ->
+                val time = viewModel.timesMap[lessonEntity.timeId]
+                ScheduleListLesson(
+                    lessonEntity.id,
+                    time!!.startHour,
+                    time.startMinute,
+                    time.endHour,
+                    time.endMinute,
+                    lessonEntity.type,
+                    lessonEntity.cabinet,
+                    viewModel.campusesMap[lessonEntity.campusId]!!.codename,
+                    lessonEntity.name,
+                    lessonEntity.teacher,
+                )
+            }
+            val diffCallback = LessonsDiffCallback(viewModel.lessons, newList)
+            val diffResult = DiffUtil.calculateDiff(diffCallback)
+
             viewModel.lessons.clear()
             viewModel.lessons.addAll(
-                lessons.map { lessonEntity ->
-                    val time = viewModel.timesMap[lessonEntity.timeId]
-                    ScheduleListLesson(
-                        lessonEntity.id,
-                        time!!.startHour,
-                        time.startMinute,
-                        time.endHour,
-                        time.endMinute,
-                        lessonEntity.type,
-                        lessonEntity.cabinet,
-                        viewModel.campusesMap[lessonEntity.campusId]!!.codename,
-                        lessonEntity.name,
-                        lessonEntity.teacher,
-                    )
-                }
+                newList
             )
-            binding.lessons.adapter?.notifyItemRangeChanged(0, viewModel.lessons.size)
+            diffResult.dispatchUpdatesTo(binding.lessons.adapter!!)
             activity.setLoading(false)
         }
 
