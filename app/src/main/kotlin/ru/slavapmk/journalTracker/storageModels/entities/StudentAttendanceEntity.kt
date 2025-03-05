@@ -26,5 +26,5 @@ data class StudentAttendanceEntity(
     @ColumnInfo(name = "student_id") val studentId: Int,
     @ColumnInfo(name = "lesson_id") val lessonId: Int,
     val attendance: StudentAttendance,
-    @ColumnInfo(name = "skip_description") val skipDescription: String
+    @ColumnInfo(name = "skip_description") val skipDescription: String?
 )

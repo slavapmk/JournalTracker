@@ -19,6 +19,7 @@ import ru.slavapmk.journalTracker.ui.lesson.StudentAttendanceLesson
 
 class LessonViewModel : ViewModel() {
     var info: LessonInfo? = null
+    var students: MutableList<LessonStudentListItem>? = null
 
     private val campusesLiveData: MutableLiveData<List<CampusEntity>> by lazy { MutableLiveData() }
     private val semestersLiveData: MutableLiveData<List<SemesterEntity>> by lazy { MutableLiveData() }
@@ -26,6 +27,7 @@ class LessonViewModel : ViewModel() {
     private val studentsLiveData: MutableLiveData<List<StudentEntity>> by lazy { MutableLiveData() }
     private val attendanceLiveData: MutableLiveData<List<StudentAttendanceEntity>> by lazy { MutableLiveData() }
     private val lessonLiveData: MutableLiveData<LessonInfoEntity> by lazy { MutableLiveData() }
+    private val fillAttendanceLiveData: MutableLiveData<List<StudentAttendanceEntity>> by lazy { MutableLiveData() }
 
     val lessonInfoLiveData = MediatorLiveData<LessonInfo>().apply {
         var campuses: List<CampusEntity>? = null
@@ -61,7 +63,6 @@ class LessonViewModel : ViewModel() {
                 if (toInit.isNotEmpty()) {
                     fillStudents(toInit)
                 }
-                val fullAttendance = attendances!! + toInit
 
                 val timeIndex = times!!.indexOfFirst { it.id == lesson!!.timeId }
                 val time = times!![timeIndex]
@@ -79,20 +80,21 @@ class LessonViewModel : ViewModel() {
                     time.endHour,
                     time.endMinute,
                     campuses!!.find { it.id == lesson!!.campusId }!!.codename,
-                    fullAttendance.map {
-                        LessonStudentListItem(
-                            it.studentId,
-                            students!!.find { student -> student.id == it.studentId }!!.name,
-                            when (it.attendance) {
-                                StudentAttendance.VISIT -> StudentAttendanceLesson.VISIT
-                                StudentAttendance.NOT_VISIT -> StudentAttendanceLesson.NOT_VISIT
-                                StudentAttendance.SICK -> StudentAttendanceLesson.SICK
-                                StudentAttendance.SICK_WITH_CERTIFICATE -> StudentAttendanceLesson.SICK_WITH_CERTIFICATE
-                                StudentAttendance.RESPECTFUL_PASS -> StudentAttendanceLesson.RESPECTFUL_PASS
-                            },
-                            it.skipDescription
-                        )
-                    }
+//                    fullAttendance.map {
+//                        LessonStudentListItem(
+//                            0,
+//                            it.studentId,
+//                            students!!.find { student -> student.id == it.studentId }!!.name,
+//                            when (it.attendance) {
+//                                StudentAttendance.VISIT -> StudentAttendanceLesson.VISIT
+//                                StudentAttendance.NOT_VISIT -> StudentAttendanceLesson.NOT_VISIT
+//                                StudentAttendance.SICK -> StudentAttendanceLesson.SICK
+//                                StudentAttendance.SICK_WITH_CERTIFICATE -> StudentAttendanceLesson.SICK_WITH_CERTIFICATE
+//                                StudentAttendance.RESPECTFUL_PASS -> StudentAttendanceLesson.RESPECTFUL_PASS
+//                            },
+//                            it.skipDescription
+//                        )
+//                    }
                 )
 
                 campuses = null
@@ -129,7 +131,7 @@ class LessonViewModel : ViewModel() {
         }
     }
 
-    fun fillStudents(attendances: List<StudentAttendanceEntity>) {
+    private fun fillStudents(attendances: List<StudentAttendanceEntity>) {
         viewModelScope.launch {
             StorageDependencies.studentsAttendanceRepository.insertAttendances(
                 attendances
@@ -172,5 +174,32 @@ class LessonViewModel : ViewModel() {
 
     fun deleteLessons(updateNext: Boolean) {
         TODO("Not yet implemented")
+    }
+
+    fun loadFilledStudents() {
+        viewModelScope.launch {
+            fillAttendanceLiveData.postValue(
+                StorageDependencies.studentsAttendanceRepository.getLessonAttendance(info!!.id)
+            )
+        }
+    }
+
+    fun updateStudent(updateStudent: LessonStudentListItem) {
+        val entity = StudentAttendanceEntity(
+            updateStudent.id,
+            updateStudent.studentId,
+            info!!.id,
+            when (updateStudent.attendance) {
+                StudentAttendanceLesson.VISIT -> StudentAttendance.VISIT
+                StudentAttendanceLesson.NOT_VISIT -> StudentAttendance.NOT_VISIT
+                StudentAttendanceLesson.SICK -> StudentAttendance.SICK
+                StudentAttendanceLesson.SICK_WITH_CERTIFICATE -> StudentAttendance.SICK_WITH_CERTIFICATE
+                StudentAttendanceLesson.RESPECTFUL_PASS -> StudentAttendance.RESPECTFUL_PASS
+            },
+            skipDescription = updateStudent.description
+        )
+        viewModelScope.launch {
+            StorageDependencies.studentsAttendanceRepository.updateAttendance(entity)
+        }
     }
 }

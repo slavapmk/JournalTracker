@@ -65,28 +65,32 @@ class LessonActivity : AppCompatActivity() {
     private fun injectData() {
         binding.lessonName.text = getString(
             R.string.students_lesson_name,
-            viewModel.info.index + 1,
-            viewModel.info.name,
-            viewModel.info.type
+            (viewModel.info?.index ?: 0) + 1,
+            viewModel.info?.name ?: "",
+            viewModel.info?.type ?: ""
         )
 
         binding.lessonDate.text = getString(
             R.string.students_lesson_date,
-            viewModel.info.dateDay,
-            viewModel.info.dateMonth,
-            viewModel.info.dateYear
+            viewModel.info?.dateDay ?: 1,
+            viewModel.info?.dateMonth ?: 1,
+            viewModel.info?.dateYear ?: 1
         )
 
-        binding.lessonTeacher.text = viewModel.info.teacher
+        binding.lessonTeacher.text = viewModel.info?.teacher ?: ""
 
         binding.lessonTimes.text = getString(
             R.string.item_lesson_times,
-            viewModel.info.startHour, viewModel.info.startMinute,
-            viewModel.info.endHour, viewModel.info.endMinute
+            viewModel.info?.startHour ?: 0,
+            viewModel.info?.startMinute ?: 0,
+            viewModel.info?.endHour ?: 0,
+            viewModel.info?.endMinute ?: 0
         )
         binding.students.layoutManager = LinearLayoutManager(this)
-        binding.students.adapter = LessonStudentsAdapter(viewModel.info.students) {
-
+        binding.students.adapter = viewModel.students?.let {
+            LessonStudentsAdapter(it) { updateStudent ->
+                viewModel.updateStudent(updateStudent)
+            }
         }
     }
 
@@ -95,7 +99,7 @@ class LessonActivity : AppCompatActivity() {
         finish()
     }
 
-    fun setLoading(loading: Boolean) {
+    private fun setLoading(loading: Boolean) {
         binding.loadingStatus.isVisible = loading
     }
 }

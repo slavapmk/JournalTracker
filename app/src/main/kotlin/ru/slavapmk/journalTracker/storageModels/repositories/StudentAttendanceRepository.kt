@@ -4,7 +4,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.slavapmk.journalTracker.storageModels.dao.StudentsAttendanceDao
 import ru.slavapmk.journalTracker.storageModels.entities.StudentAttendanceEntity
-import ru.slavapmk.journalTracker.ui.lesson.StudentAttendanceLesson
 
 class StudentAttendanceRepository(
     private val studentsAttendanceDao: StudentsAttendanceDao
@@ -14,6 +13,7 @@ class StudentAttendanceRepository(
     ) = withContext(Dispatchers.IO) {
         studentsAttendanceDao.insertStudentAttendance(studentAttendanceEntity)
     }
+
     suspend fun insertAttendances(
         studentAttendanceEntity: List<StudentAttendanceEntity>
     ) = withContext(Dispatchers.IO) {
@@ -28,5 +28,11 @@ class StudentAttendanceRepository(
         lessonId: Int
     ): List<StudentAttendanceEntity> = withContext(Dispatchers.IO) {
         studentsAttendanceDao.getLessonAttendance(lessonId)
+    }
+
+    suspend fun updateAttendance(
+        studentAttendanceEntity: StudentAttendanceEntity
+    ) = withContext(Dispatchers.IO) {
+        studentsAttendanceDao.updateAttendance(studentAttendanceEntity)
     }
 }

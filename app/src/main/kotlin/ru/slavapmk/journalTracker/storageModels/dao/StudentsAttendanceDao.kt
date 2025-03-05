@@ -3,8 +3,8 @@ package ru.slavapmk.journalTracker.storageModels.dao
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import ru.slavapmk.journalTracker.storageModels.entities.StudentAttendanceEntity
-import ru.slavapmk.journalTracker.ui.lesson.StudentAttendanceLesson
 
 @Dao
 interface StudentsAttendanceDao {
@@ -19,4 +19,7 @@ interface StudentsAttendanceDao {
 
     @Insert(entity = StudentAttendanceEntity::class)
     fun insertStudentAttendances(studentAttendanceEntity: List<StudentAttendanceEntity>)
+
+    @Update(entity = StudentAttendanceEntity::class)
+    fun updateAttendance(studentAttendanceEntity: StudentAttendanceEntity)
 }
