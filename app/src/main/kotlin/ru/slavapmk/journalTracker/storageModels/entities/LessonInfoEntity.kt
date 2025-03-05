@@ -11,17 +11,20 @@ import androidx.room.PrimaryKey
         ForeignKey(
             entity = SemesterEntity::class,
             parentColumns = ["id"],
-            childColumns = ["semester_id"]
+            childColumns = ["semester_id"],
+            onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(
             entity = TimeEntity::class,
             parentColumns = ["id"],
-            childColumns = ["time_id"]
+            childColumns = ["time_id"],
+            onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(
             entity = CampusEntity::class,
             parentColumns = ["id"],
-            childColumns = ["campus_id"]
+            childColumns = ["campus_id"],
+            onDelete = ForeignKey.CASCADE
         )
     ]
 )

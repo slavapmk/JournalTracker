@@ -12,12 +12,14 @@ import ru.slavapmk.journalTracker.storageModels.StudentAttendance
         ForeignKey(
             entity = StudentEntity::class,
             parentColumns = ["id"],
-            childColumns = ["student_id"]
+            childColumns = ["student_id"],
+            onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(
             entity = LessonInfoEntity::class,
             parentColumns = ["id"],
-            childColumns = ["lesson_id"]
+            childColumns = ["lesson_id"],
+            onDelete = ForeignKey.CASCADE
         )
     ]
 )
