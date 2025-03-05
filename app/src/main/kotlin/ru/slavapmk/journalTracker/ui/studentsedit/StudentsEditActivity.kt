@@ -6,7 +6,6 @@ import android.text.TextWatcher
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -85,16 +84,12 @@ class StudentsEditActivity : AppCompatActivity() {
                 return@setEndIconOnClickListener
             }
             addStudentFromInput()
-            this.currentFocus?.let { view ->
-                val imm = getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
-                imm?.hideSoftInputFromWindow(view.windowToken, 0)
-            }
         }
         binding.studentInput.setOnEditorActionListener { _, actionId, event ->
             if ((event != null && (event.keyCode == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
                 addStudentFromInput()
             }
-            return@setOnEditorActionListener false
+            return@setOnEditorActionListener true
         }
 
         viewModel.studentsLiveData.observe(this) {
