@@ -13,5 +13,6 @@ data class LessonInfo(
     val startMinute: Int,
     val endHour: Int,
     val endMinute: Int,
+    val campusName: String,
     val students: List<LessonStudentListItem>
 )

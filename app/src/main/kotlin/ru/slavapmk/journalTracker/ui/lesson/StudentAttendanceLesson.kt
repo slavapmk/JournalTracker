@@ -2,7 +2,7 @@ package ru.slavapmk.journalTracker.ui.lesson
 
 import ru.slavapmk.journalTracker.R
 
-enum class StudentAttendance(
+enum class StudentAttendanceLesson(
     val displayNameRes: Int
 ) {
     VISIT(R.string.attendance_visit),

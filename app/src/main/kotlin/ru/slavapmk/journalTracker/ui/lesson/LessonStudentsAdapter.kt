@@ -32,7 +32,7 @@ class LessonStudentsAdapter(
         holder.name.text = holder.context.getString(R.string.item_edit_student_name, student.name)
 
         holder.visitingInput.setText(student.attendance.displayNameRes)
-        val entries = StudentAttendance.entries
+        val entries = StudentAttendanceLesson.entries
         val visitTypes = entries.map {
             holder.context.getString(it.displayNameRes)
         }
@@ -57,7 +57,7 @@ class LessonStudentsAdapter(
     fun checkDescriptionVisibility(
         info: LessonStudentListItem, holder: LessonStudentsViewHolder
     ) {
-        holder.descriptionLayout.isVisible = info.attendance == StudentAttendance.RESPECTFUL_PASS
+        holder.descriptionLayout.isVisible = info.attendance == StudentAttendanceLesson.RESPECTFUL_PASS
     }
 }
 

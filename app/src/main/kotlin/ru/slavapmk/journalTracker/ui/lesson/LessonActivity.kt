@@ -6,12 +6,14 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.slavapmk.journalTracker.R
 import ru.slavapmk.journalTracker.databinding.ActivityLessonBinding
 import ru.slavapmk.journalTracker.ui.lessonEdit.LessonEditActivity
 import ru.slavapmk.journalTracker.ui.MainActivity.Companion.fmanager
 import ru.slavapmk.journalTracker.ui.SharedKeys
+import ru.slavapmk.journalTracker.ui.lessonEdit.LessonUpdateDialog
 import ru.slavapmk.journalTracker.viewModels.LessonViewModel
 
 class LessonActivity : AppCompatActivity() {
@@ -26,6 +28,41 @@ class LessonActivity : AppCompatActivity() {
         binding = ActivityLessonBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val lessonId = if (!intent.hasExtra(SharedKeys.SELECTED_LESSON)) {
+            throw RuntimeException("Lesson id not catch")
+        } else {
+            intent.getIntExtra(SharedKeys.SELECTED_LESSON, -1)
+        }
+
+        binding.editButton.setOnClickListener {
+            startActivity(
+                Intent(this, LessonEditActivity::class.java).apply {
+                    putExtra(SharedKeys.SELECTED_LESSON, lessonId)
+                }
+            )
+        }
+        binding.deleteButton.setOnClickListener {
+            LessonUpdateDialog(
+                {
+                    deleteLessons(false)
+                }, {
+                    deleteLessons(true)
+                }
+            ).show(
+                supportFragmentManager.beginTransaction(),
+                "delete_lessons_dialog"
+            )
+        }
+    }
+
+    private fun loadData(
+        lessonId: Int
+    ) {
+        setLoading(true)
+        viewModel.loadData(lessonId)
+    }
+
+    private fun injectData() {
         binding.lessonName.text = getString(
             R.string.students_lesson_name,
             viewModel.info.index + 1,
@@ -42,12 +79,6 @@ class LessonActivity : AppCompatActivity() {
 
         binding.lessonTeacher.text = viewModel.info.teacher
 
-        val lessonId = if (!intent.hasExtra(SharedKeys.SELECTED_LESSON)) {
-            throw RuntimeException("Lesson id not catch")
-        } else {
-            intent.getIntExtra(SharedKeys.SELECTED_LESSON, -1)
-        }
-
         binding.lessonTimes.text = getString(
             R.string.item_lesson_times,
             viewModel.info.startHour, viewModel.info.startMinute,
@@ -57,15 +88,14 @@ class LessonActivity : AppCompatActivity() {
         binding.students.adapter = LessonStudentsAdapter(viewModel.info.students) {
 
         }
-        binding.editButton.setOnClickListener {
-            startActivity(
-                Intent(this, LessonEditActivity::class.java).apply {
-                    putExtra(SharedKeys.SELECTED_LESSON, lessonId)
-                }
-            )
-        }
-        binding.deleteButton.setOnClickListener {
-            TODO()
-        }
+    }
+
+    private fun deleteLessons(updateNext: Boolean) {
+        viewModel.deleteLessons(updateNext)
+        finish()
+    }
+
+    fun setLoading(loading: Boolean) {
+        binding.loadingStatus.isVisible = loading
     }
 }

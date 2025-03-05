@@ -88,7 +88,7 @@
         android:id="@+id/loading_status"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/item_texta"
+        android:background="@color/load_background_alpha"
         android:clickable="true"
         android:elevation="100dp"
         android:visibility="gone"
