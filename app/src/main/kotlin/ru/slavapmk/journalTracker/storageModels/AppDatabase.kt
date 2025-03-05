@@ -27,7 +27,10 @@ import ru.slavapmk.journalTracker.storageModels.entities.TimeEntity
         TimeEntity::class
     ]
 )
-@TypeConverters(AttendanceConverter::class)
+@TypeConverters(
+    AttendanceConverter::class,
+    LessonTypeConverter::class
+)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun getLessonsDao(): LessonsInfoDao
     abstract fun getTimesDao(): TimesDao

@@ -78,9 +78,11 @@
     <string name="dialog_update_accept">Обновить все</string>
     <string name="dialog_update_title">Применить для последующих?</string>
     <string name="dialog_update_content">Все последующие пары в этот день и время будут обработаны также.\nПри возникновении конфликтов данные заменяться новыми</string>
-    <string name="type_lection">Л</string>
-    <string name="type_practise">П</string>
-    <string name="type_laboratory">ЛБ</string>
+    <string name="type_lecture_short">Л</string>
+    <string name="type_practise_short">П</string>
+    <string name="type_laboratory_short">ЛР</string>
+    <string name="type_laboratory">Лабораторная Работа</string>
+    <string name="type_exam">Экзамен</string>
     <string name="attendance_visit">+</string>
     <string name="attendance_skip">-</string>
     <string name="attendance_sick">Б</string>
@@ -93,4 +95,11 @@
     <string name="dialog_delete_content">При удалении, все связанные данные будут так же удалены</string>
     <string name="dialog_delete_cancel">Отменить</string>
     <string name="dialog_delete_accept">Подтвердить</string>
+    <string name="type_test_differential_short">ДЗ</string>
+    <string name="type_exam_short">Э</string>
+    <string name="type_lecture">Лекция</string>
+    <string name="type_practise">Практика</string>
+    <string name="type_test_short">З</string>
+    <string name="type_test">Зачёт</string>
+    <string name="type_test_differential">Дифференциальный Зачёт</string>
 </resources>

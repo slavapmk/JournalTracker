@@ -38,9 +38,9 @@ class LessonEditActivity : AppCompatActivity() {
 
     private val lessonTypes by lazy {
         mutableListOf(
-            getString(R.string.type_lection),
-            getString(R.string.type_practise),
-            getString(R.string.type_laboratory)
+            getString(R.string.type_lecture_short),
+            getString(R.string.type_practise_short),
+            getString(R.string.type_laboratory_short)
         )
     }
 
