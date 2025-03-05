@@ -183,6 +183,10 @@ class ScheduleFragment : Fragment() {
             val intent = Intent(activity, SemestersActivity::class.java)
             activity.startActivity(intent)
         }
+        binding.selectSemesterGone.setOnClickListener {
+            val intent = Intent(activity, SemestersActivity::class.java)
+            activity.startActivity(intent)
+        }
 
         binding.currentDay.setOnClickListener {
             viewModel.setDate(null)
@@ -286,6 +290,7 @@ class ScheduleFragment : Fragment() {
                 val time = viewModel.timesMap[lessonEntity.timeId]
                 ScheduleListLesson(
                     lessonEntity.id,
+                    viewModel.timesMap.values.indexOf(time),
                     time!!.startHour,
                     time.startMinute,
                     time.endHour,
@@ -333,6 +338,8 @@ class ScheduleFragment : Fragment() {
         binding.stroke.isVisible = visibility
         binding.dayBefore.isVisible = visibility
         binding.dayNext.isVisible = visibility
+        binding.selectSemester.isVisible = visibility
+        binding.selectSemesterGone.isVisible = !visibility
     }
 
     private fun selectDateAndUpdateDays() {

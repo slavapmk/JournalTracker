@@ -23,7 +23,7 @@ class ScheduleLessonsAdapter(
     override fun onBindViewHolder(holder: ScheduleLessonsViewHolder, position: Int) {
         val lesson = lessons[position]
         holder.order.text = holder.context.getString(
-            R.string.item_lesson_order, position + 1
+            R.string.item_lesson_order, lesson.index + 1
         )
         holder.time.text = holder.context.getString(
             R.string.item_lesson_times,
