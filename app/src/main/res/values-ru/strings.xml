@@ -89,4 +89,8 @@
     <string name="skip_reason">Причина пропуска</string>
     <string name="day_before">След. день</string>
     <string name="day_next">Пред. день</string>
+    <string name="dialog_delete_title">Подтвердить удаление</string>
+    <string name="dialog_delete_content">При удалении, все связанные данные будут так же удалены</string>
+    <string name="dialog_delete_cancel">Отменить</string>
+    <string name="dialog_delete_accept">Подтвердить</string>
 </resources>

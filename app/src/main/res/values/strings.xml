@@ -120,4 +120,8 @@
     <string name="empty" translatable="false"> </string>
     <string name="day_before">Day before</string>
     <string name="day_next">Day next</string>
+    <string name="dialog_delete_title" >Delete confirm</string>
+    <string name="dialog_delete_content" >When deleted, all related data will also be deleted.</string>
+    <string name="dialog_delete_cancel" >Cancel</string>
+    <string name="dialog_delete_accept" >Accept</string>
 </resources>

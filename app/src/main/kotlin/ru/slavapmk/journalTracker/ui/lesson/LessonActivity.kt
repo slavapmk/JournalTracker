@@ -17,7 +17,7 @@ import ru.slavapmk.journalTracker.storageModels.StudentAttendance
 import ru.slavapmk.journalTracker.ui.lessonEdit.LessonEditActivity
 import ru.slavapmk.journalTracker.ui.MainActivity.Companion.fmanager
 import ru.slavapmk.journalTracker.ui.SharedKeys
-import ru.slavapmk.journalTracker.ui.lessonEdit.LessonUpdateDialog
+import ru.slavapmk.journalTracker.ui.LessonUpdateDialog
 import ru.slavapmk.journalTracker.viewModels.LessonViewModel
 
 class LessonActivity : AppCompatActivity() {

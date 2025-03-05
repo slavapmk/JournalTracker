@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import ru.slavapmk.journalTracker.R
 import ru.slavapmk.journalTracker.dataModels.semesters.Semester
 import ru.slavapmk.journalTracker.databinding.ActivitySemestersBinding
+import ru.slavapmk.journalTracker.ui.DeleteDialog
 import ru.slavapmk.journalTracker.viewModels.SemestersViewModel
 import ru.slavapmk.journalTracker.ui.MainActivity.Companion.fmanager
 import ru.slavapmk.journalTracker.ui.SharedKeys
@@ -35,17 +36,22 @@ class SemestersActivity : AppCompatActivity() {
     private val semestersAdapter by lazy {
         SemestersAdapter(
             viewModel.semesters, { semester ->
-                binding.loadingStatus.visibility = View.VISIBLE
-                val indexOf = viewModel.semesters.indexOf(semester)
-                val size = viewModel.semesters.size
-                viewModel.semesters.remove(semester)
-                val updateCount = size - indexOf
-                binding.semesters.adapter?.notifyItemRemoved(indexOf)
-                binding.semesters.adapter?.notifyItemRangeChanged(
-                    indexOf,
-                    updateCount
+                DeleteDialog {
+                    binding.loadingStatus.visibility = View.VISIBLE
+                    val indexOf = viewModel.semesters.indexOf(semester)
+                    val size = viewModel.semesters.size
+                    viewModel.semesters.remove(semester)
+                    val updateCount = size - indexOf
+                    binding.semesters.adapter?.notifyItemRemoved(indexOf)
+                    binding.semesters.adapter?.notifyItemRangeChanged(
+                        indexOf,
+                        updateCount
+                    )
+                    viewModel.deleteSemester(semester)
+                }.show(
+                    supportFragmentManager.beginTransaction(),
+                    "delete_lessons_dialog"
                 )
-                viewModel.deleteSemester(semester)
             }, { semester ->
                 shared.edit {
                     putInt(

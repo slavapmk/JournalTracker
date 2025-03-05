@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import ru.slavapmk.journalTracker.R
 import ru.slavapmk.journalTracker.dataModels.studentsEdit.StudentsEditListItem
 import ru.slavapmk.journalTracker.databinding.ActivityStudentsEditBinding
+import ru.slavapmk.journalTracker.ui.DeleteDialog
 import ru.slavapmk.journalTracker.ui.MainActivity.Companion.fmanager
 import ru.slavapmk.journalTracker.viewModels.StudentsEditViewModel
 
@@ -26,16 +27,21 @@ class StudentsEditActivity : AppCompatActivity() {
 
     private val studentsEditListAdapter by lazy {
         StudentsEditListAdapter(viewModel.studentsList) { _, student ->
-            val indexOf = viewModel.studentsList.indexOf(student)
-            val size = viewModel.studentsList.size
-            viewModel.studentsList.remove(student)
-            val updateCount = size - indexOf
-            binding.studentsList.adapter?.notifyItemRemoved(indexOf)
-            binding.studentsList.adapter?.notifyItemRangeChanged(
-                indexOf,
-                updateCount
+            DeleteDialog {
+                val indexOf = viewModel.studentsList.indexOf(student)
+                val size = viewModel.studentsList.size
+                viewModel.studentsList.remove(student)
+                val updateCount = size - indexOf
+                binding.studentsList.adapter?.notifyItemRemoved(indexOf)
+                binding.studentsList.adapter?.notifyItemRangeChanged(
+                    indexOf,
+                    updateCount
+                )
+                viewModel.deleteStudent(student)
+            }.show(
+                supportFragmentManager.beginTransaction(),
+                "delete_lessons_dialog"
             )
-            viewModel.deleteStudent(student)
         }
     }
 

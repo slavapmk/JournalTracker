@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import ru.slavapmk.journalTracker.R
 import ru.slavapmk.journalTracker.dataModels.timeEdit.TimeEditItem
 import ru.slavapmk.journalTracker.databinding.ActivityTimeEditBinding
+import ru.slavapmk.journalTracker.ui.DeleteDialog
 import ru.slavapmk.journalTracker.ui.MainActivity.Companion.fmanager
 import ru.slavapmk.journalTracker.viewModels.TimeEditViewModel
 import java.util.Calendar
@@ -25,13 +26,18 @@ class TimeEditActivity : AppCompatActivity() {
     private val timeEditAdapter: TimeEditAdapter by lazy {
         TimeEditAdapter(
             viewModel.timeList,
-            onDelete = {
-                val index = viewModel.timeList.indexOf(it)
-                val size = viewModel.timeList.size
-                viewModel.delTime(it)
-                binding.times.adapter?.notifyItemRemoved(index)
-                binding.times.adapter?.notifyItemRangeChanged(
-                    index, size - index
+            onDelete = { delete ->
+                DeleteDialog {
+                    val index = viewModel.timeList.indexOf(delete)
+                    val size = viewModel.timeList.size
+                    viewModel.delTime(delete)
+                    binding.times.adapter?.notifyItemRemoved(index)
+                    binding.times.adapter?.notifyItemRangeChanged(
+                        index, size - index
+                    )
+                }.show(
+                    supportFragmentManager.beginTransaction(),
+                    "delete_lessons_dialog"
                 )
             }
         )
