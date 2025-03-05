@@ -15,7 +15,7 @@ class DeleteDialog(
         return activity?.let {
             val builder = AlertDialog.Builder(it, R.style.Dialog)
             val inflater = requireActivity().layoutInflater
-            val inflate = inflater.inflate(R.layout.dialog_update_all, null)
+            val inflate = inflater.inflate(R.layout.dialog_delete, null)
 
             inflate.findViewById<MaterialButton>(R.id.button_cancel)
                 .setOnClickListener {
