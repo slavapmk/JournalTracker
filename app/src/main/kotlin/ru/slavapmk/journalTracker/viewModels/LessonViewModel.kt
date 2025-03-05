@@ -19,7 +19,8 @@ import ru.slavapmk.journalTracker.ui.lesson.StudentAttendanceLesson
 
 class LessonViewModel : ViewModel() {
     var info: LessonInfo? = null
-    var students: MutableList<LessonStudentListItem>? = null
+    var students: MutableList<LessonStudentListItem> = mutableListOf()
+    val allStudents: MutableList<StudentEntity> = mutableListOf()
 
     private val campusesLiveData: MutableLiveData<List<CampusEntity>> by lazy { MutableLiveData() }
     private val semestersLiveData: MutableLiveData<List<SemesterEntity>> by lazy { MutableLiveData() }
@@ -53,7 +54,7 @@ class LessonViewModel : ViewModel() {
                                 0,
                                 student.id,
                                 lesson!!.id,
-                                student.default ?: StudentAttendance.NOT_VISIT,
+                                student.default,
                                 ""
                             )
                         )
@@ -78,8 +79,12 @@ class LessonViewModel : ViewModel() {
                     time.startMinute,
                     time.endHour,
                     time.endMinute,
-                    campuses!!.find { it.id == lesson!!.campusId }!!.codename,
+                    campuses!!.find { it.id == lesson!!.campusId }!!.codename
                 )
+                allStudents.apply {
+                    clear()
+                    addAll(students!!)
+                }
 
                 campuses = null
                 semesters = null
@@ -180,6 +185,7 @@ class LessonViewModel : ViewModel() {
                 StudentAttendanceLesson.SICK -> StudentAttendance.SICK
                 StudentAttendanceLesson.SICK_WITH_CERTIFICATE -> StudentAttendance.SICK_WITH_CERTIFICATE
                 StudentAttendanceLesson.RESPECTFUL_PASS -> StudentAttendance.RESPECTFUL_PASS
+                null -> null
             },
             skipDescription = updateStudent.description
         )

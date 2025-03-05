@@ -31,7 +31,7 @@ class LessonStudentsAdapter(
         holder.index.text = holder.context.getString(R.string.item_edit_student_order, position + 1)
         holder.name.text = holder.context.getString(R.string.item_edit_student_name, student.name)
 
-        holder.visitingInput.setText(student.attendance.displayNameRes)
+        holder.visitingInput.setText(student.attendance?.displayNameRes ?: R.string.empty)
         val entries = StudentAttendanceLesson.entries
         val visitTypes = entries.map {
             holder.context.getString(it.displayNameRes)

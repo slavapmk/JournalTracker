@@ -25,6 +25,6 @@ data class StudentAttendanceEntity(
     @PrimaryKey(autoGenerate = true) val id: Int,
     @ColumnInfo(name = "student_id") val studentId: Int,
     @ColumnInfo(name = "lesson_id") val lessonId: Int,
-    val attendance: StudentAttendance,
+    val attendance: StudentAttendance?,
     @ColumnInfo(name = "skip_description") val skipDescription: String?
 )

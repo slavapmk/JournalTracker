@@ -69,20 +69,21 @@ class LessonActivity : AppCompatActivity() {
             viewModel.loadFilledStudents()
         }
         viewModel.fillAttendanceLiveData.observe(this) { new ->
-            viewModel.students?.apply {
+            viewModel.students.apply {
                 clear()
                 addAll(
                     new.map {
                         LessonStudentListItem(
                             it.id,
                             it.studentId,
-                            viewModel.students!!.find { student -> student.id == it.studentId }!!.name,
+                            viewModel.allStudents.find { student -> student.id == it.studentId }!!.name,
                             when (it.attendance) {
                                 StudentAttendance.VISIT -> StudentAttendanceLesson.VISIT
                                 StudentAttendance.NOT_VISIT -> StudentAttendanceLesson.NOT_VISIT
                                 StudentAttendance.SICK -> StudentAttendanceLesson.SICK
                                 StudentAttendance.SICK_WITH_CERTIFICATE -> StudentAttendanceLesson.SICK_WITH_CERTIFICATE
                                 StudentAttendance.RESPECTFUL_PASS -> StudentAttendanceLesson.RESPECTFUL_PASS
+                                null -> null
                             },
                             it.skipDescription
                         )
@@ -119,10 +120,8 @@ class LessonActivity : AppCompatActivity() {
             viewModel.info?.endMinute ?: 0
         )
         binding.students.layoutManager = LinearLayoutManager(this)
-        binding.students.adapter = viewModel.students?.let {
-            LessonStudentsAdapter(it) { updateStudent ->
-                viewModel.updateStudent(updateStudent)
-            }
+        binding.students.adapter = LessonStudentsAdapter(viewModel.students) { updateStudent ->
+            viewModel.updateStudent(updateStudent)
         }
     }
 
