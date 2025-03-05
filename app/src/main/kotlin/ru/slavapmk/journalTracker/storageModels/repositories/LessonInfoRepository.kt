@@ -9,23 +9,11 @@ import ru.slavapmk.journalTracker.storageModels.entities.LessonInfoEntity
 class LessonInfoRepository(
     private val lessonsInfoDao: LessonsInfoDao
 ) {
-    suspend fun insertLesson(lessonInfoEntity: LessonInfoEntity) = withContext(Dispatchers.IO) {
-        lessonsInfoDao.insertLesson(lessonInfoEntity)
-    }
-
     suspend fun insertLessons(
         lessonInfoEntities: List<InsertLesson>
     ) = withContext(Dispatchers.IO) {
         lessonsInfoDao.insertLessons(lessonInfoEntities)
     }
-
-    suspend fun deleteLessons(lessonId: Int) = withContext(Dispatchers.IO) {
-        lessonsInfoDao.deleteLesson(lessonId)
-    }
-
-//    suspend fun getLessons(): List<LessonInfoEntity> = withContext(Dispatchers.IO) {
-//        lessonsInfoDao.getLessons()
-//    }
 
     suspend fun getLessonsByDate(
         day: Int, month: Int, year: Int
@@ -43,6 +31,12 @@ class LessonInfoRepository(
         day: Int, month: Int, year: Int, timeId: Int
     ) = withContext(Dispatchers.IO) {
         lessonsInfoDao.deleteLessonsByDateTime(day, month, year, timeId)
+    }
+
+    suspend fun deleteLessonsByDateTimeName(
+        day: Int, month: Int, year: Int, timeId: Int, name: String
+    ) = withContext(Dispatchers.IO) {
+        lessonsInfoDao.deleteLessonsByDateTimeName(day, month, year, timeId, name)
     }
 
     suspend fun updateByDateTime(

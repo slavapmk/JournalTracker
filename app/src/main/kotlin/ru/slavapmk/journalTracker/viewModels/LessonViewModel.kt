@@ -1,5 +1,6 @@
 package ru.slavapmk.journalTracker.viewModels
 
+import android.content.SharedPreferences
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,10 +16,16 @@ import ru.slavapmk.journalTracker.storageModels.entities.SemesterEntity
 import ru.slavapmk.journalTracker.storageModels.entities.StudentAttendanceEntity
 import ru.slavapmk.journalTracker.storageModels.entities.StudentEntity
 import ru.slavapmk.journalTracker.storageModels.entities.TimeEntity
+import ru.slavapmk.journalTracker.ui.SharedKeys
 import ru.slavapmk.journalTracker.ui.lesson.StudentAttendanceLesson
+import java.time.LocalDate
 
 class LessonViewModel : ViewModel() {
+    var sharedPreferences: SharedPreferences? = null
+
     var info: LessonInfo? = null
+    var semester: SemesterEntity? = null
+    var allTimes: MutableList<TimeEntity> = mutableListOf()
     var students: MutableList<LessonStudentListItem> = mutableListOf()
     val allStudents: MutableList<StudentEntity> = mutableListOf()
 
@@ -28,6 +35,10 @@ class LessonViewModel : ViewModel() {
     private val studentsLiveData: MutableLiveData<List<StudentEntity>> by lazy { MutableLiveData() }
     private val attendanceLiveData: MutableLiveData<List<StudentAttendanceEntity>> by lazy { MutableLiveData() }
     private val lessonLiveData: MutableLiveData<LessonInfoEntity> by lazy { MutableLiveData() }
+
+    val weekTypes: Int by lazy {
+        sharedPreferences!!.getInt(SharedKeys.WEEK_TYPES_KEY, 1)
+    }
 
     val lessonInfoLiveData = MediatorLiveData<LessonInfo>().apply {
         var campuses: List<CampusEntity>? = null
@@ -84,6 +95,20 @@ class LessonViewModel : ViewModel() {
                 allStudents.apply {
                     clear()
                     addAll(students!!)
+                }
+                allTimes.apply {
+                    clear()
+                    addAll(times!!)
+                }
+                semester = semesters!!.find {
+                    val lessonDate = SimpleDate(
+                        lesson!!.dateDay, lesson!!.dateMonth, lesson!!.dateYear
+                    )
+                    SimpleDate(
+                        it.startDay, it.startMonth, it.startYear
+                    ) <= lessonDate && lessonDate <= SimpleDate(
+                        it.endDay, it.endMonth, it.endYear
+                    )
                 }
 
                 campuses = null
@@ -163,7 +188,41 @@ class LessonViewModel : ViewModel() {
     }
 
     fun deleteLessons(updateNext: Boolean) {
-        TODO("Not yet implemented")
+        val nowDate = SimpleDate(info!!.dateDay, info!!.dateMonth, info!!.dateYear)
+        val dates = if (updateNext) {
+            genDates(
+                nowDate,
+                SimpleDate(semester!!.endDay, semester!!.endMonth, semester!!.endYear),
+                weekTypes
+            )
+        } else {
+            mutableListOf(nowDate)
+        }
+        viewModelScope.launch {
+            for (date in dates) {
+                StorageDependencies.lessonInfoRepository.deleteLessonsByDateTimeName(
+                    date.day,
+                    date.month,
+                    date.year,
+                    allTimes[info!!.index].id,
+                    info!!.name
+                )
+            }
+        }
+    }
+
+    private fun genDates(fromDate: SimpleDate, toDate: SimpleDate, weekOffset: Int): List<SimpleDate> {
+        val dates = mutableListOf<SimpleDate>()
+
+        var current = LocalDate.of(fromDate.year, fromDate.month, fromDate.day)
+        val end = LocalDate.of(toDate.year, toDate.month, toDate.day)
+
+        while (!current.isAfter(end)) {
+            dates.add(SimpleDate(current.dayOfMonth, current.monthValue, current.year))
+            current = current.plusWeeks(weekOffset.toLong())
+        }
+
+        return dates
     }
 
     fun loadFilledStudents() {

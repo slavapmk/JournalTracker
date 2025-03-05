@@ -50,4 +50,7 @@ interface LessonsInfoDao {
         cabinet: Int,
         campusId: Int
     )
+
+    @Query("DELETE FROM lessons_table WHERE date_day = :day AND date_month = :month AND date_year = :year AND time_id = :timeId AND name = :name")
+    fun deleteLessonsByDateTimeName(day: Int, month: Int, year: Int, timeId: Int, name: String)
 }
