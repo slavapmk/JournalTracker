@@ -29,7 +29,7 @@
     <string name="schedule_week">%1$d неделя (%2$s)</string>
     <string name="schedule_week_single">%1$d неделя</string>
     <string name="schedule_semester">%1$s семестр</string>
-    <string name="schedule_select_week">Неделя</string>
+    <string name="schedule_select_week">Выбрать неделю</string>
     <string name="schedule_current_date">Сегодня</string>
     <string name="settings_group_name">Название группы</string>
     <string name="settings_weeks_types_title">Кол-во тип недель</string>
@@ -69,7 +69,7 @@
     <string name="month_october">ОКТ</string>
     <string name="month_november">НОЯ</string>
     <string name="month_december">ДЕК</string>
-    <string name="schedule_select_semester">Семестр</string>
+    <string name="schedule_select_semester">Выбрать семестр</string>
     <string name="week_type_up">Верхняя</string>
     <string name="week_format_type_down_up">Нижняя / Верхняя</string>
     <string name="notification_title_tools">Заголовок уведомления</string>
@@ -87,4 +87,6 @@
     <string name="attendance_sick_with_certificate">Б/У</string>
     <string name="attendance_respectfull_pass">-/У</string>
     <string name="skip_reason">Причина пропуска</string>
+    <string name="day_before">След. день</string>
+    <string name="day_next">Пред. день</string>
 </resources>

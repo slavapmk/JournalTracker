@@ -191,6 +191,24 @@ class ScheduleFragment : Fragment() {
             viewModel.loadLessons()
         }
 
+        binding.dayBefore.setOnClickListener {
+            viewModel.setDate(
+                viewModel.getDate().minusDays(1)
+            )
+            selectDateAndUpdateDays()
+            activity.setLoading(true)
+            viewModel.loadLessons()
+        }
+
+        binding.dayNext.setOnClickListener {
+            viewModel.setDate(
+                viewModel.getDate().plusDays(1)
+            )
+            selectDateAndUpdateDays()
+            activity.setLoading(true)
+            viewModel.loadLessons()
+        }
+
         binding.lessons.layoutManager = LinearLayoutManager(requireContext())
         binding.lessons.adapter = ScheduleLessonsAdapter(
             viewModel.lessons
@@ -306,13 +324,15 @@ class ScheduleFragment : Fragment() {
     }
 
     private fun checkVisibility() {
-        val visibility = !(viewModel.semesters.isEmpty() || viewModel.timesMap.isEmpty())
+        val visibility = viewModel.semesters.isNotEmpty()
         binding.addLessonButton.isVisible = visibility
         binding.semester.isVisible = visibility
         binding.week.isVisible = visibility
         binding.selectWeek.isVisible = visibility
         binding.currentDay.isVisible = visibility
         binding.stroke.isVisible = visibility
+        binding.dayBefore.isVisible = visibility
+        binding.dayNext.isVisible = visibility
     }
 
     private fun selectDateAndUpdateDays() {
