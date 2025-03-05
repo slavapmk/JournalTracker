@@ -46,7 +46,7 @@ class LessonStudentsAdapter(
             onUpdate(student)
         }
 
-        holder.descriptionInput.setText(student.description)
+        holder.descriptionInput.setText(student.description ?: "")
         holder.descriptionInput.doAfterTextChanged {
             student.description = holder.descriptionInput.text.toString()
             onUpdate(student)
@@ -54,10 +54,14 @@ class LessonStudentsAdapter(
         checkDescriptionVisibility(student, holder)
     }
 
-    fun checkDescriptionVisibility(
+    private fun checkDescriptionVisibility(
         info: LessonStudentListItem, holder: LessonStudentsViewHolder
     ) {
-        holder.descriptionLayout.isVisible = info.attendance == StudentAttendanceLesson.RESPECTFUL_PASS
+        val visible = info.attendance == StudentAttendanceLesson.RESPECTFUL_PASS
+        holder.descriptionLayout.isVisible = visible
+        if (!visible) {
+            info.description = null
+        }
     }
 }
 

@@ -9,7 +9,9 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.slavapmk.journalTracker.R
+import ru.slavapmk.journalTracker.dataModels.lesson.LessonStudentListItem
 import ru.slavapmk.journalTracker.databinding.ActivityLessonBinding
+import ru.slavapmk.journalTracker.storageModels.StudentAttendance
 import ru.slavapmk.journalTracker.ui.lessonEdit.LessonEditActivity
 import ru.slavapmk.journalTracker.ui.MainActivity.Companion.fmanager
 import ru.slavapmk.journalTracker.ui.SharedKeys
@@ -53,6 +55,8 @@ class LessonActivity : AppCompatActivity() {
                 "delete_lessons_dialog"
             )
         }
+
+        loadData(lessonId)
     }
 
     private fun loadData(
@@ -60,6 +64,34 @@ class LessonActivity : AppCompatActivity() {
     ) {
         setLoading(true)
         viewModel.loadData(lessonId)
+        viewModel.lessonInfoLiveData.observe(this) { lessonInfo ->
+            viewModel.info = lessonInfo
+            viewModel.loadFilledStudents()
+        }
+        viewModel.fillAttendanceLiveData.observe(this) { new ->
+            viewModel.students?.apply {
+                clear()
+                addAll(
+                    new.map {
+                        LessonStudentListItem(
+                            it.id,
+                            it.studentId,
+                            viewModel.students!!.find { student -> student.id == it.studentId }!!.name,
+                            when (it.attendance) {
+                                StudentAttendance.VISIT -> StudentAttendanceLesson.VISIT
+                                StudentAttendance.NOT_VISIT -> StudentAttendanceLesson.NOT_VISIT
+                                StudentAttendance.SICK -> StudentAttendanceLesson.SICK
+                                StudentAttendance.SICK_WITH_CERTIFICATE -> StudentAttendanceLesson.SICK_WITH_CERTIFICATE
+                                StudentAttendance.RESPECTFUL_PASS -> StudentAttendanceLesson.RESPECTFUL_PASS
+                            },
+                            it.skipDescription
+                        )
+                    }
+                )
+            }
+            setLoading(false)
+            injectData()
+        }
     }
 
     private fun injectData() {

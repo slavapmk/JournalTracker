@@ -27,7 +27,6 @@ class LessonViewModel : ViewModel() {
     private val studentsLiveData: MutableLiveData<List<StudentEntity>> by lazy { MutableLiveData() }
     private val attendanceLiveData: MutableLiveData<List<StudentAttendanceEntity>> by lazy { MutableLiveData() }
     private val lessonLiveData: MutableLiveData<LessonInfoEntity> by lazy { MutableLiveData() }
-    private val fillAttendanceLiveData: MutableLiveData<List<StudentAttendanceEntity>> by lazy { MutableLiveData() }
 
     val lessonInfoLiveData = MediatorLiveData<LessonInfo>().apply {
         var campuses: List<CampusEntity>? = null
@@ -80,21 +79,6 @@ class LessonViewModel : ViewModel() {
                     time.endHour,
                     time.endMinute,
                     campuses!!.find { it.id == lesson!!.campusId }!!.codename,
-//                    fullAttendance.map {
-//                        LessonStudentListItem(
-//                            0,
-//                            it.studentId,
-//                            students!!.find { student -> student.id == it.studentId }!!.name,
-//                            when (it.attendance) {
-//                                StudentAttendance.VISIT -> StudentAttendanceLesson.VISIT
-//                                StudentAttendance.NOT_VISIT -> StudentAttendanceLesson.NOT_VISIT
-//                                StudentAttendance.SICK -> StudentAttendanceLesson.SICK
-//                                StudentAttendance.SICK_WITH_CERTIFICATE -> StudentAttendanceLesson.SICK_WITH_CERTIFICATE
-//                                StudentAttendance.RESPECTFUL_PASS -> StudentAttendanceLesson.RESPECTFUL_PASS
-//                            },
-//                            it.skipDescription
-//                        )
-//                    }
                 )
 
                 campuses = null
@@ -130,6 +114,7 @@ class LessonViewModel : ViewModel() {
             update()
         }
     }
+    val fillAttendanceLiveData: MutableLiveData<List<StudentAttendanceEntity>> by lazy { MutableLiveData() }
 
     private fun fillStudents(attendances: List<StudentAttendanceEntity>) {
         viewModelScope.launch {
