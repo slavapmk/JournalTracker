@@ -40,7 +40,7 @@ class LessonStudentsAdapter(
             holder.context, android.R.layout.simple_dropdown_item_1line, visitTypes
         )
         holder.visitingInput.setAdapter(adapter)
-        holder.visitingInput.setOnItemClickListener { parent, view, clickPosition, id ->
+        holder.visitingInput.setOnItemClickListener { _, _, clickPosition, _ ->
             student.attendance = entries[clickPosition]
             checkDescriptionVisibility(student, holder)
             onUpdate(student)
@@ -70,7 +70,6 @@ class LessonStudentsViewHolder(
 ) : RecyclerView.ViewHolder(itemView) {
     var index: TextView = itemView.findViewById(R.id.order)
     var name: TextView = itemView.findViewById(R.id.dates)
-    var visitingLayout: TextInputLayout = itemView.findViewById(R.id.visiting_layout)
     var visitingInput: AutoCompleteTextView = itemView.findViewById(R.id.visiting_input)
     var descriptionLayout: TextInputLayout = itemView.findViewById(R.id.description_layout)
     var descriptionInput: TextInputEditText = itemView.findViewById(R.id.description_input)

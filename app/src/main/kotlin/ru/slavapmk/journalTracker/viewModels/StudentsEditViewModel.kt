@@ -38,7 +38,8 @@ class StudentsEditViewModel : ViewModel() {
             val id = StorageDependencies.studentRepository.insertStudent(
                 StudentEntity(
                     0,
-                    insert.name
+                    insert.name,
+                    null
                 )
             )
             updateStudentLiveData.postValue(
