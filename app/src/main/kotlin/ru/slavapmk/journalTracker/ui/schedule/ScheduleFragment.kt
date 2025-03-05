@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.edit
 import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DiffUtil
@@ -205,6 +206,7 @@ class ScheduleFragment : Fragment() {
             if (loadData.semesters.isEmpty()) {
                 activity.setLoading(false)
                 binding.week.isInvisible = false
+                checkVisibility()
                 return@observe
             }
             viewModel.semesters = loadData.semesters
@@ -286,6 +288,8 @@ class ScheduleFragment : Fragment() {
             )
             diffResult.dispatchUpdatesTo(binding.lessons.adapter!!)
             activity.setLoading(false)
+
+            checkVisibility()
         }
 
         binding.previousButton.setOnClickListener {
@@ -299,6 +303,16 @@ class ScheduleFragment : Fragment() {
             updateDays()
             updateWeekTitle()
         }
+    }
+
+    private fun checkVisibility() {
+        val visibility = !(viewModel.semesters.isEmpty() || viewModel.timesMap.isEmpty())
+        binding.addLessonButton.isVisible = visibility
+        binding.semester.isVisible = visibility
+        binding.week.isVisible = visibility
+        binding.selectWeek.isVisible = visibility
+        binding.currentDay.isVisible = visibility
+        binding.stroke.isVisible = visibility
     }
 
     private fun selectDateAndUpdateDays() {
