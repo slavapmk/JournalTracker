@@ -35,7 +35,8 @@ class ScheduleLessonsAdapter(
         )
         holder.name.text = holder.context.getString(
             R.string.item_lesson_name,
-            lesson.name, lesson.type
+            lesson.name,
+            holder.context.getString(lesson.type.shortNameRes)
         )
         holder.teacher.text = holder.context.getString(
             R.string.item_lesson_teacher,
