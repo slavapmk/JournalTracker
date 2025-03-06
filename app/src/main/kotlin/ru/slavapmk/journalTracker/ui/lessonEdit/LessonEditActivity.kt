@@ -12,9 +12,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import ru.slavapmk.journalTracker.R
+import ru.slavapmk.journalTracker.dataModels.LessonTypeEdit
 import ru.slavapmk.journalTracker.dataModels.lessonEdit.LessonEditInfo
+import ru.slavapmk.journalTracker.dataModels.toEdit
 import ru.slavapmk.journalTracker.databinding.ActivityLessonEditBinding
-import ru.slavapmk.journalTracker.storageModels.LessonType
 import ru.slavapmk.journalTracker.ui.LessonUpdateDialog
 import ru.slavapmk.journalTracker.ui.SharedKeys
 import ru.slavapmk.journalTracker.viewModels.EditLessonViewModel
@@ -39,7 +40,7 @@ class LessonEditActivity : AppCompatActivity() {
 
     private val lessonTypes by lazy {
         LessonTypeEdit.entries.map {
-            it.nameRes
+            getString(it.nameRes)
         }
     }
 

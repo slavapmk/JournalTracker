@@ -1,5 +1,7 @@
 package ru.slavapmk.journalTracker.dataModels.schedule
 
+import ru.slavapmk.journalTracker.dataModels.LessonTypeEdit
+
 data class ScheduleListLesson(
     val id: Int,
     val index: Int,
@@ -7,7 +9,7 @@ data class ScheduleListLesson(
     val startMinute: Int,
     val endHour: Int,
     val endMinute: Int,
-    val type: String,
+    val type: LessonTypeEdit,
     val auditory: Int,
     val campus: String,
     val name: String,

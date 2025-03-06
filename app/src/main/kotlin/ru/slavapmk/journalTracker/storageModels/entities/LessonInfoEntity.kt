@@ -46,7 +46,7 @@ data class LessonInfoEntity(
 data class InsertLesson(
     @ColumnInfo(name = "semester_id") val semesterId: Int,
     val name: String,
-    val type: String,
+    val type: LessonType,
     @ColumnInfo(name = "date_day") val dateDay: Int,
     @ColumnInfo(name = "date_month") val dateMonth: Int,
     @ColumnInfo(name = "date_year") val dateYear: Int,

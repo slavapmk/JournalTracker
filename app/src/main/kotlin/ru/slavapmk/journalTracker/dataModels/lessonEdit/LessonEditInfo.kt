@@ -1,6 +1,6 @@
 package ru.slavapmk.journalTracker.dataModels.lessonEdit
 
-import ru.slavapmk.journalTracker.ui.lessonEdit.LessonTypeEdit
+import ru.slavapmk.journalTracker.dataModels.LessonTypeEdit
 
 data class LessonEditInfo(
     val id: Int,

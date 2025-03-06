@@ -1,4 +1,4 @@
-package ru.slavapmk.journalTracker.ui.lessonEdit
+package ru.slavapmk.journalTracker.dataModels
 
 import ru.slavapmk.journalTracker.R
 import ru.slavapmk.journalTracker.storageModels.LessonType

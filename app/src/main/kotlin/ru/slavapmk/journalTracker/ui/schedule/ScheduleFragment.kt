@@ -18,6 +18,7 @@ import ru.slavapmk.journalTracker.R
 import ru.slavapmk.journalTracker.dataModels.schedule.ScheduleListLesson
 import ru.slavapmk.journalTracker.dataModels.selectWeek.Semester
 import ru.slavapmk.journalTracker.dataModels.settings.WeeksFormats
+import ru.slavapmk.journalTracker.dataModels.toEdit
 import ru.slavapmk.journalTracker.databinding.FragmentScheduleBinding
 import ru.slavapmk.journalTracker.storageModels.entities.SemesterEntity
 import ru.slavapmk.journalTracker.ui.MainActivity
@@ -295,7 +296,7 @@ class ScheduleFragment : Fragment() {
                     time.startMinute,
                     time.endHour,
                     time.endMinute,
-                    lessonEntity.type,
+                    lessonEntity.type.toEdit(),
                     lessonEntity.cabinet,
                     viewModel.campusesMap[lessonEntity.campusId]!!.codename,
                     lessonEntity.name,
