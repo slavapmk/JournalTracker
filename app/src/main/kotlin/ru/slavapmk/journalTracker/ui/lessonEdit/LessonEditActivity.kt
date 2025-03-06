@@ -9,9 +9,14 @@ import android.view.View
 import android.widget.ArrayAdapter
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import ru.slavapmk.journalTracker.R
+import ru.slavapmk.journalTracker.dataModels.LessonTypeEdit
 import ru.slavapmk.journalTracker.dataModels.lessonEdit.LessonEditInfo
+import ru.slavapmk.journalTracker.dataModels.toEdit
 import ru.slavapmk.journalTracker.databinding.ActivityLessonEditBinding
+import ru.slavapmk.journalTracker.ui.LessonUpdateDialog
 import ru.slavapmk.journalTracker.ui.SharedKeys
 import ru.slavapmk.journalTracker.viewModels.EditLessonViewModel
 import ru.slavapmk.journalTracker.viewModels.SimpleDate
@@ -23,7 +28,7 @@ class LessonEditActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLessonEditBinding
     val viewModel by viewModels<EditLessonViewModel>()
-    val editMode by lazy {
+    private val editMode by lazy {
         intent.hasExtra(LESSON_ID)
     }
 
@@ -34,11 +39,9 @@ class LessonEditActivity : AppCompatActivity() {
     }
 
     private val lessonTypes by lazy {
-        mutableListOf(
-            getString(R.string.type_lection),
-            getString(R.string.type_practise),
-            getString(R.string.type_laboratory)
-        )
+        LessonTypeEdit.entries.map {
+            getString(it.nameRes)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,6 +50,12 @@ class LessonEditActivity : AppCompatActivity() {
         binding = ActivityLessonEditBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
+
         viewModel.sharedPreferences = shared
 
         loadData()
@@ -54,7 +63,7 @@ class LessonEditActivity : AppCompatActivity() {
         binding.addButton.setOnClickListener {
             if (
                 viewModel.info.name.isNullOrEmpty() ||
-                viewModel.info.typeName.isNullOrEmpty() ||
+                viewModel.info.typeName == null ||
                 viewModel.info.teacher.isNullOrEmpty() ||
                 viewModel.info.index == null ||
                 viewModel.info.cabinet == null ||
@@ -105,7 +114,7 @@ class LessonEditActivity : AppCompatActivity() {
                     entity.id,
                     viewModel.times.indexOfFirst { it.id == entity.timeId },
                     entity.name,
-                    entity.type,
+                    entity.type.toEdit(),
                     entity.teacher,
                     entity.cabinet,
                     entity.campusId
@@ -205,13 +214,13 @@ class LessonEditActivity : AppCompatActivity() {
             viewModel.info.index = position
         }
 
-        binding.typeInput.setText(viewModel.info.typeName ?: "")
+        binding.typeInput.setText(viewModel.info.typeName?.nameRes ?: R.string.empty)
         val typesAdapter = ArrayAdapter(
             this, android.R.layout.simple_dropdown_item_1line, lessonTypes
         )
         binding.typeInput.setAdapter(typesAdapter)
         binding.typeInput.setOnItemClickListener { _, _, position, _ ->
-            viewModel.info.typeName = lessonTypes[position]
+            viewModel.info.typeName = LessonTypeEdit.entries[position]
         }
     }
 

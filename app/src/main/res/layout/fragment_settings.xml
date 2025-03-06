@@ -1,138 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/groupField"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="40dp"
-        android:layout_marginTop="20dp"
-        android:hint="@string/settings_group_name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="wrap_content">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/groupInput"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/groupField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text"
-            android:maxLines="1" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_marginHorizontal="40dp"
+            android:layout_marginTop="20dp"
+            android:hint="@string/settings_group_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/weeksField"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="40dp"
-        android:layout_marginTop="10dp"
-        android:hint="@string/settings_weeks_types_title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/groupField">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/groupInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <AutoCompleteTextView
-            android:id="@+id/weeksInput"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/weeksField"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="none"
-            android:maxLines="1"
-            tools:ignore="LabelFor" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_marginHorizontal="40dp"
+            android:layout_marginTop="10dp"
+            android:hint="@string/settings_weeks_types_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/groupField">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/weeksFormatField"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="40dp"
-        android:layout_marginTop="10dp"
-        android:hint="@string/settings_weeks_format"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/weeksField">
+            <AutoCompleteTextView
+                android:id="@+id/weeksInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                android:maxLines="1"
+                tools:ignore="LabelFor" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <AutoCompleteTextView
-            android:id="@+id/weeksFormatInput"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/weeksFormatField"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="none"
-            android:maxLines="1"
-            tools:ignore="LabelFor" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_marginHorizontal="40dp"
+            android:layout_marginTop="10dp"
+            android:hint="@string/settings_weeks_format"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/weeksField">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/studentFormatField"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="40dp"
-        android:layout_marginTop="10dp"
-        android:hint="@string/settings_attendance_format"
-        app:layout_constraintEnd_toEndOf="parent"
+            <AutoCompleteTextView
+                android:id="@+id/weeksFormatInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                android:maxLines="1"
+                tools:ignore="LabelFor" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/weeksFormatField">
-
-        <AutoCompleteTextView
-            android:id="@+id/studentsFormatInput"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/studentFormatField"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="none"
-            android:maxLines="1" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_marginHorizontal="40dp"
+            android:layout_marginTop="10dp"
+            android:hint="@string/settings_attendance_format"
+            app:layout_constraintEnd_toEndOf="parent"
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/lessons_button"
-        android:layout_width="0dp"
-        android:layout_height="55dp"
-        android:layout_marginTop="10dp"
-        android:insetLeft="0dp"
-        android:insetTop="0dp"
-        android:insetRight="0dp"
-        android:insetBottom="0dp"
-        android:text="@string/settings_edit_timetable"
-        app:icon="@drawable/baseline_access_time_24"
-        app:iconGravity="textStart"
-        app:layout_constraintEnd_toEndOf="@id/studentFormatField"
-        app:layout_constraintStart_toStartOf="@id/studentFormatField"
-        app:layout_constraintTop_toBottomOf="@id/studentFormatField" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/weeksFormatField">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/campus_button"
-        android:layout_width="0dp"
-        android:layout_height="55dp"
-        android:layout_marginTop="10dp"
-        android:insetLeft="0dp"
-        android:insetTop="0dp"
-        android:insetRight="0dp"
-        android:insetBottom="0dp"
-        android:text="@string/settings_edit_campuses"
-        app:icon="@drawable/baseline_school_24"
-        app:iconGravity="textStart"
-        app:layout_constraintEnd_toEndOf="@id/lessons_button"
-        app:layout_constraintStart_toStartOf="@id/lessons_button"
-        app:layout_constraintTop_toBottomOf="@id/lessons_button" />
+            <AutoCompleteTextView
+                android:id="@+id/studentsFormatInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                android:maxLines="1"
+                tools:ignore="LabelFor" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/students_button"
-        android:layout_width="0dp"
-        android:layout_height="55dp"
-        android:layout_marginTop="10dp"
-        android:insetLeft="0dp"
-        android:insetTop="0dp"
-        android:insetRight="0dp"
-        android:insetBottom="0dp"
-        android:text="@string/settings_edit_students"
-        app:icon="@drawable/baseline_people_outline_24"
-        app:iconGravity="textStart"
-        app:layout_constraintEnd_toEndOf="@id/campus_button"
-        app:layout_constraintStart_toStartOf="@id/campus_button"
-        app:layout_constraintTop_toBottomOf="@id/campus_button" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/lessons_button"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
+            android:insetLeft="0dp"
+            android:insetTop="0dp"
+            android:insetRight="0dp"
+            android:insetBottom="0dp"
+            android:text="@string/settings_edit_timetable"
+            app:icon="@drawable/baseline_access_time_24"
+            app:iconGravity="textStart"
+            app:layout_constraintEnd_toEndOf="@id/studentFormatField"
+            app:layout_constraintStart_toStartOf="@id/studentFormatField"
+            app:layout_constraintTop_toBottomOf="@id/studentFormatField" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/campus_button"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
+            android:insetLeft="0dp"
+            android:insetTop="0dp"
+            android:insetRight="0dp"
+            android:insetBottom="0dp"
+            android:text="@string/settings_edit_campuses"
+            app:icon="@drawable/baseline_school_24"
+            app:iconGravity="textStart"
+            app:layout_constraintEnd_toEndOf="@id/lessons_button"
+            app:layout_constraintStart_toStartOf="@id/lessons_button"
+            app:layout_constraintTop_toBottomOf="@id/lessons_button" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/students_button"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
+            android:insetLeft="0dp"
+            android:insetTop="0dp"
+            android:insetRight="0dp"
+            android:insetBottom="0dp"
+            android:text="@string/settings_edit_students"
+            app:icon="@drawable/baseline_people_outline_24"
+            app:iconGravity="textStart"
+            app:layout_constraintEnd_toEndOf="@id/campus_button"
+            app:layout_constraintStart_toStartOf="@id/campus_button"
+            app:layout_constraintTop_toBottomOf="@id/campus_button" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

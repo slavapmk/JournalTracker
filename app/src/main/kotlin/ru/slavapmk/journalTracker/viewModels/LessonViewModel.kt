@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.slavapmk.journalTracker.dataModels.lesson.LessonInfo
 import ru.slavapmk.journalTracker.dataModels.lesson.LessonStudentListItem
+import ru.slavapmk.journalTracker.dataModels.toEdit
 import ru.slavapmk.journalTracker.storageModels.StorageDependencies
 import ru.slavapmk.journalTracker.storageModels.StudentAttendance
 import ru.slavapmk.journalTracker.storageModels.entities.CampusEntity
@@ -81,7 +82,7 @@ class LessonViewModel : ViewModel() {
                     lesson!!.id,
                     timeIndex,
                     lesson!!.name,
-                    lesson!!.type,
+                    lesson!!.type.toEdit(),
                     lesson!!.teacher,
                     lesson!!.dateDay,
                     lesson!!.dateMonth,

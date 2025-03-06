@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.edit
 import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DiffUtil
@@ -17,6 +18,7 @@ import ru.slavapmk.journalTracker.R
 import ru.slavapmk.journalTracker.dataModels.schedule.ScheduleListLesson
 import ru.slavapmk.journalTracker.dataModels.selectWeek.Semester
 import ru.slavapmk.journalTracker.dataModels.settings.WeeksFormats
+import ru.slavapmk.journalTracker.dataModels.toEdit
 import ru.slavapmk.journalTracker.databinding.FragmentScheduleBinding
 import ru.slavapmk.journalTracker.storageModels.entities.SemesterEntity
 import ru.slavapmk.journalTracker.ui.MainActivity
@@ -182,9 +184,31 @@ class ScheduleFragment : Fragment() {
             val intent = Intent(activity, SemestersActivity::class.java)
             activity.startActivity(intent)
         }
+        binding.selectSemesterGone.setOnClickListener {
+            val intent = Intent(activity, SemestersActivity::class.java)
+            activity.startActivity(intent)
+        }
 
         binding.currentDay.setOnClickListener {
             viewModel.setDate(null)
+            selectDateAndUpdateDays()
+            activity.setLoading(true)
+            viewModel.loadLessons()
+        }
+
+        binding.dayBefore.setOnClickListener {
+            viewModel.setDate(
+                viewModel.getDate().minusDays(1)
+            )
+            selectDateAndUpdateDays()
+            activity.setLoading(true)
+            viewModel.loadLessons()
+        }
+
+        binding.dayNext.setOnClickListener {
+            viewModel.setDate(
+                viewModel.getDate().plusDays(1)
+            )
             selectDateAndUpdateDays()
             activity.setLoading(true)
             viewModel.loadLessons()
@@ -205,6 +229,7 @@ class ScheduleFragment : Fragment() {
             if (loadData.semesters.isEmpty()) {
                 activity.setLoading(false)
                 binding.week.isInvisible = false
+                checkVisibility()
                 return@observe
             }
             viewModel.semesters = loadData.semesters
@@ -266,11 +291,12 @@ class ScheduleFragment : Fragment() {
                 val time = viewModel.timesMap[lessonEntity.timeId]
                 ScheduleListLesson(
                     lessonEntity.id,
+                    viewModel.timesMap.values.indexOf(time),
                     time!!.startHour,
                     time.startMinute,
                     time.endHour,
                     time.endMinute,
-                    lessonEntity.type,
+                    lessonEntity.type.toEdit(),
                     lessonEntity.cabinet,
                     viewModel.campusesMap[lessonEntity.campusId]!!.codename,
                     lessonEntity.name,
@@ -286,6 +312,8 @@ class ScheduleFragment : Fragment() {
             )
             diffResult.dispatchUpdatesTo(binding.lessons.adapter!!)
             activity.setLoading(false)
+
+            checkVisibility()
         }
 
         binding.previousButton.setOnClickListener {
@@ -299,6 +327,20 @@ class ScheduleFragment : Fragment() {
             updateDays()
             updateWeekTitle()
         }
+    }
+
+    private fun checkVisibility() {
+        val visibility = viewModel.semesters.isNotEmpty()
+        binding.addLessonButton.isVisible = visibility
+        binding.semester.isVisible = visibility
+        binding.week.isVisible = visibility
+        binding.selectWeek.isVisible = visibility
+        binding.currentDay.isVisible = visibility
+        binding.stroke.isVisible = visibility
+        binding.dayBefore.isVisible = visibility
+        binding.dayNext.isVisible = visibility
+        binding.selectSemester.isVisible = visibility
+        binding.selectSemesterGone.isVisible = !visibility
     }
 
     private fun selectDateAndUpdateDays() {

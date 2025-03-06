@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.slavapmk.journalTracker.dataModels.lessonEdit.LessonEditInfo
+import ru.slavapmk.journalTracker.dataModels.toEntity
 import ru.slavapmk.journalTracker.storageModels.StorageDependencies
 import ru.slavapmk.journalTracker.storageModels.entities.CampusEntity
 import ru.slavapmk.journalTracker.storageModels.entities.InsertLesson
@@ -152,7 +153,7 @@ class EditLessonViewModel : ViewModel() {
             InsertLesson(
                 semester!!.id,
                 info.name!!,
-                info.typeName!!,
+                info.typeName!!.toEntity(),
                 it!!.day,
                 it.month,
                 it.year,
@@ -187,7 +188,7 @@ class EditLessonViewModel : ViewModel() {
             InsertLesson(
                 semester!!.id,
                 info.name!!,
-                info.typeName!!,
+                info.typeName!!.toEntity(),
                 it!!.day,
                 it.month,
                 it.year,

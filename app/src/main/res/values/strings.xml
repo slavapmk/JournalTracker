@@ -32,7 +32,7 @@
     <string name="schedule_week">%1$d week (%2$s)</string>
     <string name="schedule_week_single">%1$d week</string>
     <string name="schedule_semester">%1$s semester</string>
-    <string name="schedule_select_week">Week</string>
+    <string name="schedule_select_week">Select week</string>
     <string name="schedule_current_date">Today</string>
     <string name="settings_group_name">Group name</string>
     <string name="settings_weeks_types_title">Week types</string>
@@ -98,7 +98,7 @@
     <string name="month_october">OCT</string>
     <string name="month_november">NOV</string>
     <string name="month_december">DEC</string>
-    <string name="schedule_select_semester">Semester</string>
+    <string name="schedule_select_semester">Select semester</string>
     <string name="week_format_type_down_up">Down / Up</string>
     <string name="notification_title_tools">Notification title</string>
     <string name="notification_content_tools">Notification content</string>
@@ -108,9 +108,18 @@
     <string name="dialog_update_accept">Update all</string>
     <string name="dialog_update_content">All subsequent pairs on that day and time will be processed as well.\nIf there are conflicts, the data will be replaced with new ones.</string>
     <string name="dialog_update_title">Apply for subsequent ones?</string>
-    <string name="type_lection">L</string>
-    <string name="type_practise">P</string>
-    <string name="type_laboratory">Lab</string>
+    <string name="type_lecture_short">L</string>
+    <string name="type_practise_short">P</string>
+    <string name="type_laboratory_short">LW</string>
+    <string name="type_test_short">T</string>
+    <string name="type_test_differential_short">TD</string>
+    <string name="type_exam_short">E</string>
+    <string name="type_lecture">Lecture</string>
+    <string name="type_practise">Practise</string>
+    <string name="type_laboratory">Laboratory Work</string>
+    <string name="type_test">Test</string>
+    <string name="type_test_differential">Test Differential</string>
+    <string name="type_exam">Exam</string>
     <string name="attendance_visit">+</string>
     <string name="attendance_skip">-</string>
     <string name="attendance_sick">S</string>
@@ -118,4 +127,10 @@
     <string name="attendance_respectfull_pass">-/R</string>
     <string name="skip_reason">Skip reason</string>
     <string name="empty" translatable="false"> </string>
+    <string name="day_before">Day before</string>
+    <string name="day_next">Day next</string>
+    <string name="dialog_delete_title" >Delete confirm</string>
+    <string name="dialog_delete_content" >When deleted, all related data will also be deleted.</string>
+    <string name="dialog_delete_cancel" >Cancel</string>
+    <string name="dialog_delete_accept" >Accept</string>
 </resources>

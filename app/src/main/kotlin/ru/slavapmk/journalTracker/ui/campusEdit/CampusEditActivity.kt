@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import ru.slavapmk.journalTracker.R
 import ru.slavapmk.journalTracker.dataModels.campuses.Campus
 import ru.slavapmk.journalTracker.databinding.ActivityCampusEditBinding
+import ru.slavapmk.journalTracker.ui.DeleteDialog
 import ru.slavapmk.journalTracker.ui.MainActivity.Companion.fmanager
 import ru.slavapmk.journalTracker.viewModels.CampusEditViewModel
 
@@ -21,13 +22,18 @@ class CampusEditActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCampusEditBinding
     val viewModel by viewModels<CampusEditViewModel>()
     private val campusesAdapter by lazy {
-        CampusesAdapter(viewModel.campuses) {
-            val indexOf = viewModel.campuses.indexOf(it)
-            val size = viewModel.campuses.size
-            viewModel.deleteCampus(it)
-            binding.campuses.adapter?.notifyItemRemoved(indexOf)
-            binding.campuses.adapter?.notifyItemRangeChanged(
-                indexOf, size - indexOf
+        CampusesAdapter(viewModel.campuses) { campus ->
+            DeleteDialog {
+                val indexOf = viewModel.campuses.indexOf(campus)
+                val size = viewModel.campuses.size
+                viewModel.deleteCampus(campus)
+                binding.campuses.adapter?.notifyItemRemoved(indexOf)
+                binding.campuses.adapter?.notifyItemRangeChanged(
+                    indexOf, size - indexOf
+                )
+            }.show(
+                supportFragmentManager.beginTransaction(),
+                "delete_lessons_dialog"
             )
         }
     }

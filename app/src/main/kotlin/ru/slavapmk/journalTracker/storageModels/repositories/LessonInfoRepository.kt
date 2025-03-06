@@ -2,6 +2,7 @@ package ru.slavapmk.journalTracker.storageModels.repositories
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import ru.slavapmk.journalTracker.storageModels.LessonType
 import ru.slavapmk.journalTracker.storageModels.dao.LessonsInfoDao
 import ru.slavapmk.journalTracker.storageModels.entities.InsertLesson
 import ru.slavapmk.journalTracker.storageModels.entities.LessonInfoEntity
@@ -45,7 +46,7 @@ class LessonInfoRepository(
         dateYear: Int,
         semesterId: Int,
         name: String,
-        type: String,
+        type: LessonType,
         timeId: Int,
         teacher: String,
         cabinet: Int,

@@ -33,7 +33,17 @@ data class SimpleDate(
     val day: Int,
     val month: Int,
     val year: Int
-)
+) {
+    fun plusDays(days: Long): SimpleDate {
+        val newDate = LocalDate.of(year, month, day).plusDays(days)
+        return SimpleDate(newDate.dayOfMonth, newDate.monthValue, newDate.year)
+    }
+
+    fun minusDays(days: Long): SimpleDate {
+        val newDate = LocalDate.of(year, month, day).minusDays(days)
+        return SimpleDate(newDate.dayOfMonth, newDate.monthValue, newDate.year)
+    }
+}
 
 data class ItemDate(
     val day: Int,
@@ -199,7 +209,10 @@ class ScheduleViewModel : ViewModel() {
     }
 
     val weekFormat: WeeksFormats
-        get() = when (sharedPreferences!!.getString(SharedKeys.WEEK_FORMAT_KEY, SharedKeys.EVEN_UNEVEN_VALUE_KEY)) {
+        get() = when (sharedPreferences!!.getString(
+            SharedKeys.WEEK_FORMAT_KEY,
+            SharedKeys.EVEN_UNEVEN_VALUE_KEY
+        )) {
             SharedKeys.EVEN_UNEVEN_VALUE_KEY -> WeeksFormats.EVEN_UNEVEN
             SharedKeys.UP_DOWN_VALUE_KEY -> WeeksFormats.UP_DOWN
             SharedKeys.DOWN_UP_VALUE_KEY -> WeeksFormats.DOWN_UP

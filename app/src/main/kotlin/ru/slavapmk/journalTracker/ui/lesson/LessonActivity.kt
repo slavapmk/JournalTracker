@@ -6,6 +6,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.slavapmk.journalTracker.R
@@ -15,7 +17,7 @@ import ru.slavapmk.journalTracker.storageModels.StudentAttendance
 import ru.slavapmk.journalTracker.ui.lessonEdit.LessonEditActivity
 import ru.slavapmk.journalTracker.ui.MainActivity.Companion.fmanager
 import ru.slavapmk.journalTracker.ui.SharedKeys
-import ru.slavapmk.journalTracker.ui.lessonEdit.LessonUpdateDialog
+import ru.slavapmk.journalTracker.ui.LessonUpdateDialog
 import ru.slavapmk.journalTracker.viewModels.LessonViewModel
 
 class LessonActivity : AppCompatActivity() {
@@ -29,6 +31,12 @@ class LessonActivity : AppCompatActivity() {
         fmanager = supportFragmentManager
         binding = ActivityLessonBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
 
         val lessonId = if (!intent.hasExtra(SharedKeys.SELECTED_LESSON)) {
             throw RuntimeException("Lesson id not catch")
