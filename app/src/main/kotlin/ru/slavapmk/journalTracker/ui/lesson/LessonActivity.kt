@@ -1,6 +1,8 @@
 package ru.slavapmk.journalTracker.ui.lesson
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -24,6 +26,12 @@ class LessonActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLessonBinding
     val viewModel by viewModels<LessonViewModel>()
 
+    private val shared: SharedPreferences by lazy {
+        getSharedPreferences(
+            SharedKeys.SHARED_APP_ID, Context.MODE_PRIVATE
+        )
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -37,6 +45,8 @@ class LessonActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        viewModel.sharedPreferences = shared
 
         val lessonId = if (!intent.hasExtra(SharedKeys.SELECTED_LESSON)) {
             throw RuntimeException("Lesson id not catch")
