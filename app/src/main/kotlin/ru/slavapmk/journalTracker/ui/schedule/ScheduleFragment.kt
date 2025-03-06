@@ -101,13 +101,27 @@ class ScheduleFragment : Fragment() {
         binding.saturday.dayOfWeek.text = getString(R.string.day_saturday)
         binding.sunday.dayOfWeek.text = getString(R.string.day_sunday)
 
+        val selectedDate: SimpleDate = viewModel.getDate()
+        val parseWeek = viewModel.parseWeek()
+        val nowDate = viewModel.nowDate()
+        val semester = viewModel.semesters.find { it.id == viewModel.semesterId }
+
         binding.nextButton.isEnabled =
             viewModel.weeks.indexOf(viewModel.week) != viewModel.weeks.size - 1
         binding.previousButton.isEnabled = viewModel.weeks.indexOf(viewModel.week) != 0
+        semester?.let {
+            binding.dayBefore.isEnabled = selectedDate != SimpleDate(
+                semester.startDay,
+                semester.startMonth,
+                semester.startYear
+            )
+            binding.dayNext.isEnabled = selectedDate != SimpleDate(
+                semester.endDay,
+                semester.endMonth,
+                semester.endYear
+            )
+        }
 
-        val parseWeek = viewModel.parseWeek()
-        val selectedDate: SimpleDate = viewModel.getDate()
-        val nowDate = viewModel.nowDate()
         for ((i, date) in dates().withIndex()) {
             if (parseWeek != null) {
                 val dayItemDate: ItemDate = parseWeek[i]
