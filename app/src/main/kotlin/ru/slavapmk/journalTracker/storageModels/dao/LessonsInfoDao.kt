@@ -54,4 +54,13 @@ interface LessonsInfoDao {
 
     @Query("DELETE FROM lessons_table WHERE date_day = :day AND date_month = :month AND date_year = :year AND time_id = :timeId AND name = :name")
     fun deleteLessonsByDateTimeName(day: Int, month: Int, year: Int, timeId: Int, name: String)
+
+    @Query("SELECT name FROM lessons_table LIMIT 50")
+    fun getLessonNames(): List<String>
+
+    @Query("SELECT teacher FROM lessons_table LIMIT 50")
+    fun getTeacherNames(): List<String>
+
+    @Query("SELECT cabinet FROM lessons_table LIMIT 50")
+    fun getCabinets(): List<Int>
 }

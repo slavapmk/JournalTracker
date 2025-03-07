@@ -65,4 +65,16 @@ class LessonInfoRepository(
             campusId
         )
     }
+
+    suspend fun getLessonNames(): List<String> = withContext(Dispatchers.IO) {
+        lessonsInfoDao.getLessonNames()
+    }
+
+    suspend fun getTeacherNames(): List<String> = withContext(Dispatchers.IO) {
+        lessonsInfoDao.getTeacherNames()
+    }
+
+    suspend fun getCabinets(): List<Int> = withContext(Dispatchers.IO) {
+        lessonsInfoDao.getCabinets()
+    }
 }
