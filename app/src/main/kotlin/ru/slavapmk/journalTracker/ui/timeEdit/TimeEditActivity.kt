@@ -1,6 +1,5 @@
 package ru.slavapmk.journalTracker.ui.timeEdit
 
-import android.app.TimePickerDialog
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -18,7 +17,6 @@ import ru.slavapmk.journalTracker.databinding.ActivityTimeEditBinding
 import ru.slavapmk.journalTracker.ui.DeleteDialog
 import ru.slavapmk.journalTracker.ui.MainActivity.Companion.fmanager
 import ru.slavapmk.journalTracker.viewModels.TimeEditViewModel
-import java.util.Calendar
 import java.util.Locale
 
 class TimeEditActivity : AppCompatActivity() {
@@ -77,14 +75,9 @@ class TimeEditActivity : AppCompatActivity() {
 
     private fun initInputs() {
         binding.startTimeInput.setOnClickListener {
-            val calendar = Calendar.getInstance()
-            val hour = calendar.get(Calendar.HOUR_OF_DAY)
-            val minute = calendar.get(Calendar.MINUTE)
-
             val dialog = MaterialTimePicker.Builder().apply {
-                setHour(hour)
-                setMinute(minute)
                 setTimeFormat(TimeFormat.CLOCK_24H)
+                setInputMode(MaterialTimePicker.INPUT_MODE_CLOCK)
                 setTitleText(R.string.edit_times_start)
             }.build()
             dialog.addOnPositiveButtonClickListener {
@@ -93,20 +86,15 @@ class TimeEditActivity : AppCompatActivity() {
                 )
                 viewModel.startHours = dialog.hour
                 viewModel.startMinutes = dialog.minute
-                binding.endTimeInput.setText(time)
+                binding.startTimeInput.setText(time)
             }
             dialog.show(supportFragmentManager, "time_start")
         }
 
         binding.endTimeInput.setOnClickListener {
-            val calendar = Calendar.getInstance()
-            val hour = calendar.get(Calendar.HOUR_OF_DAY)
-            val minute = calendar.get(Calendar.MINUTE)
-
             val dialog = MaterialTimePicker.Builder().apply {
-                setHour(hour)
-                setMinute(minute)
                 setTimeFormat(TimeFormat.CLOCK_24H)
+                setInputMode(MaterialTimePicker.INPUT_MODE_CLOCK)
                 setTitleText(R.string.edit_times_end)
             }.build()
             dialog.addOnPositiveButtonClickListener {
