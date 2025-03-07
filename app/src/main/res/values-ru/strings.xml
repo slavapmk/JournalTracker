@@ -102,4 +102,6 @@
     <string name="type_test_short">З</string>
     <string name="type_test">Зачёт</string>
     <string name="type_test_differential">Дифференциальный Зачёт</string>
+    <string name="semester_dialog">Даты нового семестра</string>
+    <string name="semester_dialog_add">Добавить семестр</string>
 </resources>

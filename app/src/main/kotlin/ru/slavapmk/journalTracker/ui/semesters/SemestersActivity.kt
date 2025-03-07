@@ -1,6 +1,5 @@
 package ru.slavapmk.journalTracker.ui.semesters
 
-import android.app.DatePickerDialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -13,15 +12,16 @@ import androidx.core.content.edit
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.datepicker.MaterialDatePicker
 import ru.slavapmk.journalTracker.R
 import ru.slavapmk.journalTracker.dataModels.semesters.Semester
 import ru.slavapmk.journalTracker.databinding.ActivitySemestersBinding
 import ru.slavapmk.journalTracker.ui.DeleteDialog
-import ru.slavapmk.journalTracker.viewModels.SemestersViewModel
 import ru.slavapmk.journalTracker.ui.MainActivity.Companion.fmanager
 import ru.slavapmk.journalTracker.ui.SharedKeys
+import ru.slavapmk.journalTracker.viewModels.SemestersViewModel
 import java.util.Calendar
-import java.util.Locale
+import java.util.TimeZone
 
 class SemestersActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySemestersBinding
@@ -82,121 +82,41 @@ class SemestersActivity : AppCompatActivity() {
     }
 
     private fun init() {
-        binding.startDateInput.setOnClickListener {
-            val calendar = Calendar.getInstance()
-            val year = calendar.get(Calendar.YEAR)
-            val month = calendar.get(Calendar.MONTH)
-            val day = calendar.get(Calendar.DAY_OF_MONTH)
-
-            val datePickerDialog = DatePickerDialog(
-                this,
-                { _, selectedYear, selectedMonth, selectedDay ->
-                    val date = String.format(
-                        Locale.getDefault(),
-                        "%02d.%02d.%02d",
-                        selectedDay,
-                        selectedMonth + 1,
-                        selectedYear % 100
-                    )
-                    viewModel.startYear = selectedYear
-                    viewModel.startMonth = selectedMonth + 1
-                    viewModel.startDay = selectedDay
-                    binding.startDateInput.setText(date)
-                },
-                year, month, day
-            )
-
-            datePickerDialog.show()
-        }
-        if (viewModel.startDay != null || viewModel.startMonth != null || viewModel.startYear != null) {
-            binding.startDateInput.setText(
-                String.format(
-                    Locale.getDefault(),
-                    "%02d.%02d.%02d",
-                    viewModel.startDay,
-                    viewModel.startMonth,
-                    viewModel.startYear?.rem(100)
-                )
-            )
-        }
-
-        binding.endDateInput.setOnClickListener {
-            val calendar = Calendar.getInstance()
-            val year = calendar.get(Calendar.YEAR)
-            val month = calendar.get(Calendar.MONTH)
-            val day = calendar.get(Calendar.DAY_OF_MONTH)
-
-            val datePickerDialog = DatePickerDialog(
-                this,
-                { _, selectedYear, selectedMonth, selectedDay ->
-                    val date = String.format(
-                        Locale.getDefault(),
-                        "%02d.%02d.%02d",
-                        selectedDay,
-                        selectedMonth + 1,
-                        selectedYear % 100
-                    )
-                    viewModel.endYear = selectedYear
-                    viewModel.endMonth = selectedMonth + 1
-                    viewModel.endDay = selectedDay
-                    binding.endDateInput.setText(date)
-                },
-                year, month, day
-            )
-
-            datePickerDialog.show()
-        }
-        if (viewModel.endDay != null || viewModel.endMonth != null || viewModel.endYear != null) {
-            binding.endDateInput.setText(
-                String.format(
-                    Locale.getDefault(),
-                    "%02d.%02d.%02d",
-                    viewModel.endDay,
-                    viewModel.endMonth,
-                    viewModel.endYear?.rem(100)
-                )
-            )
-        }
-
         binding.addButton.setOnClickListener {
-            if (
-                viewModel.startDay == null || viewModel.startMonth == null || viewModel.startYear == null ||
-                viewModel.endDay == null || viewModel.endMonth == null || viewModel.endYear == null
-            ) {
-                return@setOnClickListener
-            }
+            val dialog = MaterialDatePicker.Builder.dateRangePicker().apply {
+                setTitleText(R.string.semester_dialog)
+                setPositiveButtonText(R.string.semester_dialog_add)
+                setInputMode(MaterialDatePicker.INPUT_MODE_CALENDAR)
+            }.build()
+            dialog.addOnPositiveButtonClickListener {
+                val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
+                calendar.timeInMillis = it.first
+                val startDay = calendar.get(Calendar.DAY_OF_MONTH)
+                val startMonth = calendar.get(Calendar.MONTH) + 1
+                val startYear = calendar.get(Calendar.YEAR)
+                calendar.timeInMillis = it.second
+                val endDay = calendar.get(Calendar.DAY_OF_MONTH)
+                val endMonth = calendar.get(Calendar.MONTH) + 1
+                val endYear = calendar.get(Calendar.YEAR)
 
-            if (
-                viewModel.endYear!! * 10000 + viewModel.endMonth!! * 100 + viewModel.endDay!! <=
-                viewModel.startYear!! * 10000 + viewModel.startMonth!! * 100 + viewModel.startDay!!
-            ) {
-                return@setOnClickListener
+                binding.loadingStatus.visibility = View.VISIBLE
+                val element = Semester(
+                    null,
+                    startDay,
+                    startMonth,
+                    startYear,
+                    endDay,
+                    endMonth,
+                    endYear,
+                )
+                val indexOf = viewModel.addSemester(element)
+                binding.semesters.adapter?.notifyItemInserted(indexOf)
+                binding.semesters.adapter?.notifyItemRangeChanged(
+                    indexOf, viewModel.semesters.size - indexOf
+                )
+                binding.semesters.scrollToPosition(indexOf)
             }
-
-            binding.loadingStatus.visibility = View.VISIBLE
-            val element = Semester(
-                null,
-                viewModel.startDay!!,
-                viewModel.startMonth!!,
-                viewModel.startYear!!,
-                viewModel.endDay!!,
-                viewModel.endMonth!!,
-                viewModel.endYear!!,
-            )
-            val indexOf = viewModel.addSemester(element)
-            binding.semesters.adapter?.notifyItemInserted(indexOf)
-            binding.semesters.adapter?.notifyItemRangeChanged(
-                indexOf, viewModel.semesters.size - indexOf
-            )
-            binding.semesters.scrollToPosition(indexOf)
-            viewModel.startDay = null
-            viewModel.startMonth = null
-            viewModel.startYear = null
-            viewModel.endDay = null
-            viewModel.endMonth = null
-            viewModel.endYear = null
-            binding.startDateInput.text?.clear()
-            binding.endDateInput.text?.clear()
+            dialog.show(supportFragmentManager, "SEMESTER_DATES")
         }
 
         binding.semesters.layoutManager = LinearLayoutManager(this)

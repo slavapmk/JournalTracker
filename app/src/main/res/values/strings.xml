@@ -133,4 +133,6 @@
     <string name="dialog_delete_content" >When deleted, all related data will also be deleted.</string>
     <string name="dialog_delete_cancel" >Cancel</string>
     <string name="dialog_delete_accept" >Accept</string>
+    <string name="semester_dialog">Select semester dates</string>
+    <string name="semester_dialog_add">Add semester</string>
 </resources>
