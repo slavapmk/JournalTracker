@@ -10,6 +10,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 import ru.slavapmk.journalTracker.R
 import ru.slavapmk.journalTracker.dataModels.timeEdit.TimeEditItem
 import ru.slavapmk.journalTracker.databinding.ActivityTimeEditBinding
@@ -79,20 +81,21 @@ class TimeEditActivity : AppCompatActivity() {
             val hour = calendar.get(Calendar.HOUR_OF_DAY)
             val minute = calendar.get(Calendar.MINUTE)
 
-            val timePickerDialog = TimePickerDialog(
-                this,
-                { _, selectedHour, selectedMinute ->
-                    val time = String.format(
-                        Locale.getDefault(), "%02d:%02d", selectedHour, selectedMinute
-                    )
-                    viewModel.startHours = selectedHour
-                    viewModel.startMinutes = selectedMinute
-                    binding.startTimeInput.setText(time)
-                },
-                hour, minute, true
-            )
-
-            timePickerDialog.show()
+            val dialog = MaterialTimePicker.Builder().apply {
+                setHour(hour)
+                setMinute(minute)
+                setTimeFormat(TimeFormat.CLOCK_24H)
+                setTitleText(R.string.edit_times_start)
+            }.build()
+            dialog.addOnPositiveButtonClickListener {
+                val time = String.format(
+                    Locale.getDefault(), "%02d:%02d", dialog.hour, dialog.minute
+                )
+                viewModel.startHours = dialog.hour
+                viewModel.startMinutes = dialog.minute
+                binding.endTimeInput.setText(time)
+            }
+            dialog.show(supportFragmentManager, "time_start")
         }
 
         binding.endTimeInput.setOnClickListener {
@@ -100,20 +103,21 @@ class TimeEditActivity : AppCompatActivity() {
             val hour = calendar.get(Calendar.HOUR_OF_DAY)
             val minute = calendar.get(Calendar.MINUTE)
 
-            val timePickerDialog = TimePickerDialog(
-                this,
-                { _, selectedHour, selectedMinute ->
-                    val time = String.format(
-                        Locale.getDefault(), "%02d:%02d", selectedHour, selectedMinute
-                    )
-                    viewModel.endHours = selectedHour
-                    viewModel.endMinutes = selectedMinute
-                    binding.endTimeInput.setText(time)
-                },
-                hour, minute, true
-            )
-
-            timePickerDialog.show()
+            val dialog = MaterialTimePicker.Builder().apply {
+                setHour(hour)
+                setMinute(minute)
+                setTimeFormat(TimeFormat.CLOCK_24H)
+                setTitleText(R.string.edit_times_end)
+            }.build()
+            dialog.addOnPositiveButtonClickListener {
+                val time = String.format(
+                    Locale.getDefault(), "%02d:%02d", dialog.hour, dialog.minute
+                )
+                viewModel.endHours = dialog.hour
+                viewModel.endMinutes = dialog.minute
+                binding.endTimeInput.setText(time)
+            }
+            dialog.show(supportFragmentManager, "time_end")
         }
 
         binding.times.layoutManager = LinearLayoutManager(this)

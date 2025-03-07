@@ -36,6 +36,14 @@ class EditLessonViewModel : ViewModel() {
         sharedPreferences!!.getInt(SharedKeys.WEEK_TYPES_KEY, 1)
     }
 
+    val allLessonNames = mutableListOf<String>()
+    val allTeachers = mutableListOf<String>()
+    val allCabinets = mutableListOf<Int>()
+
+    val allLessonLiveData by lazy { MediatorLiveData<List<String>>() }
+    val allTeachersLiveData by lazy { MediatorLiveData<List<String>>() }
+    val allCabinetsLiveData by lazy { MediatorLiveData<List<Int>>() }
+
     val savingStatusLiveData: MutableLiveData<Unit> by lazy { MutableLiveData() }
     val lessonLiveData: MutableLiveData<LessonInfoEntity> by lazy { MutableLiveData() }
     private val timesLiveData: MutableLiveData<List<TimeEntity>> by lazy { MutableLiveData() }
@@ -74,23 +82,23 @@ class EditLessonViewModel : ViewModel() {
             }
         }
 
-    val collisionCheckLive: MutableLiveData<Boolean> by lazy {
-        MutableLiveData()
-    }
-
     fun loadData() {
         viewModelScope.launch {
+            allLessonLiveData.postValue(
+                StorageDependencies.lessonInfoRepository.getLessonNames()
+            )
+            allTeachersLiveData.postValue(
+                StorageDependencies.lessonInfoRepository.getTeacherNames()
+            )
+            allCabinetsLiveData.postValue(
+                StorageDependencies.lessonInfoRepository.getCabinets()
+            )
             timesLiveData.postValue(
                 StorageDependencies.timeRepository.getTimes()
             )
-        }
-        viewModelScope.launch {
             semestersLiveData.postValue(
                 StorageDependencies.semesterRepository.getSemesters()
             )
-        }
-
-        viewModelScope.launch {
             campusesLiveData.postValue(
                 StorageDependencies.campusRepository.getCampuses()
             )
@@ -101,29 +109,6 @@ class EditLessonViewModel : ViewModel() {
         viewModelScope.launch {
             lessonLiveData.postValue(
                 StorageDependencies.lessonInfoRepository.getLessonById(id)
-            )
-        }
-    }
-
-    fun checkCollisions(lesson: LessonEditInfo) {
-        if (date == null) {
-            throw IllegalStateException("Date must not be null")
-        }
-        if (lesson.index == null) {
-            throw IllegalStateException("Index must not be null")
-        }
-        val lessonId = times[lesson.index!!].id
-        viewModelScope.launch {
-            val usedTimes: List<Int> = StorageDependencies.lessonInfoRepository.getLessonsByDate(
-                date!!.day,
-                date!!.month,
-                date!!.year,
-            ).map {
-                it.timeId
-            }
-
-            collisionCheckLive.postValue(
-                usedTimes.contains(lessonId)
             )
         }
     }

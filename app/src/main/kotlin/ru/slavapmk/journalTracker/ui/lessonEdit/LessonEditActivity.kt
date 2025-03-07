@@ -11,6 +11,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import ru.slavapmk.journalTracker.R
 import ru.slavapmk.journalTracker.dataModels.LessonTypeEdit
 import ru.slavapmk.journalTracker.dataModels.lessonEdit.LessonEditInfo
@@ -58,8 +59,6 @@ class LessonEditActivity : AppCompatActivity() {
 
         viewModel.sharedPreferences = shared
 
-        loadData()
-
         binding.addButton.setOnClickListener {
             if (
                 viewModel.info.name.isNullOrEmpty() ||
@@ -84,10 +83,11 @@ class LessonEditActivity : AppCompatActivity() {
             )
         }
 
-        init()
+        initObservers()
+        loadData()
     }
 
-    private fun init() {
+    private fun initObservers() {
         viewModel.loadLiveData.observe(this) { loadBundle ->
             viewModel.times.apply {
                 clear()
@@ -109,7 +109,7 @@ class LessonEditActivity : AppCompatActivity() {
             initLesson()
         }
         viewModel.lessonLiveData.observe(this) { lesson ->
-            setInfo(lesson.let { entity ->
+            fillLessonInfo(lesson.let { entity ->
                 LessonEditInfo(
                     entity.id,
                     viewModel.times.indexOfFirst { it.id == entity.timeId },
@@ -127,6 +127,26 @@ class LessonEditActivity : AppCompatActivity() {
             setLoading(false)
             finish()
         }
+        viewModel.allTeachersLiveData.observe(this) {
+            viewModel.allTeachers.apply {
+                clear()
+                addAll(it)
+            }
+        }
+
+        viewModel.allLessonLiveData.observe(this) {
+            viewModel.allLessonNames.apply {
+                clear()
+                addAll(it)
+            }
+        }
+
+        viewModel.allCabinetsLiveData.observe(this) {
+            viewModel.allCabinets.apply {
+                clear()
+                addAll(it)
+            }
+        }
     }
 
     private fun initLesson() {
@@ -135,7 +155,7 @@ class LessonEditActivity : AppCompatActivity() {
             viewModel.loadLesson(id)
         } else {
             setLoading(false)
-            setInfo(
+            fillLessonInfo(
                 LessonEditInfo(
                     0, null, null, null, null, null, null
                 )
@@ -157,6 +177,9 @@ class LessonEditActivity : AppCompatActivity() {
 
             override fun afterTextChanged(s: Editable?) {}
         })
+        val nameItems = viewModel.allLessonNames.toTypedArray()
+        (binding.nameInput as MaterialAutoCompleteTextView).setSimpleItems(nameItems)
+
         binding.teacherInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
@@ -169,6 +192,9 @@ class LessonEditActivity : AppCompatActivity() {
 
             override fun afterTextChanged(s: Editable?) {}
         })
+        val teacherItems = viewModel.allTeachers.toTypedArray()
+        (binding.teacherInput as MaterialAutoCompleteTextView).setSimpleItems(teacherItems)
+
         binding.cabinetInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
@@ -181,6 +207,8 @@ class LessonEditActivity : AppCompatActivity() {
 
             override fun afterTextChanged(s: Editable?) {}
         })
+        val cabinetItems = viewModel.allCabinets.map { it.toString() }.toTypedArray()
+        (binding.cabinetInput as MaterialAutoCompleteTextView).setSimpleItems(cabinetItems)
 
         val campusNames = viewModel.campuses.map {
             it.name
@@ -230,11 +258,13 @@ class LessonEditActivity : AppCompatActivity() {
         viewModel.loadData()
     }
 
-    private fun setInfo(info: LessonEditInfo) {
+    private fun fillLessonInfo(info: LessonEditInfo) {
         viewModel.info = info
 
         binding.nameInput.setText(viewModel.info.name ?: "")
+
         binding.teacherInput.setText(viewModel.info.teacher ?: "")
+
         binding.cabinetInput.setText(
             if (viewModel.info.cabinet == null) {
                 ""
