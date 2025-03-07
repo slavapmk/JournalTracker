@@ -40,6 +40,7 @@
         android:layout_marginEnd="20dp"
         android:insetTop="0dp"
         android:insetBottom="0dp"
+        style="?attr/materialIconButtonStyle"
         app:icon="@drawable/baseline_close_24"
         android:insetRight="0dp"
         android:insetLeft="0dp"
