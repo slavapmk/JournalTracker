@@ -32,6 +32,14 @@ class LessonActivity : AppCompatActivity() {
         )
     }
 
+    private val lessonId by lazy {
+        if (!intent.hasExtra(SharedKeys.SELECTED_LESSON)) {
+            throw RuntimeException("Lesson id not catch")
+        } else {
+            intent.getIntExtra(SharedKeys.SELECTED_LESSON, -1)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -47,12 +55,6 @@ class LessonActivity : AppCompatActivity() {
         }
 
         viewModel.sharedPreferences = shared
-
-        val lessonId = if (!intent.hasExtra(SharedKeys.SELECTED_LESSON)) {
-            throw RuntimeException("Lesson id not catch")
-        } else {
-            intent.getIntExtra(SharedKeys.SELECTED_LESSON, -1)
-        }
 
         binding.editButton.setOnClickListener {
             startActivity(
@@ -73,7 +75,10 @@ class LessonActivity : AppCompatActivity() {
                 "delete_lessons_dialog"
             )
         }
+    }
 
+    override fun onResume() {
+        super.onResume()
         loadData(lessonId)
     }
 
@@ -145,6 +150,12 @@ class LessonActivity : AppCompatActivity() {
         binding.students.layoutManager = LinearLayoutManager(this)
         binding.students.adapter = LessonStudentsAdapter(viewModel.students) { updateStudent ->
             viewModel.updateStudent(updateStudent)
+        }
+
+        viewModel.info?.type?.colorState?.let {
+            binding.typeColor.setBackgroundColor(
+                getColor(it)
+            )
         }
     }
 
