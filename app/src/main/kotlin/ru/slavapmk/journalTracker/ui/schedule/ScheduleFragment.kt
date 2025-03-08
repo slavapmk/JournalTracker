@@ -31,6 +31,7 @@ import ru.slavapmk.journalTracker.utils.generateWeeks
 import ru.slavapmk.journalTracker.viewModels.ItemDate
 import ru.slavapmk.journalTracker.viewModels.ScheduleViewModel
 import ru.slavapmk.journalTracker.viewModels.SimpleDate
+import ru.slavapmk.journalTracker.viewModels.SimpleTime
 import ru.slavapmk.journalTracker.viewModels.compareTo
 import java.util.Locale
 
@@ -230,7 +231,18 @@ class ScheduleFragment : Fragment() {
 
         binding.lessons.layoutManager = LinearLayoutManager(requireContext())
         binding.lessons.adapter = ScheduleLessonsAdapter(
-            viewModel.lessons
+            viewModel.lessons,
+            if (viewModel.nowDate() == viewModel.getDate()) {
+                viewModel.lessons.indexOfFirst {
+                    SimpleTime(
+                        it.startHour, it.startMinute
+                    ) <= viewModel.nowTime() && viewModel.nowTime() <= SimpleTime(
+                        it.endHour, it.endMinute
+                    )
+                }
+            } else {
+                -2
+            }
         ) { lesson ->
             startActivity(
                 Intent(activity, LessonActivity::class.java).apply {
@@ -325,6 +337,19 @@ class ScheduleFragment : Fragment() {
                 newList
             )
             diffResult.dispatchUpdatesTo(binding.lessons.adapter!!)
+            (binding.lessons.adapter as ScheduleLessonsAdapter).nowIndex = if (
+                viewModel.nowDate() == viewModel.getDate()
+            ) {
+                viewModel.lessons.indexOfFirst {
+                    SimpleTime(
+                        it.startHour, it.startMinute
+                    ) <= viewModel.nowTime() && viewModel.nowTime() <= SimpleTime(
+                        it.endHour, it.endMinute
+                    )
+                }
+            } else {
+                -2
+            }
             activity.setLoading(false)
 
             checkVisibility()

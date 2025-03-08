@@ -6,12 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import ru.slavapmk.journalTracker.R
 import ru.slavapmk.journalTracker.dataModels.schedule.ScheduleListLesson
 
 class ScheduleLessonsAdapter(
     private val lessons: MutableList<ScheduleListLesson>,
+    var nowIndex: Int,
     private val onSelect: ((ScheduleListLesson) -> Unit)
 ) : RecyclerView.Adapter<ScheduleLessonsViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ScheduleLessonsViewHolder {
@@ -51,6 +53,7 @@ class ScheduleLessonsAdapter(
                 lesson.type.colorState
             )
         )
+        holder.nowColorView.isVisible = position == nowIndex
     }
 }
 
@@ -63,4 +66,5 @@ class ScheduleLessonsViewHolder(
     var name: TextView = itemView.findViewById(R.id.title)
     var teacher: TextView = itemView.findViewById(R.id.teacher)
     val typeColorView: View = itemView.findViewById(R.id.type_color)
+    val nowColorView: View = itemView.findViewById(R.id.now_color)
 }

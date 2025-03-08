@@ -45,6 +45,10 @@ data class SimpleDate(
     }
 }
 
+data class SimpleTime(
+    val hour: Int, val minute: Int
+)
+
 data class ItemDate(
     val day: Int,
     val month: Int,
@@ -55,6 +59,10 @@ data class ItemDate(
 
 operator fun SimpleDate.compareTo(other: SimpleDate): Int {
     return compareValuesBy(this, other, SimpleDate::year, SimpleDate::month, SimpleDate::day)
+}
+
+operator fun SimpleTime.compareTo(other: SimpleTime): Int {
+    return compareValuesBy(this, other, SimpleTime::hour, SimpleTime::minute)
 }
 
 class ScheduleViewModel : ViewModel() {
@@ -164,12 +172,21 @@ class ScheduleViewModel : ViewModel() {
         val calendar: Calendar = GregorianCalendar.getInstance().apply {
             time = Date()
         }
-        val date = SimpleDate(
+        return SimpleDate(
             calendar[Calendar.DAY_OF_MONTH],
             calendar[Calendar.MONTH] + 1,
             calendar[Calendar.YEAR]
         )
-        return date
+    }
+
+    fun nowTime(): SimpleTime {
+        val calendar: Calendar = GregorianCalendar.getInstance().apply {
+            time = Date()
+        }
+        return SimpleTime(
+            calendar[Calendar.HOUR_OF_DAY],
+            calendar[Calendar.MINUTE]
+        )
     }
 
     fun setDate(date: SimpleDate?) {
