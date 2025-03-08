@@ -1,8 +1,10 @@
 package ru.slavapmk.journalTracker.ui.settings
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.text.Editable
@@ -13,6 +15,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -20,6 +23,7 @@ import ru.slavapmk.journalTracker.R
 import ru.slavapmk.journalTracker.dataModels.settings.AttendanceFormats
 import ru.slavapmk.journalTracker.dataModels.settings.WeeksFormats
 import ru.slavapmk.journalTracker.databinding.FragmentSettingsBinding
+import ru.slavapmk.journalTracker.storageModels.StorageDependencies
 import ru.slavapmk.journalTracker.storageModels.StorageDependencies.DB_NAME
 import ru.slavapmk.journalTracker.ui.MainActivity
 import ru.slavapmk.journalTracker.ui.SharedKeys
@@ -27,8 +31,8 @@ import ru.slavapmk.journalTracker.ui.campusEdit.CampusEditActivity
 import ru.slavapmk.journalTracker.ui.studentsedit.StudentsEditActivity
 import ru.slavapmk.journalTracker.ui.timeEdit.TimeEditActivity
 import ru.slavapmk.journalTracker.viewModels.SettingsViewModel
-import ru.slavapmk.journalTracker.viewModels.SimpleTime
 import java.io.File
+import java.io.FileOutputStream
 import java.io.IOException
 import java.util.Calendar
 import java.util.Date
@@ -60,6 +64,43 @@ class SettingsFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         init()
+    }
+
+    private val filePickerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            result.data?.data?.let { uri ->
+                importDatabase(uri)
+            }
+        }
+    }
+
+    private fun importDatabase(uri: Uri) {
+        val dbName = DB_NAME
+        val dbPath = requireContext().getDatabasePath(dbName)
+
+        StorageDependencies.closeDb()
+
+        try {
+            requireContext().contentResolver.openInputStream(uri)?.use { input ->
+                FileOutputStream(dbPath).use { output ->
+                    input.copyTo(output)
+                }
+            }
+            Toast.makeText(requireContext(), R.string.db_import_success, Toast.LENGTH_LONG).show()
+            Log.d("Import", "DB imported: ${dbPath.absolutePath}")
+
+            restartApp()
+        } catch (e: IOException) {
+            Toast.makeText(requireContext(), R.string.db_import_error, Toast.LENGTH_LONG).show()
+            Log.e("Import", "DB import error", e)
+        }
+    }
+
+    private fun restartApp() {
+        val intent = context?.packageManager?.getLaunchIntentForPackage(requireContext().packageName)
+        intent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+        context?.startActivity(intent)
+        Runtime.getRuntime().exit(0)
     }
 
     private fun init() {
@@ -101,6 +142,14 @@ class SettingsFragment : Fragment() {
                 ).show()
                 Log.e("Backup", "Error export BD", e)
             }
+        }
+
+        binding.dbImport.setOnClickListener {
+            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                addCategory(Intent.CATEGORY_OPENABLE)
+                type = "application/octet-stream"
+            }
+            filePickerLauncher.launch(intent)
         }
 
         binding.lessonsButton.setOnClickListener {

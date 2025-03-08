@@ -108,4 +108,6 @@
     <string name="export_filename">Journal_export_%1$02d_%2$02d_%3$02d_%4$02d_%5$02d.db</string>
     <string name="db_saved">Файл БД сохранён</string>
     <string name="db_save_error">Ошибка сохранения</string>
+    <string name="db_import_success">БД импортирована</string>
+    <string name="db_import_error">Ошибка импорта</string>
 </resources>

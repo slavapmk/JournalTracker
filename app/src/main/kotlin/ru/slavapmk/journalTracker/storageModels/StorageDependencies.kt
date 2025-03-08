@@ -47,4 +47,8 @@ object StorageDependencies {
     val timeRepository: TimeRepository by lazy {
         TimeRepository(appDatabase.getTimesDao())
     }
+
+    fun closeDb() {
+        appDatabase.close()
+    }
 }

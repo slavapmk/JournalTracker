@@ -141,4 +141,6 @@
     <string name="export_filename">Журнал_экспорт_%1$02d_%2$02d_%3$02d_%4$02d_%5$02d.db</string>
     <string name="db_saved">DB file saved</string>
     <string name="db_save_error">Save error</string>
+    <string name="db_import_success">DB imported</string>
+    <string name="db_import_error">DB import error</string>
 </resources>
