@@ -37,7 +37,7 @@ jobs:
 
       - name: Decode and restore journal_key.jks
         run: |
-          echo "${{ secrets.JKS_BASE64 }}" | base64 --decode > ${{ env.main_project_module }}/journal_key.jks
+          printf "%s" "${{ secrets.JKS_BASE64 }}" | base64 --decode > ${{ env.main_project_module }}/journal_key.jks
 
       - name: Set up signing environment variables
         run: |
