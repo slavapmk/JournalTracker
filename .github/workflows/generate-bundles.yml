@@ -35,9 +35,20 @@ jobs:
       - name: Change wrapper permissions
         run: chmod +x ./gradlew
 
+      - name: Decode and restore journal_key.jks
+        run: |
+          echo "${{ secrets.JKS_BASE64 }}" | base64 --decode > ${{ env.main_project_module }}/journal_key.jks
+
+      - name: Set up signing environment variables
+        run: |
+          echo "KEYSTORE_PATH=${{ env.main_project_module }}/journal_key.jks" >> $GITHUB_ENV
+          echo "KEYSTORE_ALIAS=${{ secrets.KEYSTORE_ALIAS }}" >> $GITHUB_ENV
+          echo "KEYSTORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}" >> $GITHUB_ENV
+          echo "KEY_PASSWORD=${{ secrets.KEY_PASSWORD }}" >> $GITHUB_ENV
+
       # Create APK Release
       - name: Build apk release project (APK)
-        run: ./gradlew assembleDebug
+        run: ./gradlew assembleRelease
 
       - name: Generate release version
         id: version
@@ -65,13 +76,24 @@ jobs:
           draft: false
           prerelease: false
 
-      - name: Upload Release Asset
+      - name: Upload Release APK
         id: upload-release-asset
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ env.main_project_module }}/build/outputs/apk/debug/app-debug.apk
+          asset_path: ${{ env.main_project_module }}/release/app-release.apk
           asset_name: JournalTracker.apk
           asset_content_type: application/zip
+
+      - name: Upload Release Meta
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{ env.main_project_module }}/release/output-metadata.json
+          asset_name: output-metadata.json
+          asset_content_type: application/json
