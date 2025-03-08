@@ -103,4 +103,6 @@
     <string name="semester_dialog">Даты нового семестра</string>
     <string name="semester_dialog_add">Добавить семестр</string>
     <string name="button_delete">Удалить</string>
+    <string name="save_db">Экспорт БД</string>
+    <string name="load_db">Импорт БД</string>
 </resources>

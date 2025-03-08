@@ -136,4 +136,6 @@
     <string name="semester_dialog">Select semester dates</string>
     <string name="semester_dialog_add">Add semester</string>
     <string name="button_delete">Delete</string>
+    <string name="save_db">Save DB</string>
+    <string name="load_db">Load DB</string>
 </resources>
