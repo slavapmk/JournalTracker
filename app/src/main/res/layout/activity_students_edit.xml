@@ -23,11 +23,11 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/studentInput"
-            android:maxLines="1"
-            android:inputType="textPersonName"
-            android:imeOptions="actionDone"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:imeOptions="actionDone"
+            android:inputType="textPersonName|textCapWords"
+            android:maxLines="1" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -36,24 +36,25 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/studentField"
-        app:layout_constraintBottom_toBottomOf="parent"
         tools:listitem="@layout/item_student_edit" />
 
     <FrameLayout
         android:id="@+id/loading_status"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:clickable="true"
-        android:visibility="gone"
         android:background="@color/load_background_alpha"
+        android:clickable="true"
+        android:elevation="100dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:elevation="100dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
         <ProgressBar
             android:layout_width="100dp"
             android:layout_height="100dp"
