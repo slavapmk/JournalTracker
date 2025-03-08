@@ -31,27 +31,27 @@ import ru.slavapmk.journalTracker.storageModels.LessonType
 )
 data class LessonInfoEntity(
     @PrimaryKey(autoGenerate = true) val id: Int,
-    @ColumnInfo(name = "semester_id") val semesterId: Int,
+    @ColumnInfo(name = "semester_id", index = true) val semesterId: Int,
     val name: String,
     val type: LessonType,
     @ColumnInfo(name = "date_day") val dateDay: Int,
     @ColumnInfo(name = "date_month") val dateMonth: Int,
     @ColumnInfo(name = "date_year") val dateYear: Int,
-    @ColumnInfo(name = "time_id") val timeId: Int,
+    @ColumnInfo(name = "time_id", index = true) val timeId: Int,
     @ColumnInfo(name = "teacher") val teacher: String,
     @ColumnInfo(name = "cabinet") val cabinet: Int,
-    @ColumnInfo(name = "campus_id") val campusId: Int,
+    @ColumnInfo(name = "campus_id", index = true) val campusId: Int,
 )
 
 data class InsertLesson(
-    @ColumnInfo(name = "semester_id") val semesterId: Int,
+    @ColumnInfo(name = "semester_id", index = true) val semesterId: Int,
     val name: String,
     val type: LessonType,
     @ColumnInfo(name = "date_day") val dateDay: Int,
     @ColumnInfo(name = "date_month") val dateMonth: Int,
     @ColumnInfo(name = "date_year") val dateYear: Int,
-    @ColumnInfo(name = "time_id") val timeId: Int,
+    @ColumnInfo(name = "time_id", index = true) val timeId: Int,
     @ColumnInfo(name = "teacher") val teacher: String,
     @ColumnInfo(name = "cabinet") val cabinet: Int,
-    @ColumnInfo(name = "campus_id") val campusId: Int
+    @ColumnInfo(name = "campus_id", index = true) val campusId: Int
 )
