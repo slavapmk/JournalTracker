@@ -105,4 +105,7 @@
     <string name="button_delete">Удалить</string>
     <string name="save_db">Экспорт БД</string>
     <string name="load_db">Импорт БД</string>
+    <string name="export_filename">Journal_export_%1$02d_%2$02d_%3$02d_%4$02d_%5$02d.db</string>
+    <string name="db_saved">Файл БД сохранён</string>
+    <string name="db_save_error">Ошибка сохранения</string>
 </resources>

@@ -4,12 +4,15 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.Environment
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -17,12 +20,19 @@ import ru.slavapmk.journalTracker.R
 import ru.slavapmk.journalTracker.dataModels.settings.AttendanceFormats
 import ru.slavapmk.journalTracker.dataModels.settings.WeeksFormats
 import ru.slavapmk.journalTracker.databinding.FragmentSettingsBinding
+import ru.slavapmk.journalTracker.storageModels.StorageDependencies.DB_NAME
 import ru.slavapmk.journalTracker.ui.MainActivity
 import ru.slavapmk.journalTracker.ui.SharedKeys
 import ru.slavapmk.journalTracker.ui.campusEdit.CampusEditActivity
 import ru.slavapmk.journalTracker.ui.studentsedit.StudentsEditActivity
 import ru.slavapmk.journalTracker.ui.timeEdit.TimeEditActivity
 import ru.slavapmk.journalTracker.viewModels.SettingsViewModel
+import ru.slavapmk.journalTracker.viewModels.SimpleTime
+import java.io.File
+import java.io.IOException
+import java.util.Calendar
+import java.util.Date
+import java.util.GregorianCalendar
 
 class SettingsFragment : Fragment() {
     private lateinit var binding: FragmentSettingsBinding
@@ -53,6 +63,46 @@ class SettingsFragment : Fragment() {
     }
 
     private fun init() {
+        binding.dbExport.setOnClickListener {
+            val calendar: Calendar = GregorianCalendar.getInstance().apply {
+                time = Date()
+            }
+            val dbPath = context?.getDatabasePath(DB_NAME)
+            val backupName = getString(
+                R.string.export_filename,
+                calendar[Calendar.YEAR],
+                calendar[Calendar.MONTH] + 1,
+                calendar[Calendar.DAY_OF_MONTH],
+                calendar[Calendar.HOUR_OF_DAY],
+                calendar[Calendar.MINUTE]
+            )
+            val backupPath = File(
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
+                backupName
+            )
+
+            try {
+                dbPath?.inputStream().use { input ->
+                    backupPath.outputStream().use { output ->
+                        input?.copyTo(output)
+                    }
+                }
+                Toast.makeText(
+                    requireContext(),
+                    R.string.db_saved,
+                    Toast.LENGTH_LONG
+                ).show()
+                Log.d("Backup", "Saved BD ${backupPath.absolutePath}")
+            } catch (e: IOException) {
+                Toast.makeText(
+                    requireContext(),
+                    R.string.db_save_error,
+                    Toast.LENGTH_LONG
+                ).show()
+                Log.e("Backup", "Error export BD", e)
+            }
+        }
+
         binding.lessonsButton.setOnClickListener {
             val intent = Intent(activity, TimeEditActivity::class.java)
             activity.startActivity(intent)

@@ -138,4 +138,7 @@
     <string name="button_delete">Delete</string>
     <string name="save_db">Save DB</string>
     <string name="load_db">Load DB</string>
+    <string name="export_filename">Журнал_экспорт_%1$02d_%2$02d_%3$02d_%4$02d_%5$02d.db</string>
+    <string name="db_saved">DB file saved</string>
+    <string name="db_save_error">Save error</string>
 </resources>
