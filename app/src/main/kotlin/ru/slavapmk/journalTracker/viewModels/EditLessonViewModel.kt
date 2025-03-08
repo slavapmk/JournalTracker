@@ -188,7 +188,7 @@ class EditLessonViewModel : ViewModel() {
                 StorageDependencies.lessonInfoRepository.updateByDateTime(
                     addLesson.dateDay,
                     addLesson.dateMonth,
-                    addLesson.dateDay,
+                    addLesson.dateYear,
                     addLesson.semesterId,
                     addLesson.name,
                     addLesson.type,
