@@ -23,7 +23,7 @@ android {
 
     buildTypes {
         release {
-            signingConfig = signingConfigs["release"]
+            signingConfig = signingConfigs.findByName("config")
             isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -43,8 +43,8 @@ android {
     }
 
     signingConfigs {
-        System.getenv("KEYSTORE_PATH")?.let {
-            create("release") {
+        create("config") {
+            System.getenv("KEYSTORE_PATH")?.let {
                 storeFile = file(it)
                 storePassword = System.getenv("KEYSTORE_PASSWORD")
                 keyAlias = System.getenv("KEYSTORE_ALIAS")
