@@ -118,7 +118,9 @@ class LessonActivity : AppCompatActivity() {
             R.string.students_lesson_name,
             (viewModel.info?.index ?: 0) + 1,
             viewModel.info?.name ?: "",
-            viewModel.info?.type ?: ""
+            getString(
+                viewModel.info?.type?.shortNameRes ?: R.string.empty
+            )
         )
 
         binding.lessonDate.text = getString(

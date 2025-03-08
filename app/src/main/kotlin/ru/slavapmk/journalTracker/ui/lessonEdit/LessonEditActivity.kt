@@ -23,14 +23,10 @@ import ru.slavapmk.journalTracker.viewModels.EditLessonViewModel
 import ru.slavapmk.journalTracker.viewModels.SimpleDate
 
 class LessonEditActivity : AppCompatActivity() {
-    companion object {
-        const val LESSON_ID = "LESSON_ID"
-    }
-
     private lateinit var binding: ActivityLessonEditBinding
     val viewModel by viewModels<EditLessonViewModel>()
     private val editMode by lazy {
-        intent.hasExtra(LESSON_ID)
+        intent.hasExtra(SharedKeys.SELECTED_LESSON)
     }
 
     private val shared: SharedPreferences by lazy {
@@ -151,7 +147,7 @@ class LessonEditActivity : AppCompatActivity() {
 
     private fun initLesson() {
         if (editMode) {
-            val id = intent.getIntExtra(LESSON_ID, -1)
+            val id = intent.getIntExtra(SharedKeys.SELECTED_LESSON, -1)
             viewModel.loadLesson(id)
         } else {
             setLoading(false)
