@@ -7,6 +7,8 @@ import kotlinx.coroutines.launch
 import ru.slavapmk.journalTracker.dataModels.studentsEdit.StudentsEditListItem
 import ru.slavapmk.journalTracker.storageModels.StorageDependencies
 import ru.slavapmk.journalTracker.storageModels.entities.StudentEntity
+import ru.slavapmk.journalTracker.ui.lesson.toEdit
+import ru.slavapmk.journalTracker.ui.lesson.toEntity
 
 class StudentsEditViewModel : ViewModel() {
     fun loadStudents() {
@@ -14,7 +16,8 @@ class StudentsEditViewModel : ViewModel() {
             val students = StorageDependencies.studentRepository.getStudents().map {
                 StudentsEditListItem(
                     it.id,
-                    it.name
+                    it.name,
+                    it.default.toEdit()
                 )
             }
             studentsLiveData.postValue(students)
@@ -39,14 +42,15 @@ class StudentsEditViewModel : ViewModel() {
                 StudentEntity(
                     0,
                     insert.name,
-                    null
+                    insert.default.toEntity()
                 )
             )
             updateStudentLiveData.postValue(
                 Pair(
                     insert, StudentsEditListItem(
                         id,
-                        insert.name
+                        insert.name,
+                        insert.default
                     )
                 )
             )
@@ -58,6 +62,18 @@ class StudentsEditViewModel : ViewModel() {
     fun deleteStudent(student: StudentsEditListItem) {
         viewModelScope.launch {
             StorageDependencies.studentRepository.deleteStudent(student.id!!)
+        }
+    }
+
+    fun updateStudent(student: StudentsEditListItem) {
+        viewModelScope.launch {
+            StorageDependencies.studentRepository.updateStudent(
+                StudentEntity(
+                    student.id ?: 0,
+                    student.name,
+                    student.default.toEntity()
+                )
+            )
         }
     }
 }

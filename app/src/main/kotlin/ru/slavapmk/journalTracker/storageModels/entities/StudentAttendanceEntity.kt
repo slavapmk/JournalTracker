@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import ru.slavapmk.journalTracker.storageModels.StudentAttendance
+import ru.slavapmk.journalTracker.storageModels.StudentEntityAttendance
 
 @Entity(
     tableName = "student_attendance_table",
@@ -27,6 +27,6 @@ data class StudentAttendanceEntity(
     @PrimaryKey(autoGenerate = true) val id: Int,
     @ColumnInfo(name = "student_id", index = true) val studentId: Int,
     @ColumnInfo(name = "lesson_id", index = true) val lessonId: Int,
-    val attendance: StudentAttendance?,
+    val attendance: StudentEntityAttendance?,
     @ColumnInfo(name = "skip_description") val skipDescription: String?
 )

@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import ru.slavapmk.journalTracker.R
 import ru.slavapmk.journalTracker.dataModels.lesson.LessonStudentListItem
 import ru.slavapmk.journalTracker.databinding.ActivityLessonBinding
-import ru.slavapmk.journalTracker.storageModels.StudentAttendance
+import ru.slavapmk.journalTracker.storageModels.StudentEntityAttendance
 import ru.slavapmk.journalTracker.ui.LessonUpdateDialog
 import ru.slavapmk.journalTracker.ui.MainActivity.Companion.fmanager
 import ru.slavapmk.journalTracker.ui.SharedKeys
@@ -102,11 +102,11 @@ class LessonActivity : AppCompatActivity() {
                             it.studentId,
                             viewModel.allStudents.find { student -> student.id == it.studentId }!!.name,
                             when (it.attendance) {
-                                StudentAttendance.VISIT -> StudentAttendanceLesson.VISIT
-                                StudentAttendance.NOT_VISIT -> StudentAttendanceLesson.NOT_VISIT
-                                StudentAttendance.SICK -> StudentAttendanceLesson.SICK
-                                StudentAttendance.SICK_WITH_CERTIFICATE -> StudentAttendanceLesson.SICK_WITH_CERTIFICATE
-                                StudentAttendance.RESPECTFUL_PASS -> StudentAttendanceLesson.RESPECTFUL_PASS
+                                StudentEntityAttendance.VISIT -> StudentAttendanceLesson.VISIT
+                                StudentEntityAttendance.NOT_VISIT -> StudentAttendanceLesson.NOT_VISIT
+                                StudentEntityAttendance.SICK -> StudentAttendanceLesson.SICK
+                                StudentEntityAttendance.SICK_WITH_CERTIFICATE -> StudentAttendanceLesson.SICK_WITH_CERTIFICATE
+                                StudentEntityAttendance.RESPECTFUL_PASS -> StudentAttendanceLesson.RESPECTFUL_PASS
                                 null -> null
                             },
                             it.skipDescription

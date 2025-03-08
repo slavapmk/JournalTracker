@@ -4,29 +4,29 @@ import androidx.room.TypeConverter
 
 class LessonTypeConverter {
     @TypeConverter
-    fun fromType(value: LessonType?): String? {
+    fun fromType(value: LessonEntityType?): String? {
         return value?.let {
             when (it) {
-                LessonType.LECTURE -> LECTURE
-                LessonType.PRACTISE -> PRACTISE
-                LessonType.LABORATORY_WORK -> LABORATORY_WORK
-                LessonType.TEST -> TEST
-                LessonType.DIFFERENTIAL_TEST -> DIFFERENTIAL_TEST
-                LessonType.EXAM -> EXAM
+                LessonEntityType.LECTURE -> LECTURE
+                LessonEntityType.PRACTISE -> PRACTISE
+                LessonEntityType.LABORATORY_WORK -> LABORATORY_WORK
+                LessonEntityType.TEST -> TEST
+                LessonEntityType.DIFFERENTIAL_TEST -> DIFFERENTIAL_TEST
+                LessonEntityType.EXAM -> EXAM
             }
         }
     }
 
     @TypeConverter
-    fun toAttendance(raw: String?): LessonType? {
+    fun toAttendance(raw: String?): LessonEntityType? {
         return raw?.let {
             when (it) {
-                LECTURE -> LessonType.LECTURE
-                PRACTISE -> LessonType.PRACTISE
-                LABORATORY_WORK -> LessonType.LABORATORY_WORK
-                TEST -> LessonType.TEST
-                DIFFERENTIAL_TEST -> LessonType.DIFFERENTIAL_TEST
-                EXAM -> LessonType.EXAM
+                LECTURE -> LessonEntityType.LECTURE
+                PRACTISE -> LessonEntityType.PRACTISE
+                LABORATORY_WORK -> LessonEntityType.LABORATORY_WORK
+                TEST -> LessonEntityType.TEST
+                DIFFERENTIAL_TEST -> LessonEntityType.DIFFERENTIAL_TEST
+                EXAM -> LessonEntityType.EXAM
                 else -> throw IllegalStateException()
             }
         }

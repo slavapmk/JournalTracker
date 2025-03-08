@@ -1,6 +1,6 @@
 package ru.slavapmk.journalTracker.storageModels
 
-enum class LessonType {
+enum class LessonEntityType {
     LECTURE,
     PRACTISE,
     LABORATORY_WORK,

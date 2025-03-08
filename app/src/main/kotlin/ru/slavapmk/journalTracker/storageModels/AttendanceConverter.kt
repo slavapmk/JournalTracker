@@ -4,27 +4,27 @@ import androidx.room.TypeConverter
 
 class AttendanceConverter {
     @TypeConverter
-    fun fromAttendance(value: StudentAttendance?): String? {
+    fun fromAttendance(value: StudentEntityAttendance?): String? {
         return value?.let {
             when (it) {
-                StudentAttendance.VISIT -> VISIT
-                StudentAttendance.NOT_VISIT -> NOT_VISIT
-                StudentAttendance.SICK -> SICK
-                StudentAttendance.SICK_WITH_CERTIFICATE -> SICK_WITH_CERTIFICATE
-                StudentAttendance.RESPECTFUL_PASS -> RESPECTFUL_PASS
+                StudentEntityAttendance.VISIT -> VISIT
+                StudentEntityAttendance.NOT_VISIT -> NOT_VISIT
+                StudentEntityAttendance.SICK -> SICK
+                StudentEntityAttendance.SICK_WITH_CERTIFICATE -> SICK_WITH_CERTIFICATE
+                StudentEntityAttendance.RESPECTFUL_PASS -> RESPECTFUL_PASS
             }
         }
     }
 
     @TypeConverter
-    fun toAttendance(raw: String?): StudentAttendance? {
+    fun toAttendance(raw: String?): StudentEntityAttendance? {
         return raw?.let {
             when (it) {
-                VISIT -> StudentAttendance.VISIT
-                NOT_VISIT -> StudentAttendance.NOT_VISIT
-                SICK -> StudentAttendance.SICK
-                SICK_WITH_CERTIFICATE -> StudentAttendance.SICK_WITH_CERTIFICATE
-                RESPECTFUL_PASS -> StudentAttendance.RESPECTFUL_PASS
+                VISIT -> StudentEntityAttendance.VISIT
+                NOT_VISIT -> StudentEntityAttendance.NOT_VISIT
+                SICK -> StudentEntityAttendance.SICK
+                SICK_WITH_CERTIFICATE -> StudentEntityAttendance.SICK_WITH_CERTIFICATE
+                RESPECTFUL_PASS -> StudentEntityAttendance.RESPECTFUL_PASS
                 else -> throw IllegalStateException()
             }
         }

@@ -3,6 +3,7 @@ package ru.slavapmk.journalTracker.storageModels.dao
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import ru.slavapmk.journalTracker.storageModels.entities.StudentEntity
 
 @Dao
@@ -15,4 +16,7 @@ interface StudentsDao {
 
     @Query("SELECT * FROM students_table ORDER by name")
     fun getStudents(): List<StudentEntity>
+
+    @Update(entity = StudentEntity::class)
+    fun updateStudent(studentEntity: StudentEntity)
 }
