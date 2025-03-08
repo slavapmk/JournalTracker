@@ -17,18 +17,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Set Current Date As Env Variable
       - name: Set current date as env variable
         run: echo "date_today=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
 
-      # Set Repository Name As Env Variable
       - name: Set repository name as env variable
         run: echo "repository_name=$(echo '${{ github.repository }}' | awk -F '/' '{print $2}')" >> $GITHUB_ENV
 
       - name: Set Up JDK
         uses: actions/setup-java@v4
         with:
-          distribution: 'zulu' # See 'Supported distributions' for available options
+          distribution: 'zulu'
           java-version: '17'
           cache: 'gradle'
 
@@ -37,14 +35,17 @@ jobs:
 
       - name: Decode and restore journal_key.jks
         run: |
-          echo "${{ secrets.JKS_BASE64 }}" | base64 --decode > ${{ env.main_project_module }}/journal_key.jks
+          mkdir -p ${{ github.workspace }}/app
+          printf "%s" "${{ secrets.JKS_BASE64 }}" | base64 --decode > ${{ github.workspace }}/app/journal_key.jks
+          ls -l ${{ github.workspace }}/app/journal_key.jks
 
       - name: Set up signing environment variables
         run: |
-          echo "KEYSTORE_PATH=${{ env.main_project_module }}/journal_key.jks" >> $GITHUB_ENV
+          echo "KEYSTORE_PATH=${{ github.workspace }}/app/journal_key.jks" >> $GITHUB_ENV
           echo "KEYSTORE_ALIAS=${{ secrets.KEYSTORE_ALIAS }}" >> $GITHUB_ENV
           echo "KEYSTORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}" >> $GITHUB_ENV
           echo "KEY_PASSWORD=${{ secrets.KEY_PASSWORD }}" >> $GITHUB_ENV
+
 
       # Create APK Release
       - name: Build apk release project (APK)
