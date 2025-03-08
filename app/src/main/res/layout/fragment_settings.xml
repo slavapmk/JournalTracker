@@ -140,5 +140,39 @@
             app:layout_constraintStart_toStartOf="@id/campus_button"
             app:layout_constraintTop_toBottomOf="@id/campus_button" />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/db_export"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="5dp"
+            android:insetLeft="0dp"
+            android:insetTop="0dp"
+            android:insetRight="0dp"
+            android:insetBottom="0dp"
+            android:text="@string/save_db"
+            app:icon="@drawable/baseline_save_24"
+            app:iconGravity="textStart"
+            app:layout_constraintEnd_toStartOf="@id/db_import"
+            app:layout_constraintStart_toStartOf="@id/students_button"
+            app:layout_constraintTop_toBottomOf="@id/students_button" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/db_import"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="10dp"
+            android:insetLeft="0dp"
+            android:insetTop="0dp"
+            android:insetRight="0dp"
+            android:insetBottom="0dp"
+            android:text="@string/load_db"
+            app:icon="@drawable/baseline_open_in_browser_24"
+            app:iconGravity="textStart"
+            app:layout_constraintEnd_toEndOf="@id/students_button"
+            app:layout_constraintStart_toEndOf="@id/db_export"
+            app:layout_constraintTop_toBottomOf="@id/students_button" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

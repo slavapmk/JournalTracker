@@ -9,8 +9,8 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        versionCode = 9
-        versionName = "0.7.1"
+        versionCode = 10
+        versionName = "0.8"
         applicationId = "ru.slavapmk.journalTracker"
         minSdk = 29
         targetSdk = 35
@@ -20,7 +20,7 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -36,6 +36,15 @@ android {
     }
     buildFeatures {
         viewBinding = true
+    }
+
+    signingConfigs {
+        create("config") {
+            storeFile = file(System.getenv("KEYSTORE_PATH"))
+            storePassword = System.getenv("KEYSTORE_PASSWORD")
+            keyAlias = System.getenv("KEYSTORE_ALIAS")
+            keyPassword = System.getenv("KEY_PASSWORD")
+        }
     }
 }
 

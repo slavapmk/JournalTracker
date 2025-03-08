@@ -16,10 +16,10 @@ import ru.slavapmk.journalTracker.R
 import ru.slavapmk.journalTracker.dataModels.lesson.LessonStudentListItem
 import ru.slavapmk.journalTracker.databinding.ActivityLessonBinding
 import ru.slavapmk.journalTracker.storageModels.StudentAttendance
-import ru.slavapmk.journalTracker.ui.lessonEdit.LessonEditActivity
+import ru.slavapmk.journalTracker.ui.LessonUpdateDialog
 import ru.slavapmk.journalTracker.ui.MainActivity.Companion.fmanager
 import ru.slavapmk.journalTracker.ui.SharedKeys
-import ru.slavapmk.journalTracker.ui.LessonUpdateDialog
+import ru.slavapmk.journalTracker.ui.lessonEdit.LessonEditActivity
 import ru.slavapmk.journalTracker.viewModels.LessonViewModel
 
 class LessonActivity : AppCompatActivity() {
@@ -30,6 +30,14 @@ class LessonActivity : AppCompatActivity() {
         getSharedPreferences(
             SharedKeys.SHARED_APP_ID, Context.MODE_PRIVATE
         )
+    }
+
+    private val lessonId by lazy {
+        if (!intent.hasExtra(SharedKeys.SELECTED_LESSON)) {
+            throw RuntimeException("Lesson id not catch")
+        } else {
+            intent.getIntExtra(SharedKeys.SELECTED_LESSON, -1)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,12 +55,6 @@ class LessonActivity : AppCompatActivity() {
         }
 
         viewModel.sharedPreferences = shared
-
-        val lessonId = if (!intent.hasExtra(SharedKeys.SELECTED_LESSON)) {
-            throw RuntimeException("Lesson id not catch")
-        } else {
-            intent.getIntExtra(SharedKeys.SELECTED_LESSON, -1)
-        }
 
         binding.editButton.setOnClickListener {
             startActivity(
@@ -73,7 +75,10 @@ class LessonActivity : AppCompatActivity() {
                 "delete_lessons_dialog"
             )
         }
+    }
 
+    override fun onResume() {
+        super.onResume()
         loadData(lessonId)
     }
 
@@ -87,6 +92,7 @@ class LessonActivity : AppCompatActivity() {
             viewModel.loadFilledStudents()
         }
         viewModel.fillAttendanceLiveData.observe(this) { new ->
+            val oldSize = viewModel.students.size
             viewModel.students.apply {
                 clear()
                 addAll(
@@ -108,8 +114,10 @@ class LessonActivity : AppCompatActivity() {
                     }
                 )
             }
+            val newSize = viewModel.students.size
             setLoading(false)
             injectData()
+            binding.students.adapter?.notifyItemRangeChanged(0, maxOf(oldSize, newSize))
         }
     }
 
@@ -118,7 +126,9 @@ class LessonActivity : AppCompatActivity() {
             R.string.students_lesson_name,
             (viewModel.info?.index ?: 0) + 1,
             viewModel.info?.name ?: "",
-            viewModel.info?.type ?: ""
+            getString(
+                viewModel.info?.type?.shortNameRes ?: R.string.empty
+            )
         )
 
         binding.lessonDate.text = getString(
@@ -140,6 +150,12 @@ class LessonActivity : AppCompatActivity() {
         binding.students.layoutManager = LinearLayoutManager(this)
         binding.students.adapter = LessonStudentsAdapter(viewModel.students) { updateStudent ->
             viewModel.updateStudent(updateStudent)
+        }
+
+        viewModel.info?.type?.colorState?.let {
+            binding.typeColor.setBackgroundColor(
+                getColor(it)
+            )
         }
     }
 

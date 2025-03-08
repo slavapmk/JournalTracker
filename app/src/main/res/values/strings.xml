@@ -120,8 +120,8 @@
     <string name="type_test">Test</string>
     <string name="type_test_differential">Test Differential</string>
     <string name="type_exam">Exam</string>
-    <string name="attendance_visit">+</string>
-    <string name="attendance_skip">-</string>
+    <string name="attendance_visit" translatable="false">+</string>
+    <string name="attendance_skip" translatable="false">—</string>
     <string name="attendance_sick">S</string>
     <string name="attendance_sick_with_certificate">S/R</string>
     <string name="attendance_respectfull_pass">-/R</string>
@@ -133,4 +133,14 @@
     <string name="dialog_delete_content" >When deleted, all related data will also be deleted.</string>
     <string name="dialog_delete_cancel" >Cancel</string>
     <string name="dialog_delete_accept" >Accept</string>
+    <string name="semester_dialog">Select semester dates</string>
+    <string name="semester_dialog_add">Add semester</string>
+    <string name="button_delete">Delete</string>
+    <string name="save_db">Save DB</string>
+    <string name="load_db">Load DB</string>
+    <string name="export_filename">Журнал_экспорт_%1$02d_%2$02d_%3$02d_%4$02d_%5$02d.db</string>
+    <string name="db_saved">DB file saved</string>
+    <string name="db_save_error">Save error</string>
+    <string name="db_import_success">DB imported</string>
+    <string name="db_import_error">DB import error</string>
 </resources>

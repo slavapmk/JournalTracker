@@ -16,9 +16,11 @@ object StorageDependencies {
         applicationContext = context
     }
 
+    const val DB_NAME = "database.db"
+
     private val appDatabase: AppDatabase by lazy {
         Room.databaseBuilder(
-            applicationContext, AppDatabase::class.java, "database.db"
+            applicationContext, AppDatabase::class.java, DB_NAME
         ).build()
     }
 
@@ -44,5 +46,9 @@ object StorageDependencies {
 
     val timeRepository: TimeRepository by lazy {
         TimeRepository(appDatabase.getTimesDao())
+    }
+
+    fun closeDb() {
+        appDatabase.close()
     }
 }

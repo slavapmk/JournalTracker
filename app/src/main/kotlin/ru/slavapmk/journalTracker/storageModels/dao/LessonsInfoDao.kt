@@ -36,7 +36,8 @@ interface LessonsInfoDao {
             SET semester_id = :semesterId, name = :name, type = :type,
                 time_id = :timeId, teacher = :teacher, cabinet = :cabinet, 
                 campus_id = :campusId
-            WHERE date_day = :dateDay AND date_month = :dateMonth AND date_year = :dateYear
+            WHERE date_day = :dateDay AND date_month = :dateMonth AND
+                  date_year = :dateYear AND time_id = :timeId
         """
     )
     fun updateByDateTime(

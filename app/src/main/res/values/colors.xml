@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="black">#FF000000</color>
+    <color name="alpha">#00000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="item_background">#2F2F2F</color>
     <color name="item_foreground">#767676</color>
     <color name="now_foreground">#393FAF</color>
+    <color name="now_background">#393FAF</color>
     <color name="item_text">#BFBFBF</color>
     <color name="load_background_alpha">#7C000000</color>
     <color name="load_background">#878686</color>
+    <color name="color_practise">#367CF4</color>
+    <color name="color_lecture">#98F436</color>
+    <color name="color_laboratory_work">#F4A836</color>
+    <color name="color_exam">#F44336</color>
 </resources>

@@ -7,82 +7,33 @@
     android:layout_height="match_parent"
     tools:context=".ui.semesters.SemestersActivity">
 
-    <View
-        android:id="@+id/footer"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/semesters"
         android:layout_width="0dp"
-        android:layout_height="200dp"
-        android:background="#353535"
+        android:layout_height="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/codename_field"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="40dp"
-        android:layout_marginTop="10dp"
-        android:hint="@string/edit_semester_date_start"
-        app:layout_constraintEnd_toEndOf="@id/footer"
-        app:layout_constraintStart_toStartOf="@id/footer"
-        app:layout_constraintTop_toTopOf="@id/footer">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/start_date_input"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:focusable="false"
-            android:inputType="none" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/endTimeField"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="40dp"
-        android:layout_marginTop="5dp"
-        android:hint="@string/edit_semester_date_end"
-        app:layout_constraintEnd_toEndOf="@id/footer"
-        app:layout_constraintStart_toStartOf="@id/footer"
-        app:layout_constraintTop_toBottomOf="@id/codename_field">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/end_date_input"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:focusable="false"
-            android:inputType="none" />
-
-    </com.google.android.material.textfield.TextInputLayout>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:listitem="@layout/item_semester" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/add_button"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_marginEnd="40dp"
-        android:layout_marginBottom="10dp"
-        android:button="@null"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
         android:insetLeft="0dp"
         android:insetTop="0dp"
         android:insetRight="0dp"
         android:insetBottom="0dp"
-        android:text="@string/edit_semester_add"
+        android:padding="0dp"
         app:icon="@drawable/baseline_add_24"
-        app:iconGravity="textStart"
+        app:iconGravity="textEnd"
         app:iconPadding="0dp"
-        app:iconSize="30dp"
-        app:layout_constraintBottom_toBottomOf="@id/footer"
-        app:layout_constraintEnd_toEndOf="@id/footer" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/semesters"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/footer"
-        tools:listitem="@layout/item_semester" />
+        app:iconSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <FrameLayout
         android:id="@+id/loading_status"
