@@ -66,13 +66,14 @@ class SettingsFragment : Fragment() {
         init()
     }
 
-    private val filePickerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            result.data?.data?.let { uri ->
-                importDatabase(uri)
+    private val filePickerLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                result.data?.data?.let { uri ->
+                    importDatabase(uri)
+                }
             }
         }
-    }
 
     private fun importDatabase(uri: Uri) {
         val dbName = DB_NAME
@@ -89,18 +90,15 @@ class SettingsFragment : Fragment() {
             Toast.makeText(requireContext(), R.string.db_import_success, Toast.LENGTH_LONG).show()
             Log.d("Import", "DB imported: ${dbPath.absolutePath}")
 
-            restartApp()
+            restartActivity()
         } catch (e: IOException) {
             Toast.makeText(requireContext(), R.string.db_import_error, Toast.LENGTH_LONG).show()
             Log.e("Import", "DB import error", e)
         }
     }
 
-    private fun restartApp() {
-        val intent = context?.packageManager?.getLaunchIntentForPackage(requireContext().packageName)
-        intent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-        context?.startActivity(intent)
-        Runtime.getRuntime().exit(0)
+    private fun restartActivity() {
+        activity.recreate()
     }
 
     private fun init() {
