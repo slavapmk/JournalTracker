@@ -44,12 +44,12 @@ android {
 
     signingConfigs {
         create("config") {
-            System.getenv("KEYSTORE_PATH")?.let {
-                storeFile = file(it)
+//            System.getenv("KEYSTORE_PATH")?.let {
+                storeFile = file(System.getenv("KEYSTORE_PATH"))
                 storePassword = System.getenv("KEYSTORE_PASSWORD")
                 keyAlias = System.getenv("KEYSTORE_ALIAS")
                 keyPassword = System.getenv("KEY_PASSWORD")
-            }
+//            }
         }
     }
 }
