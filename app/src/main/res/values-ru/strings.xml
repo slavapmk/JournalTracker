@@ -83,8 +83,6 @@
     <string name="type_laboratory_short">ЛР</string>
     <string name="type_laboratory">Лабораторная Работа</string>
     <string name="type_exam">Экзамен</string>
-    <string name="attendance_visit">+</string>
-    <string name="attendance_skip">-</string>
     <string name="attendance_sick">Б</string>
     <string name="attendance_sick_with_certificate">Б/У</string>
     <string name="attendance_respectfull_pass">-/У</string>

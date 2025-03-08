@@ -16,10 +16,10 @@ import ru.slavapmk.journalTracker.R
 import ru.slavapmk.journalTracker.dataModels.lesson.LessonStudentListItem
 import ru.slavapmk.journalTracker.databinding.ActivityLessonBinding
 import ru.slavapmk.journalTracker.storageModels.StudentAttendance
-import ru.slavapmk.journalTracker.ui.lessonEdit.LessonEditActivity
+import ru.slavapmk.journalTracker.ui.LessonUpdateDialog
 import ru.slavapmk.journalTracker.ui.MainActivity.Companion.fmanager
 import ru.slavapmk.journalTracker.ui.SharedKeys
-import ru.slavapmk.journalTracker.ui.LessonUpdateDialog
+import ru.slavapmk.journalTracker.ui.lessonEdit.LessonEditActivity
 import ru.slavapmk.journalTracker.viewModels.LessonViewModel
 
 class LessonActivity : AppCompatActivity() {
@@ -87,6 +87,7 @@ class LessonActivity : AppCompatActivity() {
             viewModel.loadFilledStudents()
         }
         viewModel.fillAttendanceLiveData.observe(this) { new ->
+            val oldSize = viewModel.students.size
             viewModel.students.apply {
                 clear()
                 addAll(
@@ -108,8 +109,10 @@ class LessonActivity : AppCompatActivity() {
                     }
                 )
             }
+            val newSize = viewModel.students.size
             setLoading(false)
             injectData()
+            binding.students.adapter?.notifyItemRangeChanged(0, maxOf(oldSize, newSize))
         }
     }
 

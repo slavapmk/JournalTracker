@@ -120,8 +120,8 @@
     <string name="type_test">Test</string>
     <string name="type_test_differential">Test Differential</string>
     <string name="type_exam">Exam</string>
-    <string name="attendance_visit">+</string>
-    <string name="attendance_skip">-</string>
+    <string name="attendance_visit" translatable="false">+</string>
+    <string name="attendance_skip" translatable="false">—</string>
     <string name="attendance_sick">S</string>
     <string name="attendance_sick_with_certificate">S/R</string>
     <string name="attendance_respectfull_pass">-/R</string>
