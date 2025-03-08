@@ -22,8 +22,8 @@ android {
     }
 
     buildTypes {
-        release {
-            signingConfig = signingConfigs.findByName("config")
+        getByName("release") {
+            signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -43,13 +43,13 @@ android {
     }
 
     signingConfigs {
-        create("config") {
-//            System.getenv("KEYSTORE_PATH")?.let {
+        create("release") {
+            System.getenv("KEYSTORE_PATH")?.let {
                 storeFile = file(System.getenv("KEYSTORE_PATH"))
                 storePassword = System.getenv("KEYSTORE_PASSWORD")
                 keyAlias = System.getenv("KEYSTORE_ALIAS")
                 keyPassword = System.getenv("KEY_PASSWORD")
-//            }
+            }
         }
     }
 }
