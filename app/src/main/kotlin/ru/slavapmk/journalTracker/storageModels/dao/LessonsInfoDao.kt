@@ -56,12 +56,12 @@ interface LessonsInfoDao {
     @Query("DELETE FROM lessons_table WHERE date_day = :day AND date_month = :month AND date_year = :year AND time_id = :timeId AND name = :name")
     fun deleteLessonsByDateTimeName(day: Int, month: Int, year: Int, timeId: Int, name: String)
 
-    @Query("SELECT DISTINCT name FROM lessons_table LIMIT 50")
+    @Query("SELECT DISTINCT name FROM lessons_table ORDER BY name LIMIT 200")
     fun getLessonNames(): List<String>
 
-    @Query("SELECT DISTINCT teacher FROM lessons_table LIMIT 50")
+    @Query("SELECT DISTINCT teacher FROM lessons_table ORDER BY teacher LIMIT 200")
     fun getTeacherNames(): List<String>
 
-    @Query("SELECT DISTINCT cabinet FROM lessons_table LIMIT 50")
+    @Query("SELECT DISTINCT cabinet FROM lessons_table ORDER BY cabinet LIMIT 200")
     fun getCabinets(): List<Int>
 }
