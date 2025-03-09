@@ -1,4 +1,4 @@
-package ru.slavapmk.journalTracker.ui.lesson
+package ru.slavapmk.journalTracker.dataModels
 
 import ru.slavapmk.journalTracker.R
 import ru.slavapmk.journalTracker.storageModels.StudentEntityAttendance

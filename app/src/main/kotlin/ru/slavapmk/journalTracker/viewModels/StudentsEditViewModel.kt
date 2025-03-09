@@ -7,8 +7,8 @@ import kotlinx.coroutines.launch
 import ru.slavapmk.journalTracker.dataModels.studentsEdit.StudentsEditListItem
 import ru.slavapmk.journalTracker.storageModels.StorageDependencies
 import ru.slavapmk.journalTracker.storageModels.entities.StudentEntity
-import ru.slavapmk.journalTracker.ui.lesson.toEdit
-import ru.slavapmk.journalTracker.ui.lesson.toEntity
+import ru.slavapmk.journalTracker.dataModels.toEdit
+import ru.slavapmk.journalTracker.dataModels.toEntity
 
 class StudentsEditViewModel : ViewModel() {
     fun loadStudents() {

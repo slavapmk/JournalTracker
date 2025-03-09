@@ -14,8 +14,8 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.slavapmk.journalTracker.R
 import ru.slavapmk.journalTracker.dataModels.lesson.LessonStudentListItem
+import ru.slavapmk.journalTracker.dataModels.toEdit
 import ru.slavapmk.journalTracker.databinding.ActivityLessonBinding
-import ru.slavapmk.journalTracker.storageModels.StudentEntityAttendance
 import ru.slavapmk.journalTracker.ui.LessonUpdateDialog
 import ru.slavapmk.journalTracker.ui.MainActivity.Companion.fmanager
 import ru.slavapmk.journalTracker.ui.SharedKeys
@@ -101,14 +101,7 @@ class LessonActivity : AppCompatActivity() {
                             it.id,
                             it.studentId,
                             viewModel.allStudents.find { student -> student.id == it.studentId }!!.name,
-                            when (it.attendance) {
-                                StudentEntityAttendance.VISIT -> StudentAttendanceLesson.VISIT
-                                StudentEntityAttendance.NOT_VISIT -> StudentAttendanceLesson.NOT_VISIT
-                                StudentEntityAttendance.SICK -> StudentAttendanceLesson.SICK
-                                StudentEntityAttendance.SICK_WITH_CERTIFICATE -> StudentAttendanceLesson.SICK_WITH_CERTIFICATE
-                                StudentEntityAttendance.RESPECTFUL_PASS -> StudentAttendanceLesson.RESPECTFUL_PASS
-                                null -> null
-                            },
+                            it.attendance.toEdit(),
                             it.skipDescription
                         )
                     }

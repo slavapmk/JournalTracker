@@ -9,8 +9,8 @@ import kotlinx.coroutines.launch
 import ru.slavapmk.journalTracker.dataModels.lesson.LessonInfo
 import ru.slavapmk.journalTracker.dataModels.lesson.LessonStudentListItem
 import ru.slavapmk.journalTracker.dataModels.toEdit
+import ru.slavapmk.journalTracker.dataModels.toEntity
 import ru.slavapmk.journalTracker.storageModels.StorageDependencies
-import ru.slavapmk.journalTracker.storageModels.StudentEntityAttendance
 import ru.slavapmk.journalTracker.storageModels.entities.CampusEntity
 import ru.slavapmk.journalTracker.storageModels.entities.LessonInfoEntity
 import ru.slavapmk.journalTracker.storageModels.entities.SemesterEntity
@@ -18,8 +18,6 @@ import ru.slavapmk.journalTracker.storageModels.entities.StudentAttendanceEntity
 import ru.slavapmk.journalTracker.storageModels.entities.StudentEntity
 import ru.slavapmk.journalTracker.storageModels.entities.TimeEntity
 import ru.slavapmk.journalTracker.ui.SharedKeys
-import ru.slavapmk.journalTracker.ui.lesson.StudentAttendanceLesson
-import ru.slavapmk.journalTracker.ui.lesson.toEntity
 import java.time.LocalDate
 
 class LessonViewModel : ViewModel() {

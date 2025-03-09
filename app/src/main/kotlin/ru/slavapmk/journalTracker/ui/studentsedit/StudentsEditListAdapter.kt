@@ -13,7 +13,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
 import ru.slavapmk.journalTracker.R
 import ru.slavapmk.journalTracker.dataModels.studentsEdit.StudentsEditListItem
-import ru.slavapmk.journalTracker.ui.lesson.StudentAttendanceLesson
+import ru.slavapmk.journalTracker.dataModels.StudentAttendanceLesson
 
 class StudentsEditListAdapter(
     private val students: MutableList<StudentsEditListItem>,

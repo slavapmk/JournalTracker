@@ -18,7 +18,7 @@ import ru.slavapmk.journalTracker.dataModels.studentsEdit.StudentsEditListItem
 import ru.slavapmk.journalTracker.databinding.ActivityStudentsEditBinding
 import ru.slavapmk.journalTracker.ui.DeleteDialog
 import ru.slavapmk.journalTracker.ui.MainActivity.Companion.fmanager
-import ru.slavapmk.journalTracker.ui.lesson.StudentAttendanceLesson
+import ru.slavapmk.journalTracker.dataModels.StudentAttendanceLesson
 import ru.slavapmk.journalTracker.viewModels.StudentsEditViewModel
 
 class StudentsEditActivity : AppCompatActivity() {
