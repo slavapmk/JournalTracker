@@ -17,25 +17,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.0"
         android:layout_marginTop="15dp"
         android:text="@string/item_student_order"
         android:textSize="22sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
 
     <TextView
-        android:id="@+id/dates"
-        android:layout_width="wrap_content"
+        android:id="@+id/name"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:text="@string/item_student_name"
         android:textSize="22sp"
-        app:layout_constraintBottom_toBottomOf="@id/order"
-        app:layout_constraintStart_toEndOf="@id/order" />
+        app:layout_constraintEnd_toStartOf="@id/visiting_layout"
+        app:layout_constraintStart_toEndOf="@id/order"
+        app:layout_constraintTop_toTopOf="@id/order" />
 
 
     <com.google.android.material.textfield.TextInputLayout
@@ -44,9 +45,9 @@
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
+        android:layout_marginBottom="4dp"
         app:layout_constraintBottom_toBottomOf="@id/order"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="4dp"
         app:layout_constraintTop_toTopOf="@id/order">
 
         <AutoCompleteTextView
@@ -66,13 +67,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="15dp"
-        android:layout_marginBottom="5dp"
         android:layout_marginEnd="20dp"
+        android:layout_marginBottom="5dp"
         android:hint="@string/skip_reason"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/order">
+        app:layout_constraintTop_toBottomOf="@id/name">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/description_input"
