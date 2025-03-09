@@ -75,6 +75,10 @@ class LessonActivity : AppCompatActivity() {
                 "delete_lessons_dialog"
             )
         }
+        binding.students.layoutManager = LinearLayoutManager(this)
+        binding.students.adapter = LessonStudentsAdapter(viewModel.students) { updateStudent ->
+            viewModel.updateStudent(updateStudent)
+        }
     }
 
     override fun onResume() {
@@ -140,10 +144,6 @@ class LessonActivity : AppCompatActivity() {
             viewModel.info?.endHour ?: 0,
             viewModel.info?.endMinute ?: 0
         )
-        binding.students.layoutManager = LinearLayoutManager(this)
-        binding.students.adapter = LessonStudentsAdapter(viewModel.students) { updateStudent ->
-            viewModel.updateStudent(updateStudent)
-        }
 
         viewModel.info?.type?.colorState?.let {
             binding.typeColor.setBackgroundColor(

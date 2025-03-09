@@ -70,7 +70,7 @@ class LessonStudentsViewHolder(
     var context: Context, itemView: View
 ) : RecyclerView.ViewHolder(itemView) {
     var index: TextView = itemView.findViewById(R.id.order)
-    var name: TextView = itemView.findViewById(R.id.dates)
+    var name: TextView = itemView.findViewById(R.id.name)
     var visitingInput: AutoCompleteTextView = itemView.findViewById(R.id.visiting_input)
     var descriptionLayout: TextInputLayout = itemView.findViewById(R.id.description_layout)
     var descriptionInput: TextInputEditText = itemView.findViewById(R.id.description_input)

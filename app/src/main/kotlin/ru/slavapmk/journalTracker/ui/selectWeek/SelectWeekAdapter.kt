@@ -42,5 +42,5 @@ class SelectWeekViewHolder(
     var context: Context, itemView: View
 ) : RecyclerView.ViewHolder(itemView) {
     var order: TextView = itemView.findViewById(R.id.order)
-    var dates: TextView = itemView.findViewById(R.id.dates)
+    var dates: TextView = itemView.findViewById(R.id.name)
 }

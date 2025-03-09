@@ -1,1 +1,2 @@
-Updated settings students markup
+* Updated lesson markup
+* Fixed loading students

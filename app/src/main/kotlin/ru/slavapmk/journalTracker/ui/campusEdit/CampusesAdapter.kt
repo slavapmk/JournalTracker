@@ -37,6 +37,6 @@ class CampusesViewHolder(
 ) : RecyclerView.ViewHolder(itemView) {
     var order: TextView = itemView.findViewById(R.id.order)
     var codename: TextView = itemView.findViewById(R.id.codename)
-    var name: TextView = itemView.findViewById(R.id.dates)
+    var name: TextView = itemView.findViewById(R.id.name)
     var deleteButton: MaterialButton = itemView.findViewById(R.id.delete_button)
 }
