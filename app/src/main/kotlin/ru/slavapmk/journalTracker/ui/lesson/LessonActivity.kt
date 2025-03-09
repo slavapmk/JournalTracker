@@ -76,7 +76,7 @@ class LessonActivity : AppCompatActivity() {
             )
         }
         binding.students.layoutManager = LinearLayoutManager(this)
-        binding.students.adapter = LessonStudentsAdapter(viewModel.students) { updateStudent ->
+        binding.students.adapter = LessonStudentsAdapter(viewModel.studentAttendances) { updateStudent ->
             viewModel.updateStudent(updateStudent)
         }
     }
@@ -93,14 +93,18 @@ class LessonActivity : AppCompatActivity() {
         viewModel.loadData(lessonId)
         viewModel.lessonInfoLiveData.observe(this) { lessonInfo ->
             viewModel.info = lessonInfo
-            viewModel.loadFilledStudents()
+            viewModel.loadAttendance()
         }
-        viewModel.fillAttendanceLiveData.observe(this) { new ->
-            val oldSize = viewModel.students.size
-            viewModel.students.apply {
+        viewModel.insertedLiveData.observe(this) {
+            viewModel.loadAttendance()
+        }
+        viewModel.reloadAttendanceLiveData.observe(this) { attendances ->
+            setLoading(false)
+            val oldSize = viewModel.studentAttendances.size
+            viewModel.studentAttendances.apply {
                 clear()
                 addAll(
-                    new.map {
+                    attendances.map {
                         LessonStudentListItem(
                             it.id,
                             it.studentId,
@@ -111,8 +115,7 @@ class LessonActivity : AppCompatActivity() {
                     }
                 )
             }
-            val newSize = viewModel.students.size
-            setLoading(false)
+            val newSize = viewModel.studentAttendances.size
             injectData()
             binding.students.adapter?.notifyItemRangeChanged(0, maxOf(oldSize, newSize))
         }
