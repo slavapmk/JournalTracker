@@ -1,1 +1,1 @@
-Default student attendance value in edit screen
+Updated settings students markup
