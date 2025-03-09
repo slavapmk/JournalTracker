@@ -1,6 +1,6 @@
 package ru.slavapmk.journalTracker.dataModels.lesson
 
-import ru.slavapmk.journalTracker.ui.lesson.StudentAttendanceLesson
+import ru.slavapmk.journalTracker.dataModels.StudentAttendanceLesson
 
 data class LessonStudentListItem(
     var id: Int,

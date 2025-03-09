@@ -9,8 +9,8 @@ import kotlinx.coroutines.launch
 import ru.slavapmk.journalTracker.dataModels.lesson.LessonInfo
 import ru.slavapmk.journalTracker.dataModels.lesson.LessonStudentListItem
 import ru.slavapmk.journalTracker.dataModels.toEdit
+import ru.slavapmk.journalTracker.dataModels.toEntity
 import ru.slavapmk.journalTracker.storageModels.StorageDependencies
-import ru.slavapmk.journalTracker.storageModels.StudentAttendance
 import ru.slavapmk.journalTracker.storageModels.entities.CampusEntity
 import ru.slavapmk.journalTracker.storageModels.entities.LessonInfoEntity
 import ru.slavapmk.journalTracker.storageModels.entities.SemesterEntity
@@ -18,7 +18,6 @@ import ru.slavapmk.journalTracker.storageModels.entities.StudentAttendanceEntity
 import ru.slavapmk.journalTracker.storageModels.entities.StudentEntity
 import ru.slavapmk.journalTracker.storageModels.entities.TimeEntity
 import ru.slavapmk.journalTracker.ui.SharedKeys
-import ru.slavapmk.journalTracker.ui.lesson.StudentAttendanceLesson
 import java.time.LocalDate
 
 class LessonViewModel : ViewModel() {
@@ -239,14 +238,7 @@ class LessonViewModel : ViewModel() {
             updateStudent.id,
             updateStudent.studentId,
             info!!.id,
-            when (updateStudent.attendance) {
-                StudentAttendanceLesson.VISIT -> StudentAttendance.VISIT
-                StudentAttendanceLesson.NOT_VISIT -> StudentAttendance.NOT_VISIT
-                StudentAttendanceLesson.SICK -> StudentAttendance.SICK
-                StudentAttendanceLesson.SICK_WITH_CERTIFICATE -> StudentAttendance.SICK_WITH_CERTIFICATE
-                StudentAttendanceLesson.RESPECTFUL_PASS -> StudentAttendance.RESPECTFUL_PASS
-                null -> null
-            },
+            updateStudent.attendance.toEntity(),
             skipDescription = updateStudent.description
         )
         viewModelScope.launch {

@@ -1,7 +1,7 @@
 package ru.slavapmk.journalTracker.dataModels
 
 import ru.slavapmk.journalTracker.R
-import ru.slavapmk.journalTracker.storageModels.LessonType
+import ru.slavapmk.journalTracker.storageModels.LessonEntityType
 
 enum class LessonTypeEdit(
     val shortNameRes: Int,
@@ -40,21 +40,21 @@ enum class LessonTypeEdit(
     )
 }
 
-fun LessonType.toEdit(): LessonTypeEdit = when (this) {
-    LessonType.LECTURE -> LessonTypeEdit.LECTURE
-    LessonType.PRACTISE -> LessonTypeEdit.PRACTISE
-    LessonType.LABORATORY_WORK -> LessonTypeEdit.LABORATORY_WORK
-    LessonType.TEST -> LessonTypeEdit.TEST
-    LessonType.DIFFERENTIAL_TEST -> LessonTypeEdit.DIFFERENTIAL_TEST
-    LessonType.EXAM -> LessonTypeEdit.EXAM
+fun LessonEntityType.toEdit(): LessonTypeEdit = when (this) {
+    LessonEntityType.LECTURE -> LessonTypeEdit.LECTURE
+    LessonEntityType.PRACTISE -> LessonTypeEdit.PRACTISE
+    LessonEntityType.LABORATORY_WORK -> LessonTypeEdit.LABORATORY_WORK
+    LessonEntityType.TEST -> LessonTypeEdit.TEST
+    LessonEntityType.DIFFERENTIAL_TEST -> LessonTypeEdit.DIFFERENTIAL_TEST
+    LessonEntityType.EXAM -> LessonTypeEdit.EXAM
 }
 
 
-fun LessonTypeEdit.toEntity(): LessonType = when (this) {
-    LessonTypeEdit.LECTURE -> LessonType.LECTURE
-    LessonTypeEdit.PRACTISE -> LessonType.PRACTISE
-    LessonTypeEdit.LABORATORY_WORK -> LessonType.LABORATORY_WORK
-    LessonTypeEdit.TEST -> LessonType.TEST
-    LessonTypeEdit.DIFFERENTIAL_TEST -> LessonType.DIFFERENTIAL_TEST
-    LessonTypeEdit.EXAM -> LessonType.EXAM
+fun LessonTypeEdit.toEntity(): LessonEntityType = when (this) {
+    LessonTypeEdit.LECTURE -> LessonEntityType.LECTURE
+    LessonTypeEdit.PRACTISE -> LessonEntityType.PRACTISE
+    LessonTypeEdit.LABORATORY_WORK -> LessonEntityType.LABORATORY_WORK
+    LessonTypeEdit.TEST -> LessonEntityType.TEST
+    LessonTypeEdit.DIFFERENTIAL_TEST -> LessonEntityType.DIFFERENTIAL_TEST
+    LessonTypeEdit.EXAM -> LessonEntityType.EXAM
 }

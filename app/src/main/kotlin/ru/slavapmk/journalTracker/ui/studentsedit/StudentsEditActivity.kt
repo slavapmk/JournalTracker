@@ -18,6 +18,7 @@ import ru.slavapmk.journalTracker.dataModels.studentsEdit.StudentsEditListItem
 import ru.slavapmk.journalTracker.databinding.ActivityStudentsEditBinding
 import ru.slavapmk.journalTracker.ui.DeleteDialog
 import ru.slavapmk.journalTracker.ui.MainActivity.Companion.fmanager
+import ru.slavapmk.journalTracker.dataModels.StudentAttendanceLesson
 import ru.slavapmk.journalTracker.viewModels.StudentsEditViewModel
 
 class StudentsEditActivity : AppCompatActivity() {
@@ -25,7 +26,7 @@ class StudentsEditActivity : AppCompatActivity() {
     val viewModel by viewModels<StudentsEditViewModel>()
 
     private val studentsEditListAdapter by lazy {
-        StudentsEditListAdapter(viewModel.studentsList) { _, student ->
+        StudentsEditListAdapter(viewModel.studentsList, { student ->
             DeleteDialog {
                 val indexOf = viewModel.studentsList.indexOf(student)
                 val size = viewModel.studentsList.size
@@ -41,7 +42,9 @@ class StudentsEditActivity : AppCompatActivity() {
                 supportFragmentManager.beginTransaction(),
                 "delete_lessons_dialog"
             )
-        }
+        }, { student ->
+            viewModel.updateStudent(student)
+        })
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -122,7 +125,8 @@ class StudentsEditActivity : AppCompatActivity() {
         val insertIndex = viewModel.addStudent(
             StudentsEditListItem(
                 null,
-                text
+                text,
+                StudentAttendanceLesson.NULL
             )
         )
         studentsEditListAdapter.notifyItemInserted(insertIndex)

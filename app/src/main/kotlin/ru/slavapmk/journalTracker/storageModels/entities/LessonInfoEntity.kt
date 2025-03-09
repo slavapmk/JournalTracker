@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import ru.slavapmk.journalTracker.storageModels.LessonType
+import ru.slavapmk.journalTracker.storageModels.LessonEntityType
 
 @Entity(
     tableName = "lessons_table",
@@ -33,7 +33,7 @@ data class LessonInfoEntity(
     @PrimaryKey(autoGenerate = true) val id: Int,
     @ColumnInfo(name = "semester_id", index = true) val semesterId: Int,
     val name: String,
-    val type: LessonType,
+    val type: LessonEntityType,
     @ColumnInfo(name = "date_day") val dateDay: Int,
     @ColumnInfo(name = "date_month") val dateMonth: Int,
     @ColumnInfo(name = "date_year") val dateYear: Int,
@@ -46,7 +46,7 @@ data class LessonInfoEntity(
 data class InsertLesson(
     @ColumnInfo(name = "semester_id", index = true) val semesterId: Int,
     val name: String,
-    val type: LessonType,
+    val type: LessonEntityType,
     @ColumnInfo(name = "date_day") val dateDay: Int,
     @ColumnInfo(name = "date_month") val dateMonth: Int,
     @ColumnInfo(name = "date_year") val dateYear: Int,

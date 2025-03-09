@@ -1,6 +1,6 @@
 package ru.slavapmk.journalTracker.storageModels
 
-enum class StudentAttendance {
+enum class StudentEntityAttendance {
     VISIT,
     NOT_VISIT,
     SICK,

@@ -3,7 +3,7 @@ package ru.slavapmk.journalTracker.storageModels.dao
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import ru.slavapmk.journalTracker.storageModels.LessonType
+import ru.slavapmk.journalTracker.storageModels.LessonEntityType
 import ru.slavapmk.journalTracker.storageModels.entities.InsertLesson
 import ru.slavapmk.journalTracker.storageModels.entities.LessonInfoEntity
 
@@ -46,7 +46,7 @@ interface LessonsInfoDao {
         dateYear: Int,
         semesterId: Int,
         name: String,
-        type: LessonType,
+        type: LessonEntityType,
         timeId: Int,
         teacher: String,
         cabinet: Int,

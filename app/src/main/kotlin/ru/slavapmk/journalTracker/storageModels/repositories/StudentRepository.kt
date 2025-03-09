@@ -16,6 +16,10 @@ class StudentRepository(
         studentsDao.deleteStudent(studentId)
     }
 
+    suspend fun updateStudent(studentEntity: StudentEntity) = withContext(Dispatchers.IO) {
+        studentsDao.updateStudent(studentEntity)
+    }
+
     suspend fun getStudents(): List<StudentEntity> = withContext(Dispatchers.IO) {
         studentsDao.getStudents()
     }

@@ -143,4 +143,5 @@
     <string name="db_save_error">Save error</string>
     <string name="db_import_success">DB imported</string>
     <string name="db_import_error">DB import error</string>
+    <string name="student_default_attendance">Default</string>
 </resources>

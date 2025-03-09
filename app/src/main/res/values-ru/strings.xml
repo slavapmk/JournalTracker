@@ -110,4 +110,5 @@
     <string name="db_save_error">Ошибка сохранения</string>
     <string name="db_import_success">БД импортирована</string>
     <string name="db_import_error">Ошибка импорта</string>
+    <string name="student_default_attendance">По умолчанию</string>
 </resources>
