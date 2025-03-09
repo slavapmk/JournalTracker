@@ -5,6 +5,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.slavapmk.journalTracker.dataModels.lesson.LessonInfo
 import ru.slavapmk.journalTracker.dataModels.lesson.LessonStudentListItem
@@ -26,8 +27,8 @@ class LessonViewModel : ViewModel() {
     var info: LessonInfo? = null
     var semester: SemesterEntity? = null
     var allTimes: MutableList<TimeEntity> = mutableListOf()
-    var students: MutableList<LessonStudentListItem> = mutableListOf()
-    val allStudents: MutableList<StudentEntity> = mutableListOf()
+    var studentAttendances: MutableList<LessonStudentListItem> = mutableListOf()
+    var allStudents: MutableList<StudentEntity> = mutableListOf()
 
     private val campusesLiveData: MutableLiveData<List<CampusEntity>> by lazy { MutableLiveData() }
     private val semestersLiveData: MutableLiveData<List<SemesterEntity>> by lazy { MutableLiveData() }
@@ -35,6 +36,8 @@ class LessonViewModel : ViewModel() {
     private val studentsLiveData: MutableLiveData<List<StudentEntity>> by lazy { MutableLiveData() }
     private val attendanceLiveData: MutableLiveData<List<StudentAttendanceEntity>> by lazy { MutableLiveData() }
     private val lessonLiveData: MutableLiveData<LessonInfoEntity> by lazy { MutableLiveData() }
+    val reloadAttendanceLiveData by lazy { MutableLiveData<List<StudentAttendanceEntity>>() }
+    val insertedLiveData by lazy { MutableLiveData<Unit>() }
 
     val weekTypes: Int by lazy {
         sharedPreferences!!.getInt(SharedKeys.WEEK_TYPES_KEY, 1)
@@ -71,9 +74,7 @@ class LessonViewModel : ViewModel() {
                         )
                     }
                 }
-                if (toInit.isNotEmpty()) {
-                    fillStudents(toInit)
-                }
+                fillStudents(toInit)
 
                 val timeIndex = times!!.indexOfFirst { it.id == lesson!!.timeId }
                 val time = times!![timeIndex]
@@ -144,13 +145,25 @@ class LessonViewModel : ViewModel() {
             update()
         }
     }
-    val fillAttendanceLiveData: MutableLiveData<List<StudentAttendanceEntity>> by lazy { MutableLiveData() }
 
     private fun fillStudents(attendances: List<StudentAttendanceEntity>) {
         viewModelScope.launch {
-            StorageDependencies.studentsAttendanceRepository.insertAttendances(
-                attendances
-            )
+            if (attendances.isNotEmpty()) {
+                StorageDependencies.studentsAttendanceRepository.insertAttendances(
+                    attendances
+                )
+                insertedLiveData.postValue(Unit)
+            }
+        }
+    }
+
+    fun loadAttendance() {
+        viewModelScope.launch {
+            info?.id?.let {
+                reloadAttendanceLiveData.postValue(
+                    StorageDependencies.studentsAttendanceRepository.getLessonAttendance(it)
+                )
+            }
         }
     }
 
@@ -211,7 +224,11 @@ class LessonViewModel : ViewModel() {
         }
     }
 
-    private fun genDates(fromDate: SimpleDate, toDate: SimpleDate, weekOffset: Int): List<SimpleDate> {
+    private fun genDates(
+        fromDate: SimpleDate,
+        toDate: SimpleDate,
+        weekOffset: Int
+    ): List<SimpleDate> {
         val dates = mutableListOf<SimpleDate>()
 
         var current = LocalDate.of(fromDate.year, fromDate.month, fromDate.day)
@@ -223,14 +240,6 @@ class LessonViewModel : ViewModel() {
         }
 
         return dates
-    }
-
-    fun loadFilledStudents() {
-        viewModelScope.launch {
-            fillAttendanceLiveData.postValue(
-                StorageDependencies.studentsAttendanceRepository.getLessonAttendance(info!!.id)
-            )
-        }
     }
 
     fun updateStudent(updateStudent: LessonStudentListItem) {
