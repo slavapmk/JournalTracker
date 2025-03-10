@@ -39,6 +39,7 @@ class StudentsEditActivity : AppCompatActivity() {
                     updateCount
                 )
                 viewModel.deleteStudent(student)
+                checkEmptyMessage()
             }.show(
                 supportFragmentManager.beginTransaction(),
                 "delete_lessons_dialog"
