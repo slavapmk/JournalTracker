@@ -16,6 +16,7 @@ import org.apache.poi.ss.usermodel.Workbook
 import org.apache.poi.ss.util.CellRangeAddress
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import ru.slavapmk.journalTracker.R
+import ru.slavapmk.journalTracker.dataModels.toEdit
 import ru.slavapmk.journalTracker.storageModels.StorageDependencies
 import java.io.File
 import java.io.FileOutputStream
@@ -30,9 +31,9 @@ class ExportDayViewModel : ViewModel() {
         MutableLiveData<Unit>()
     }
 
-    fun saveExcel(context: Context) {
+    fun saveExcel(context: Context, date: SimpleDate) {
         viewModelScope.launch {
-            val workbook = parse(context)
+            val workbook = parse(context, date)
             withContext(Dispatchers.IO) {
                 val calendar: Calendar = GregorianCalendar.getInstance().apply { time = Date() }
 
@@ -60,13 +61,13 @@ class ExportDayViewModel : ViewModel() {
         }
     }
 
-    private suspend fun parse(context: Context) = withContext(Dispatchers.IO) {
+    private suspend fun parse(context: Context, date: SimpleDate) = withContext(Dispatchers.IO) {
         val workbook = XSSFWorkbook()
         val sheet: Sheet = workbook.createSheet("Лист1")
         workbook.properties.coreProperties.creator = "Journal Exporter"
         workbook.properties.coreProperties.title = "Attendance Journal"
 
-        val cellDataList = fillDay(context)
+        val cellDataList = fillDay(context, date)
         parseBook(
             workbook,
             sheet,
@@ -80,7 +81,10 @@ class ExportDayViewModel : ViewModel() {
         return@withContext workbook
     }
 
-    private suspend fun fillDay(context: Context): RenderData {
+    private suspend fun fillDay(
+        context: Context,
+        date: SimpleDate
+    ): RenderData {
         val resultCells = mutableListOf<CellData>()
         val resultBorders = mutableListOf<BorderData>()
 
@@ -128,6 +132,50 @@ class ExportDayViewModel : ViewModel() {
                 0, 1,
                 1, 4 + studentEntityList.size - 1,
                 BorderStyle.THICK
+            )
+        )
+
+        val lessonListWithAttendance = withContext(Dispatchers.IO) {
+            StorageDependencies.lessonInfoRepository.getLessonsByDate(
+                date.day,
+                date.month,
+                date.year
+            ).map {
+                it to StorageDependencies.studentsAttendanceRepository.getStudentAttendanceWithNames(
+                    it.id
+                )
+            }
+        }
+
+        for ((index, listPair) in lessonListWithAttendance.withIndex()) {
+            val (lesson, students) = listPair
+            resultCells.add(
+                CellData(
+                    2 + index,
+                    2,
+                    lesson.name,
+                    rotation = 90
+                )
+            )
+            resultCells.add(
+                CellData(
+                    2 + index,
+                    3,
+                    context.getString(
+                        lesson.type.toEdit().shortNameRes
+                    )
+                )
+            )
+        }
+
+        resultCells.add(
+            CellData(
+                2, 1,
+                context.getString(
+                    R.string.exporter_date,
+                    date.day, date.month, date.year
+                ),
+                endColumn = 2 + lessonListWithAttendance.size - 1
             )
         )
 
