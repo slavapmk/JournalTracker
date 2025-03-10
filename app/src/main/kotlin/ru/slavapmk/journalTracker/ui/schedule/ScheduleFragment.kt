@@ -250,6 +250,7 @@ class ScheduleFragment : Fragment() {
                 }
             )
         }
+        binding.noLessonsText.isVisible = viewModel.lessons.isEmpty()
 
         viewModel.mediatorLiveData.observe(viewLifecycleOwner) { loadData ->
             if (loadData.semesters.isEmpty()) {
@@ -351,6 +352,7 @@ class ScheduleFragment : Fragment() {
                 -2
             }
             activity.setLoading(false)
+            binding.noLessonsText.isVisible = viewModel.lessons.isEmpty()
 
             checkVisibility()
         }
