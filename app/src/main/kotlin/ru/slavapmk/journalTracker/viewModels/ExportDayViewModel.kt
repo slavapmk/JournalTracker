@@ -160,17 +160,17 @@ class ExportDayViewModel : ViewModel() {
                 CellData(
                     2 + lessonIndex,
                     2,
-                    lesson.name,
-                    rotation = 90
+                    context.getString(
+                        lesson.type.toEdit().shortNameRes
+                    )
                 )
             )
             resultCells.add(
                 CellData(
                     2 + lessonIndex,
                     3,
-                    context.getString(
-                        lesson.type.toEdit().shortNameRes
-                    )
+                    lesson.name,
+                    rotation = 90
                 )
             )
             for ((studentIndex, student) in students.withIndex()) {
