@@ -39,6 +39,7 @@ interface StudentsAttendanceDao {
         FROM student_attendance_table
         INNER JOIN students_table ON students_table.id = student_attendance_table.student_id
         WHERE student_attendance_table.lesson_id = :lessonId
+        ORDER BY student_name
     """)
     fun getStudentAttendanceWithNames(lessonId: Int): List<StudentWithAttendance>
 }

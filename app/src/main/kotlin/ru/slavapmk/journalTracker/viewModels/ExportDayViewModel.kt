@@ -2,7 +2,6 @@ package ru.slavapmk.journalTracker.viewModels
 
 import android.content.Context
 import android.os.Environment
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -150,11 +149,11 @@ class ExportDayViewModel : ViewModel() {
             }
         }
 
-        for ((index, listPair) in lessonListWithAttendance.withIndex()) {
+        for ((lessonIndex, listPair) in lessonListWithAttendance.withIndex()) {
             val (lesson, students) = listPair
             resultCells.add(
                 CellData(
-                    2 + index,
+                    2 + lessonIndex,
                     2,
                     lesson.name,
                     rotation = 90
@@ -162,14 +161,34 @@ class ExportDayViewModel : ViewModel() {
             )
             resultCells.add(
                 CellData(
-                    2 + index,
+                    2 + lessonIndex,
                     3,
                     context.getString(
                         lesson.type.toEdit().shortNameRes
                     )
                 )
             )
+            for ((studentIndex, student) in students.withIndex()) {
+                val toEdit = student.attendance.attendance.toEdit()
+                val skipped = toEdit?.displayNameRes?.let { context.getString(it) } ?: ""
+                resultCells.add(
+                    CellData(
+                        2 + lessonIndex,
+                        4 + studentIndex,
+                        skipped
+                    )
+                )
+            }
         }
+
+        resultBorders.add(
+            BorderData(
+                2, 1,
+                2 + lessonListWithAttendance.size - 1,
+                3 + studentEntityList.size,
+                BorderStyle.THICK
+            )
+        )
 
         resultCells.add(
             CellData(
