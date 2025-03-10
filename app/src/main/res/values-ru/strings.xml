@@ -111,4 +111,5 @@
     <string name="db_import_success">БД импортирована</string>
     <string name="db_import_error">Ошибка импорта</string>
     <string name="student_default_attendance">По умолчанию</string>
+    <string name="add_semester_requirement">Добавьте хотя бы 1 семестр</string>
 </resources>

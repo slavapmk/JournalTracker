@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.edit
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.datepicker.MaterialDatePicker
 import ru.slavapmk.journalTracker.R
@@ -48,6 +49,7 @@ class SemestersActivity : AppCompatActivity() {
                         updateCount
                     )
                     viewModel.deleteSemester(semester)
+                    binding.addRequirement.isVisible = viewModel.semesters.isEmpty()
                 }.show(
                     supportFragmentManager.beginTransaction(),
                     "delete_lessons_dialog"
@@ -115,6 +117,7 @@ class SemestersActivity : AppCompatActivity() {
                     indexOf, viewModel.semesters.size - indexOf
                 )
                 binding.semesters.scrollToPosition(indexOf)
+                binding.addRequirement.isVisible = viewModel.semesters.isEmpty()
             }
             dialog.show(supportFragmentManager, "SEMESTER_DATES")
         }
@@ -127,6 +130,7 @@ class SemestersActivity : AppCompatActivity() {
             viewModel.semesters.addAll(it)
             semestersAdapter.notifyItemRangeChanged(0, it.size)
             binding.loadingStatus.visibility = View.GONE
+            binding.addRequirement.isVisible = viewModel.semesters.isEmpty()
         }
 
         viewModel.semesterUpdateLiveData.observe(this) { (old, new) ->
@@ -134,6 +138,7 @@ class SemestersActivity : AppCompatActivity() {
             viewModel.semesters[indexOf] = new
             semestersAdapter.notifyItemChanged(indexOf)
             binding.loadingStatus.visibility = View.GONE
+            binding.addRequirement.isVisible = viewModel.semesters.isEmpty()
         }
 
         viewModel.endDeleteLiveData.observe(this) {
