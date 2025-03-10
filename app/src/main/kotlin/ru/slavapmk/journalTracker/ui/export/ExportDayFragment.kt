@@ -92,7 +92,11 @@ class ExportDayFragment : Fragment() {
 
         binding.saveExcel.setOnClickListener {
             activity.setLoading(true)
-            viewModel.saveExcel(requireContext(), date)
+            viewModel.saveExcel(
+                requireContext(),
+                date,
+                shared.getString(SharedKeys.GROUP_NAME_KEY, "")!!
+            )
         }
 
         viewModel.savedLiveStatus.observe(viewLifecycleOwner) {

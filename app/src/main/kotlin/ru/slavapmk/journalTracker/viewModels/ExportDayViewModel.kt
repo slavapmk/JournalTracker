@@ -34,9 +34,9 @@ class ExportDayViewModel : ViewModel() {
         MutableLiveData<Unit>()
     }
 
-    fun saveExcel(context: Context, date: SimpleDate) {
+    fun saveExcel(context: Context, date: SimpleDate, group: String) {
         viewModelScope.launch {
-            val workbook = parse(context, date)
+            val workbook = parse(context, date, group)
             withContext(Dispatchers.IO) {
                 val calendar: Calendar = GregorianCalendar.getInstance().apply { time = Date() }
 
@@ -64,13 +64,13 @@ class ExportDayViewModel : ViewModel() {
         }
     }
 
-    private suspend fun parse(context: Context, date: SimpleDate) = withContext(Dispatchers.IO) {
+    private suspend fun parse(context: Context, date: SimpleDate, group: String) = withContext(Dispatchers.IO) {
         val workbook = XSSFWorkbook()
         val sheet: Sheet = workbook.createSheet("Лист1")
         workbook.properties.coreProperties.creator = "Journal Exporter"
         workbook.properties.coreProperties.title = "Attendance Journal"
 
-        val cellDataList = fillDay(context, date)
+        val cellDataList = fillDay(context, date, group)
         parseBook(
             workbook,
             sheet,
@@ -86,7 +86,8 @@ class ExportDayViewModel : ViewModel() {
 
     private suspend fun fillDay(
         context: Context,
-        date: SimpleDate
+        date: SimpleDate,
+        group: String
     ): RenderData {
         val resultCells = mutableListOf<CellData>()
         val resultBorders = mutableListOf<BorderData>()
@@ -305,7 +306,7 @@ class ExportDayViewModel : ViewModel() {
         resultCells.add(
             CellData(
                 0, 0,
-                context.getString(R.string.exporter_group, "БББ2200"),
+                context.getString(R.string.exporter_group, group),
                 endColumn = 2 + lessonListWithAttendance.size + 1
             )
         )
