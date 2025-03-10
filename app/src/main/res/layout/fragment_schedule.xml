@@ -277,6 +277,7 @@
         android:text="@string/no_lessons"
         android:textSize="20sp"
         android:textStyle="bold"
+        android:textAlignment="center"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/lessons"
         app:layout_constraintEnd_toEndOf="@id/lessons"

@@ -79,6 +79,7 @@
         android:layout_height="wrap_content"
         android:maxWidth="250dp"
         android:text="@string/add_time_requirement"
+        android:textAlignment="center"
         android:textSize="20sp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
