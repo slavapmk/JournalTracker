@@ -17,6 +17,7 @@ import org.apache.poi.ss.usermodel.Workbook
 import org.apache.poi.ss.util.CellRangeAddress
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import ru.slavapmk.journalTracker.R
+import ru.slavapmk.journalTracker.dataModels.StudentAttendanceLesson
 import ru.slavapmk.journalTracker.dataModels.toEdit
 import ru.slavapmk.journalTracker.storageModels.StorageDependencies
 import java.io.File
@@ -149,6 +150,9 @@ class ExportDayViewModel : ViewModel() {
             }
         }
 
+        val studentsSumDisrespect = mutableMapOf<Int, Int>()
+        val studentsSumRespect = mutableMapOf<Int, Int>()
+
         for ((lessonIndex, listPair) in lessonListWithAttendance.withIndex()) {
             val (lesson, students) = listPair
             resultCells.add(
@@ -170,6 +174,31 @@ class ExportDayViewModel : ViewModel() {
             )
             for ((studentIndex, student) in students.withIndex()) {
                 val toEdit = student.attendance.attendance.toEdit()
+                when (toEdit) {
+                    StudentAttendanceLesson.NULL -> {}
+                    StudentAttendanceLesson.VISIT -> {}
+                    StudentAttendanceLesson.NOT_VISIT ->
+                        studentsSumDisrespect.compute(studentIndex) { _, oldValue ->
+                            (oldValue ?: 0) + 2
+                        }
+
+                    StudentAttendanceLesson.SICK ->
+                        studentsSumDisrespect.compute(studentIndex) { _, oldValue ->
+                            (oldValue ?: 0) + 2
+                        }
+
+                    StudentAttendanceLesson.SICK_WITH_CERTIFICATE ->
+                        studentsSumRespect.compute(studentIndex) { _, oldValue ->
+                            (oldValue ?: 0) + 2
+                        }
+
+                    StudentAttendanceLesson.RESPECTFUL_PASS ->
+                        studentsSumRespect.compute(studentIndex) { _, oldValue ->
+                            (oldValue ?: 0) + 2
+                        }
+
+                    null -> {}
+                }
                 val skipped = toEdit?.displayNameRes?.let { context.getString(it) } ?: ""
                 resultCells.add(
                     CellData(
@@ -198,6 +227,86 @@ class ExportDayViewModel : ViewModel() {
                     date.day, date.month, date.year
                 ),
                 endColumn = 2 + lessonListWithAttendance.size - 1
+            )
+        )
+
+        resultCells.add(
+            CellData(
+                2 + lessonListWithAttendance.size, 1,
+                context.getString(
+                    R.string.exporter_hour_skipped
+                ),
+                endColumn = 2 + lessonListWithAttendance.size + 1
+            )
+        )
+        resultCells.add(
+            CellData(
+                2 + lessonListWithAttendance.size, 2,
+                context.getString(
+                    R.string.exporter_hour_skipped_respectful
+                ),
+                endRow = 3,
+                rotation = 90
+            )
+        )
+        resultCells.add(
+            CellData(
+                2 + lessonListWithAttendance.size + 1, 2,
+                context.getString(
+                    R.string.exporter_hour_skipped_disrespectful
+                ),
+                endRow = 3,
+                rotation = 90
+            )
+        )
+        resultCells.addAll(
+            studentsSumDisrespect.map {
+                CellData(
+                    2 + lessonListWithAttendance.size + 1,
+                    4 + it.key,
+                    it.value
+                )
+            }
+        )
+        resultCells.addAll(
+            studentsSumRespect.map {
+                CellData(
+                    2 + lessonListWithAttendance.size,
+                    4 + it.key,
+                    it.value
+                )
+            }
+        )
+        resultBorders.add(
+            BorderData(
+                2 + lessonListWithAttendance.size, 1,
+                2 + lessonListWithAttendance.size + 1,
+                3 + studentEntityList.size,
+                BorderStyle.THICK
+            )
+        )
+
+        resultBorders.add(
+            BorderData(
+                0, 1,
+                2 + lessonListWithAttendance.size + 1,
+                3,
+                BorderStyle.THICK
+            )
+        )
+        resultBorders.add(
+            BorderData(
+                0, 0,
+                2 + lessonListWithAttendance.size + 1,
+                0,
+                BorderStyle.THICK
+            )
+        )
+        resultCells.add(
+            CellData(
+                0, 0,
+                context.getString(R.string.exporter_group, "БББ2200"),
+                endColumn = 2 + lessonListWithAttendance.size + 1
             )
         )
 
