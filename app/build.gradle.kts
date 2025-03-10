@@ -77,6 +77,8 @@ dependencies {
     testImplementation(libs.androidx.room.testing)
     implementation(libs.androidx.room.paging)
     implementation(libs.flexbox)
+    implementation(libs.poi)
+    implementation(libs.poi.ooxml)
 }
 
 tasks.register("generateVersions") {
