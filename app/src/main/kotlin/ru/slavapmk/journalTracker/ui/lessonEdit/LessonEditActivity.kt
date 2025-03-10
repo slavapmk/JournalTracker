@@ -41,6 +41,14 @@ class LessonEditActivity : AppCompatActivity() {
         }
     }
 
+//    private val campusesAdapter by lazy {
+//        ArrayAdapter(
+//            this,
+//            android.R.layout.simple_dropdown_item_1line,
+//            viewModel.campusNames
+//        )
+//    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -141,6 +149,7 @@ class LessonEditActivity : AppCompatActivity() {
             viewModel.allCabinets.apply {
                 clear()
                 addAll(it)
+                (binding.cabinetInput as MaterialAutoCompleteTextView).setSimpleItems(viewModel.allCabinetsNames)
             }
         }
     }
@@ -203,8 +212,7 @@ class LessonEditActivity : AppCompatActivity() {
 
             override fun afterTextChanged(s: Editable?) {}
         })
-        val cabinetItems = viewModel.allCabinets.map { it.toString() }.toTypedArray()
-        (binding.cabinetInput as MaterialAutoCompleteTextView).setSimpleItems(cabinetItems)
+        viewModel.loadCabinets(viewModel.info.campusId)
 
         val campusNames = viewModel.campuses.map {
             it.name
@@ -220,6 +228,7 @@ class LessonEditActivity : AppCompatActivity() {
         binding.campusInput.setAdapter(campusesAdapter)
         binding.campusInput.setOnItemClickListener { _, _, position, _ ->
             viewModel.info.campusId = viewModel.campuses[position].id
+            viewModel.loadCabinets(viewModel.info.campusId)
         }
 
         val timeNames = List(viewModel.times.size) { index -> (index + 1).toString() }

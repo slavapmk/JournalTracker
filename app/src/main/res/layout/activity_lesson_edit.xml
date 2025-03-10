@@ -17,11 +17,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="40dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:hint="@string/edit_lesspon_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/type_field">
 
             <AutoCompleteTextView
                 android:id="@+id/name_input"
@@ -61,7 +61,7 @@
             android:hint="@string/edit_lesson_cabinet"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/teacher_field">
+            app:layout_constraintTop_toBottomOf="@id/campus_field">
 
             <AutoCompleteTextView
                 android:id="@+id/cabinet_input"
@@ -82,7 +82,7 @@
             android:hint="@string/edit_lesson_campus"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cabinet_field">
+            app:layout_constraintTop_toBottomOf="@id/teacher_field">
 
             <AutoCompleteTextView
                 android:id="@+id/campus_input"
@@ -100,11 +100,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="40dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:hint="@string/edit_lesson_order"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/campus_field">
+            app:layout_constraintTop_toTopOf="parent">
 
             <AutoCompleteTextView
                 android:id="@+id/order_input"
@@ -152,7 +152,7 @@
             app:iconGravity="textStart"
             app:layout_constraintEnd_toEndOf="@id/type_field"
             app:layout_constraintStart_toStartOf="@id/type_field"
-            app:layout_constraintTop_toBottomOf="@id/type_field" />
+            app:layout_constraintTop_toBottomOf="@id/cabinet_field" />
 
         <FrameLayout
             android:id="@+id/loading_status"

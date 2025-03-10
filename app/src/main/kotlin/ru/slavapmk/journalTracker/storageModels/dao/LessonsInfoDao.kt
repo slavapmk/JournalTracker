@@ -63,5 +63,8 @@ interface LessonsInfoDao {
     fun getTeacherNames(): List<String>
 
     @Query("SELECT DISTINCT cabinet FROM lessons_table ORDER BY cabinet LIMIT 200")
-    fun getCabinets(): List<Int>
+    fun getAllCabinets(): List<Int>
+
+    @Query("SELECT DISTINCT cabinet FROM lessons_table WHERE campus_id = :campusId ORDER BY cabinet LIMIT 200")
+    fun getCabinets(campusId: Int): List<Int>
 }
