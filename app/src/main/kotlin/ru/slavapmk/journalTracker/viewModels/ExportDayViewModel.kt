@@ -2,6 +2,7 @@ package ru.slavapmk.journalTracker.viewModels
 
 import android.content.Context
 import android.os.Environment
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,6 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.apache.poi.ss.usermodel.BorderStyle
+import org.apache.poi.ss.usermodel.Cell
 import org.apache.poi.ss.usermodel.HorizontalAlignment
 import org.apache.poi.ss.usermodel.Sheet
 import org.apache.poi.ss.usermodel.VerticalAlignment
@@ -24,6 +26,7 @@ import java.io.IOException
 import java.util.Calendar
 import java.util.Date
 import java.util.GregorianCalendar
+import kotlin.math.roundToInt
 
 
 class ExportDayViewModel : ViewModel() {
@@ -244,28 +247,59 @@ class ExportDayViewModel : ViewModel() {
         }
     }
 
+    private fun findRegion(
+        regions: List<CellRangeAddress>,
+        column: Int,
+        row: Int
+    ): CellRangeAddress? {
+        for (region in regions) {
+            if (row in region.firstRow..region.lastRow && column in region.firstColumn..region.lastColumn) {
+                return region
+            }
+        }
+        return null
+    }
 
     private fun resizeColumn(sheet: Sheet) {
-        val columnsToResize = mutableMapOf<Int, Int>()
+        val columnsToResize = mutableMapOf<Int, Double>()
 
         for (rowIndex in 0..sheet.lastRowNum) {
             val row = sheet.getRow(rowIndex) ?: continue
-            for (cell in row) {
-                val cellValue = cell.toString()
-                val columnIndex = cell.columnIndex
-                columnsToResize[columnIndex] = maxOf(
-                    columnsToResize.getOrDefault(columnIndex, 0),
-                    if (cell.cellStyle.rotation == 90.toShort()) {
-                        1
+            for (columnIndex in 0..row.physicalNumberOfCells) {
+                val cell: Cell? = row.getCell(columnIndex)
+                val cellValue = cell?.toString() ?: ""
+                val findRegion = findRegion(sheet.mergedRegions, columnIndex, rowIndex)
+                val mergeCell = findRegion?.let {
+                    sheet.getRow(it.firstRow).getCell(it.firstColumn)
+                }
+                val mergeWidthCols = findRegion?.let {
+                    maxOf(it.lastColumn, it.firstColumn) - minOf(it.firstColumn, it.lastColumn) + 1
+                }
+                val width: Double = if (cell?.cellStyle?.rotation == 90.toShort()) {
+                    5.0
+                } else {
+                    if (mergeWidthCols == null || mergeCell == null) {
+                        cellValue.length.toDouble()
                     } else {
-                        cellValue.length
+                        if (mergeCell.cellStyle.rotation == 90.toShort()) {
+                            5.0
+                        } else {
+                            mergeCell.toString().length.toDouble() / mergeWidthCols
+                        }
                     }
+                }
+                columnsToResize[columnIndex] = maxOf(
+                    columnsToResize.getOrDefault(columnIndex, 5.0),
+                    width
                 )
             }
         }
 
         for ((column, maxLength) in columnsToResize) {
-            sheet.setColumnWidth(column, (maxLength + 2) * 256) // +2 для небольшого запаса
+            sheet.setColumnWidth(
+                column,
+                ((maxLength/* + 2*/) * 256).roundToInt()
+            ) // +2 для небольшого запаса
         }
     }
 }
