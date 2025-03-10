@@ -74,7 +74,11 @@ class LessonInfoRepository(
         lessonsInfoDao.getTeacherNames()
     }
 
-    suspend fun getCabinets(): List<Int> = withContext(Dispatchers.IO) {
-        lessonsInfoDao.getCabinets()
+    suspend fun getAllCabinets(): List<Int> = withContext(Dispatchers.IO) {
+        lessonsInfoDao.getAllCabinets()
+    }
+
+    suspend fun getCabinets(campusId: Int): List<Int> = withContext(Dispatchers.IO) {
+        lessonsInfoDao.getCabinets(campusId)
     }
 }

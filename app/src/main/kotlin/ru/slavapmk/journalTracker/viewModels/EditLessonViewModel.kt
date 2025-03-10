@@ -39,6 +39,8 @@ class EditLessonViewModel : ViewModel() {
     val allLessonNames = mutableListOf<String>()
     val allTeachers = mutableListOf<String>()
     val allCabinets = mutableListOf<Int>()
+    val allCabinetsNames: Array<String>
+        get() = allCabinets.map { it.toString() }.toTypedArray()
 
     val allLessonLiveData by lazy { MediatorLiveData<List<String>>() }
     val allTeachersLiveData by lazy { MediatorLiveData<List<String>>() }
@@ -90,9 +92,6 @@ class EditLessonViewModel : ViewModel() {
             allTeachersLiveData.postValue(
                 StorageDependencies.lessonInfoRepository.getTeacherNames()
             )
-            allCabinetsLiveData.postValue(
-                StorageDependencies.lessonInfoRepository.getCabinets()
-            )
             timesLiveData.postValue(
                 StorageDependencies.timeRepository.getTimes()
             )
@@ -102,6 +101,20 @@ class EditLessonViewModel : ViewModel() {
             campusesLiveData.postValue(
                 StorageDependencies.campusRepository.getCampuses()
             )
+        }
+    }
+
+    fun loadCabinets(campusId: Int?) {
+        viewModelScope.launch {
+            if (campusId == null) {
+                allCabinetsLiveData.postValue(
+                    StorageDependencies.lessonInfoRepository.getAllCabinets()
+                )
+            } else {
+                allCabinetsLiveData.postValue(
+                    StorageDependencies.lessonInfoRepository.getCabinets(campusId)
+                )
+            }
         }
     }
 

@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
@@ -13,7 +14,8 @@ import ru.slavapmk.journalTracker.dataModels.semesters.Semester
 class SemestersAdapter(
     private val semesters: MutableList<Semester>,
     private val onDelete: ((Semester) -> Unit),
-    private val onSelect: ((Semester) -> Unit)
+    private val onSelect: ((Semester) -> Unit),
+    private val selectedId: Int? = null
 ) : RecyclerView.Adapter<SemestersViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SemestersViewHolder {
         val inflate = LayoutInflater.from(parent.context)
@@ -38,6 +40,7 @@ class SemestersAdapter(
         holder.itemView.setOnClickListener {
             onSelect(semester)
         }
+        holder.selected.isChecked = semester.id == selectedId
     }
 }
 
@@ -47,4 +50,5 @@ class SemestersViewHolder(
     var order: TextView = itemView.findViewById(R.id.order)
     var name: TextView = itemView.findViewById(R.id.name)
     var deleteButton: MaterialButton = itemView.findViewById(R.id.delete_button)
+    var selected: RadioButton = itemView.findViewById(R.id.selected)
 }

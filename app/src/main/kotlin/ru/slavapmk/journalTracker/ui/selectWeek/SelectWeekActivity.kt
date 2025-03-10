@@ -82,10 +82,15 @@ class SelectWeekActivity : AppCompatActivity() {
                 0, viewModel.weeks.size
             )
             setLoading(false)
+            checkEmptyMessage()
         }
     }
 
     private fun setLoading(loading: Boolean) {
         binding.loadingStatus.isVisible = loading
+    }
+
+    private fun checkEmptyMessage() {
+        binding.addRequirement.isVisible = viewModel.weeks.isEmpty()
     }
 }

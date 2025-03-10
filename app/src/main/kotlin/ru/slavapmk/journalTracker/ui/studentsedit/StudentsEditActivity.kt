@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.slavapmk.journalTracker.R
 import ru.slavapmk.journalTracker.dataModels.studentsEdit.StudentsEditListItem
@@ -38,6 +39,7 @@ class StudentsEditActivity : AppCompatActivity() {
                     updateCount
                 )
                 viewModel.deleteStudent(student)
+                checkEmptyMessage()
             }.show(
                 supportFragmentManager.beginTransaction(),
                 "delete_lessons_dialog"
@@ -100,6 +102,7 @@ class StudentsEditActivity : AppCompatActivity() {
             viewModel.studentsList.addAll(it)
             studentsEditListAdapter.notifyItemRangeChanged(0, it.size)
             binding.loadingStatus.visibility = View.GONE
+            checkEmptyMessage()
         }
 
         viewModel.updateStudentLiveData.observe(this) { (old, new) ->
@@ -107,6 +110,7 @@ class StudentsEditActivity : AppCompatActivity() {
             viewModel.studentsList[indexOf] = new
             studentsEditListAdapter.notifyItemChanged(indexOf)
             binding.loadingStatus.visibility = View.GONE
+            checkEmptyMessage()
         }
     }
 
@@ -133,5 +137,10 @@ class StudentsEditActivity : AppCompatActivity() {
         studentsEditListAdapter.notifyItemRangeChanged(
             insertIndex, viewModel.studentsList.size - insertIndex
         )
+        checkEmptyMessage()
+    }
+
+    private fun checkEmptyMessage() {
+        binding.addRequirement.isVisible = viewModel.studentsList.isEmpty()
     }
 }

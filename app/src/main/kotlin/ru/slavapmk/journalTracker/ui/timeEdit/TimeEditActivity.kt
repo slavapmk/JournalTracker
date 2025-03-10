@@ -70,6 +70,7 @@ class TimeEditActivity : AppCompatActivity() {
                 addAll(it)
             }
             initInputs()
+            checkEmptyMessage()
         }
     }
 
@@ -144,6 +145,7 @@ class TimeEditActivity : AppCompatActivity() {
             viewModel.startMinutes = -1
             viewModel.endHours = -1
             viewModel.endMinutes = -1
+            checkEmptyMessage()
         }
 
         if (viewModel.startHours != -1 && viewModel.startMinutes != -1) {
@@ -164,7 +166,11 @@ class TimeEditActivity : AppCompatActivity() {
         }
     }
 
-    fun setLoading(loading: Boolean) {
+    private fun checkEmptyMessage() {
+        binding.addRequirement.isVisible = viewModel.timeList.isEmpty()
+    }
+
+    private fun setLoading(loading: Boolean) {
         binding.loadingStatus.isVisible = loading
     }
 }

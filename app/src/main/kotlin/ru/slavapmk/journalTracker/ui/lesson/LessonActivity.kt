@@ -118,6 +118,7 @@ class LessonActivity : AppCompatActivity() {
             val newSize = viewModel.studentAttendances.size
             injectData()
             binding.students.adapter?.notifyItemRangeChanged(0, maxOf(oldSize, newSize))
+            checkEmptyMessage()
         }
     }
 
@@ -162,5 +163,9 @@ class LessonActivity : AppCompatActivity() {
 
     private fun setLoading(loading: Boolean) {
         binding.loadingStatus.isVisible = loading
+    }
+
+    private fun checkEmptyMessage() {
+        binding.addRequirement.isVisible = viewModel.studentAttendances.isEmpty()
     }
 }
