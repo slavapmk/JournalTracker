@@ -49,7 +49,8 @@ class ExportDayViewModel : ViewModel() {
                             calendar[Calendar.MONTH] + 1,
                             calendar[Calendar.DAY_OF_MONTH],
                             calendar[Calendar.HOUR_OF_DAY],
-                            calendar[Calendar.MINUTE]
+                            calendar[Calendar.MINUTE],
+                            calendar[Calendar.SECOND]
                         )
                     )
                     val outputStream = FileOutputStream(file)
@@ -64,25 +65,26 @@ class ExportDayViewModel : ViewModel() {
         }
     }
 
-    private suspend fun parse(context: Context, date: SimpleDate, group: String) = withContext(Dispatchers.IO) {
-        val workbook = XSSFWorkbook()
-        val sheet: Sheet = workbook.createSheet("Лист1")
-        workbook.properties.coreProperties.creator = "Journal Exporter"
-        workbook.properties.coreProperties.title = "Attendance Journal"
+    private suspend fun parse(context: Context, date: SimpleDate, group: String) =
+        withContext(Dispatchers.IO) {
+            val workbook = XSSFWorkbook()
+            val sheet: Sheet = workbook.createSheet("Лист1")
+            workbook.properties.coreProperties.creator = "Journal Exporter"
+            workbook.properties.coreProperties.title = "Attendance Journal"
 
-        val cellDataList = fillDay(context, date, group)
-        parseBook(
-            workbook,
-            sheet,
-            cellDataList
-        )
+            val cellDataList = fillDay(context, date, group)
+            parseBook(
+                workbook,
+                sheet,
+                cellDataList
+            )
 
-        resizeColumn(
-            sheet
-        )
+            resizeColumn(
+                sheet
+            )
 
-        return@withContext workbook
-    }
+            return@withContext workbook
+        }
 
     private suspend fun fillDay(
         context: Context,
@@ -151,6 +153,25 @@ class ExportDayViewModel : ViewModel() {
             }
         }
 
+        resultCells.add(
+            CellData(
+                2, 1,
+                context.getString(
+                    R.string.exporter_date,
+                    date.day, date.month, date.year
+                ),
+                endColumn = 2 + lessonListWithAttendance.size - 1
+            )
+        )
+        resultBorders.add(
+            BorderData(
+                2, 1,
+                2 + lessonListWithAttendance.size - 1,
+                1,
+                BorderStyle.THICK
+            )
+        )
+
         val studentsSumDisrespect = mutableMapOf<Int, Int>()
         val studentsSumRespect = mutableMapOf<Int, Int>()
 
@@ -217,17 +238,6 @@ class ExportDayViewModel : ViewModel() {
                 2 + lessonListWithAttendance.size - 1,
                 3 + studentEntityList.size,
                 BorderStyle.THICK
-            )
-        )
-
-        resultCells.add(
-            CellData(
-                2, 1,
-                context.getString(
-                    R.string.exporter_date,
-                    date.day, date.month, date.year
-                ),
-                endColumn = 2 + lessonListWithAttendance.size - 1
             )
         )
 
