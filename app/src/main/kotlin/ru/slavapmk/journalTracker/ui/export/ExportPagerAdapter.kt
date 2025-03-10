@@ -1,40 +1,13 @@
-package ru.slavapmk.journalTracker.ui.export
-
-import android.content.Context
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.viewpager.widget.PagerAdapter
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.viewpager2.adapter.FragmentStateAdapter
 
 class ExportPagerAdapter(
-    private val context: Context,
-    private val listNames: List<String>,
-    private val listLayouts: List<Int>,
-) : PagerAdapter() {
-    override fun getCount(): Int {
-        return 3
-    }
+    fragmentActivity: FragmentActivity,
+    private val listFragments: List<Fragment>
+) : FragmentStateAdapter(fragmentActivity) {
 
-    override fun isViewFromObject(view: View, `object`: Any): Boolean {
-        return view == `object`
-    }
+    override fun getItemCount(): Int = listFragments.size
 
-    override fun getPageTitle(position: Int): CharSequence {
-        return listNames[position]
-    }
-
-    override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        val inflater = LayoutInflater.from(context)
-        val layout = inflater.inflate(
-            listLayouts[position],
-            container,
-            false
-        )
-        container.addView(layout)
-        return layout
-    }
-
-    override fun destroyItem(collection: ViewGroup, position: Int, `object`: Any) {
-        collection.removeView(`object` as View?)
-    }
+    override fun createFragment(position: Int): Fragment = listFragments[position]
 }
