@@ -156,4 +156,5 @@
     <string name="exporter_hour_skipped">Skipped Hours</string>
     <string name="exporter_hour_skipped_respectful">Respectful</string>
     <string name="exporter_hour_skipped_disrespectful">Disrespectful</string>
+    <string name="export_filename_excel">Journal %1$02d-%2$02d-%3$02d %4$02d-%5$02d.xlsx</string>
 </resources>

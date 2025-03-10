@@ -121,4 +121,5 @@
     <string name="exporter_hour_skipped">Часов пропуска</string>
     <string name="exporter_hour_skipped_respectful">Уважительно</string>
     <string name="exporter_hour_skipped_disrespectful">Неуважительно</string>
+    <string name="export_filename_excel">Журнал %1$02d-%2$02d-%3$02d %4$02d-%5$02d.xlsx</string>
 </resources>

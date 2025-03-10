@@ -25,7 +25,7 @@ class ExportDayFragment : Fragment() {
 
         binding.saveExcel.setOnClickListener {
             activity.setLoading(true)
-            viewModel.saveExcel()
+            viewModel.saveExcel(requireContext())
         }
 
         viewModel.savedLiveStatus.observe(viewLifecycleOwner) {
