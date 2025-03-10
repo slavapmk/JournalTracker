@@ -145,4 +145,6 @@
     <string name="db_import_error">DB import error</string>
     <string name="student_default_attendance">Default</string>
     <string name="add_semester_requirement">Add at least 1 semester</string>
+    <string name="add_time_requirement">Add at least 1 time</string>
+    <string name="add_student_requirement">Add at least 1 student</string>
 </resources>

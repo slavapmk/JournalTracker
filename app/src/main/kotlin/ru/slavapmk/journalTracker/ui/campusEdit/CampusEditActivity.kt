@@ -31,6 +31,7 @@ class CampusEditActivity : AppCompatActivity() {
                 binding.campuses.adapter?.notifyItemRangeChanged(
                     indexOf, size - indexOf
                 )
+                checkEmptyMessage()
             }.show(
                 supportFragmentManager.beginTransaction(),
                 "delete_lessons_dialog"
@@ -113,16 +114,22 @@ class CampusEditActivity : AppCompatActivity() {
             binding.campuses.adapter?.notifyItemRangeChanged(
                 0, it.size
             )
+            checkEmptyMessage()
         }
 
         viewModel.campusUpdateLiveData.observe(this) { (old, new) ->
             val indexOf = viewModel.campuses.indexOf(old)
             viewModel.campuses[indexOf] = new
             binding.campuses.adapter?.notifyItemChanged(indexOf)
+            checkEmptyMessage()
         }
     }
 
-    fun setLoading(loading: Boolean) {
+    private fun setLoading(loading: Boolean) {
         binding.loadingStatus.isVisible = loading
+    }
+
+    private fun checkEmptyMessage() {
+        binding.addRequirement.isVisible = viewModel.campuses.isEmpty()
     }
 }

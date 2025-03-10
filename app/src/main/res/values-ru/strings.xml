@@ -112,4 +112,6 @@
     <string name="db_import_error">Ошибка импорта</string>
     <string name="student_default_attendance">По умолчанию</string>
     <string name="add_semester_requirement">Добавьте хотя бы 1 семестр</string>
+    <string name="add_time_requirement">Добавьте хотя бы 1 время</string>
+    <string name="add_student_requirement">Добавьте хотя бы 1 студента</string>
 </resources>

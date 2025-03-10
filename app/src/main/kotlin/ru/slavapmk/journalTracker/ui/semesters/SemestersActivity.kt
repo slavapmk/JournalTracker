@@ -128,6 +128,7 @@ class SemestersActivity : AppCompatActivity() {
                 )
                 binding.semesters.scrollToPosition(indexOf)
                 binding.addRequirement.isVisible = viewModel.semesters.isEmpty()
+                checkEmptyMessage()
             }
             dialog.show(supportFragmentManager, "SEMESTER_DATES")
         }
@@ -141,6 +142,7 @@ class SemestersActivity : AppCompatActivity() {
             semestersAdapter.notifyItemRangeChanged(0, it.size)
             binding.loadingStatus.visibility = View.GONE
             binding.addRequirement.isVisible = viewModel.semesters.isEmpty()
+            checkEmptyMessage()
         }
 
         viewModel.semesterUpdateLiveData.observe(this) { (old, new) ->
@@ -149,15 +151,21 @@ class SemestersActivity : AppCompatActivity() {
             semestersAdapter.notifyItemChanged(indexOf)
             binding.loadingStatus.visibility = View.GONE
             binding.addRequirement.isVisible = viewModel.semesters.isEmpty()
+            checkEmptyMessage()
         }
 
         viewModel.endDeleteLiveData.observe(this) {
             binding.loadingStatus.visibility = View.GONE
+            checkEmptyMessage()
         }
     }
 
     private fun load() {
         binding.loadingStatus.visibility = View.VISIBLE
         viewModel.loadSemesters()
+    }
+
+    private fun checkEmptyMessage() {
+        binding.addRequirement.isVisible = viewModel.semesters.isEmpty()
     }
 }
