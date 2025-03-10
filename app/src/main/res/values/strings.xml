@@ -149,4 +149,11 @@
     <string name="add_student_requirement">Add at least 1 student</string>
     <string name="no_lessons">There are no classes</string>
     <string name="add_campus_requirement">Add at least 1 campus</string>
+    <string name="exporter_num" translatable="false">№</string>
+    <string name="exporter_name">Student</string>
+    <string name="exporter_group">Group %1$s</string>
+    <string name="exporter_date" translatable="false">%1$02d.%2$02d.%3$02d</string>
+    <string name="exporter_hour_skipped">Skipped Hours</string>
+    <string name="exporter_hour_skipped_respectful">Respectful</string>
+    <string name="exporter_hour_skipped_disrespectful">Disrespectful</string>
 </resources>
