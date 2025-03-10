@@ -175,7 +175,11 @@ class ExportDayViewModel : ViewModel() {
                 for (rowIndex in border.startRow..border.endRow) {
                     val row = sheet.getRow(rowIndex) ?: sheet.createRow(rowIndex)
                     val cell = row.getCell(colIndex) ?: row.createCell(colIndex)
-                    val style = workbook.createCellStyle().apply {
+                    val style = if (cell.cellStyle.index == 0.toShort()) {
+                        workbook.createCellStyle()
+                    } else {
+                        cell.cellStyle
+                    }.apply {
                         val isTop = rowIndex == border.startRow
                         val isBottom = rowIndex == border.endRow
                         val isLeft = colIndex == border.startColumn
