@@ -364,10 +364,10 @@ class ExportDayViewModel : ViewModel() {
                         val isLeft = colIndex == border.startColumn
                         val isRight = colIndex == border.endColumn
 
-                        borderTop = if (isTop) border.outer else border.inner
-                        borderBottom = if (isBottom) border.outer else border.inner
-                        borderLeft = if (isLeft) border.outer else border.inner
-                        borderRight = if (isRight) border.outer else border.inner
+                        (if (isTop) border.outer else border.inner)?.also { borderTop = it }
+                        (if (isBottom) border.outer else border.inner)?.also { borderBottom = it }
+                        (if (isLeft) border.outer else border.inner)?.also { borderLeft = it }
+                        (if (isRight) border.outer else border.inner)?.also { borderRight = it }
                     }
                     cell.cellStyle = style
                 }
@@ -454,5 +454,5 @@ data class BorderData(
     val endColumn: Int,
     val endRow: Int,
     val outer: BorderStyle,
-    val inner: BorderStyle = BorderStyle.NONE
+    val inner: BorderStyle? = null
 )
