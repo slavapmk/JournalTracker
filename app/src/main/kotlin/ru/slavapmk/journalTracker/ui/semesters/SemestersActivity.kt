@@ -34,6 +34,15 @@ class SemestersActivity : AppCompatActivity() {
         )
     }
 
+    private val selectedSemesterId: Int?
+        get() = shared.getInt(SharedKeys.SEMESTER_ID, -1).let {
+            if (it == -1) {
+                null
+            } else {
+                it
+            }
+        }
+
     private val semestersAdapter by lazy {
         SemestersAdapter(
             viewModel.semesters, { semester ->
@@ -62,7 +71,8 @@ class SemestersActivity : AppCompatActivity() {
                     )
                 }
                 finish()
-            }
+            },
+            selectedSemesterId
         )
     }
 
