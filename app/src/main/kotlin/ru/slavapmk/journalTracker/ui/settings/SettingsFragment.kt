@@ -37,6 +37,7 @@ import java.io.IOException
 import java.util.Calendar
 import java.util.Date
 import java.util.GregorianCalendar
+import kotlin.system.exitProcess
 
 class SettingsFragment : Fragment() {
     private lateinit var binding: FragmentSettingsBinding
@@ -90,16 +91,27 @@ class SettingsFragment : Fragment() {
             Toast.makeText(requireContext(), R.string.db_import_success, Toast.LENGTH_LONG).show()
             Log.d("Import", "DB imported: ${dbPath.absolutePath}")
 
-            restartActivity()
+            restartApplication()
         } catch (e: IOException) {
             Toast.makeText(requireContext(), R.string.db_import_error, Toast.LENGTH_LONG).show()
             Log.e("Import", "DB import error", e)
         }
     }
 
-    private fun restartActivity() {
-        activity.recreate()
+    private fun restartApplication() {
+        val context = requireContext()
+        val packageManager = context.packageManager
+        val intent = packageManager.getLaunchIntentForPackage(context.packageName)
+
+        if (intent != null) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+            Runtime.getRuntime().exit(0)
+        } else {
+            Log.e("RestartApp", "Не удалось получить launch intent")
+        }
     }
+
 
     private fun init() {
         binding.dbExport.setOnClickListener {

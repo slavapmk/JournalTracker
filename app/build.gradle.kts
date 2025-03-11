@@ -9,8 +9,8 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        versionCode = 17
-        versionName = "0.9.1"
+        versionCode = 18
+        versionName = "0.9.2"
         applicationId = "ru.slavapmk.journalTracker"
         minSdk = 29
         targetSdk = 35
@@ -35,7 +35,8 @@ android {
     buildTypes {
         getByName("release") {
             signingConfig = signingConfigs.getByName("release")
-            isMinifyEnabled = true
+//            isMinifyEnabled = true
+            isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
