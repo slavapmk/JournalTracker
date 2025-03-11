@@ -9,8 +9,8 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        versionCode = 15
-        versionName = "0.8.5"
+        versionCode = 16
+        versionName = "0.9.0"
         applicationId = "ru.slavapmk.journalTracker"
         minSdk = 29
         targetSdk = 35
