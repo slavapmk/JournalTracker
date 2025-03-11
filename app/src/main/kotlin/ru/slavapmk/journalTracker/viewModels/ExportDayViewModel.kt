@@ -1,7 +1,9 @@
 package ru.slavapmk.journalTracker.viewModels
 
 import android.content.Context
+import android.content.Intent
 import android.os.Environment
+import androidx.core.content.FileProvider
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -29,6 +31,9 @@ import java.util.GregorianCalendar
 class ExportDayViewModel : ViewModel() {
     val savedLiveStatus by lazy {
         MutableLiveData<Unit>()
+    }
+    val sharedLiveStatus by lazy {
+        MutableLiveData<Intent?>()
     }
 
     fun saveExcel(context: Context, date: SimpleDate, group: String) {
@@ -58,6 +63,48 @@ class ExportDayViewModel : ViewModel() {
                 }
             }
             savedLiveStatus.postValue(Unit)
+        }
+    }
+
+    fun shareExcel(context: Context, date: SimpleDate, group: String) {
+        viewModelScope.launch {
+            val workbook = parse(context, date, group)
+            withContext(Dispatchers.IO) {
+                val calendar: Calendar = GregorianCalendar.getInstance().apply { time = Date() }
+
+                try {
+                    val file = File(
+                        context.cacheDir,
+                        context.getString(
+                            R.string.export_filename_excel,
+                            calendar[Calendar.YEAR],
+                            calendar[Calendar.MONTH] + 1,
+                            calendar[Calendar.DAY_OF_MONTH],
+                            calendar[Calendar.HOUR_OF_DAY],
+                            calendar[Calendar.MINUTE],
+                            calendar[Calendar.SECOND]
+                        )
+                    )
+                    val outputStream = FileOutputStream(file)
+                    workbook.export(outputStream)
+                    outputStream.close()
+
+                    val uri = FileProvider.getUriForFile(context, "${context.packageName}.provider", file)
+                    val intent = Intent(Intent.ACTION_SEND).apply {
+                        type = "application/vnd.ms-excel"
+                        putExtra(Intent.EXTRA_STREAM, uri)
+                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    }
+                    sharedLiveStatus.postValue(
+                        Intent.createChooser(
+                            intent, context.getString(R.string.share_via)
+                        )
+                    )
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                    sharedLiveStatus.postValue(null)
+                }
+            }
         }
     }
 

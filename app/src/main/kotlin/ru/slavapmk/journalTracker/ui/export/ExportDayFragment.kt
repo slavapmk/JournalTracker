@@ -108,6 +108,22 @@ class ExportDayFragment : Fragment() {
             ).show()
         }
 
+        binding.shareExcel.setOnClickListener {
+            activity.setLoading(true)
+            viewModel.shareExcel(
+                requireContext(),
+                date,
+                shared.getString(SharedKeys.GROUP_NAME_KEY, "")!!
+            )
+        }
+
+        viewModel.sharedLiveStatus.observe(viewLifecycleOwner) {
+            activity.setLoading(false)
+            it?.let {
+                startActivity(it)
+            }
+        }
+
         return binding.root
     }
 }
