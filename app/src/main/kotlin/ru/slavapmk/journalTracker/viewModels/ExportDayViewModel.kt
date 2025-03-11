@@ -35,6 +35,9 @@ class ExportDayViewModel : ViewModel() {
     val sharedLiveStatus by lazy {
         MutableLiveData<Intent?>()
     }
+    val openLiveStatus by lazy {
+        MutableLiveData<Intent?>()
+    }
 
     fun saveExcel(context: Context, date: SimpleDate, group: String) {
         viewModelScope.launch {
@@ -89,7 +92,8 @@ class ExportDayViewModel : ViewModel() {
                     workbook.export(outputStream)
                     outputStream.close()
 
-                    val uri = FileProvider.getUriForFile(context, "${context.packageName}.provider", file)
+                    val uri =
+                        FileProvider.getUriForFile(context, "${context.packageName}.provider", file)
                     val intent = Intent(Intent.ACTION_SEND).apply {
                         type = "application/vnd.ms-excel"
                         putExtra(Intent.EXTRA_STREAM, uri)
@@ -103,6 +107,47 @@ class ExportDayViewModel : ViewModel() {
                 } catch (e: IOException) {
                     e.printStackTrace()
                     sharedLiveStatus.postValue(null)
+                }
+            }
+        }
+    }
+
+    fun openExcel(context: Context, date: SimpleDate, group: String) {
+        viewModelScope.launch {
+            val workbook = parse(context, date, group)
+            withContext(Dispatchers.IO) {
+                val calendar: Calendar = GregorianCalendar.getInstance().apply { time = Date() }
+
+                try {
+                    val file = File(
+                        context.cacheDir,
+                        context.getString(
+                            R.string.export_filename_excel,
+                            calendar[Calendar.YEAR],
+                            calendar[Calendar.MONTH] + 1,
+                            calendar[Calendar.DAY_OF_MONTH],
+                            calendar[Calendar.HOUR_OF_DAY],
+                            calendar[Calendar.MINUTE],
+                            calendar[Calendar.SECOND]
+                        )
+                    )
+                    val outputStream = FileOutputStream(file)
+                    workbook.export(outputStream)
+                    outputStream.close()
+
+                    val uri = FileProvider.getUriForFile(context, "${context.packageName}.provider", file)
+                    val intent = Intent(Intent.ACTION_VIEW).apply {
+                        setDataAndType(uri, "application/vnd.ms-excel")
+                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    }
+                    openLiveStatus.postValue(
+                        Intent.createChooser(
+                            intent, context.getString(R.string.share_via)
+                        )
+                    )
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                    openLiveStatus.postValue(null)
                 }
             }
         }
