@@ -94,6 +94,7 @@ class ExportDayViewModel : ViewModel() {
         val resultCells = mutableListOf<CellData>()
         val resultBorders = mutableListOf<BorderData>()
 
+        // Student number title
         resultCells.add(
             CellData(
                 0,
@@ -102,6 +103,8 @@ class ExportDayViewModel : ViewModel() {
                 endRow = 3
             )
         )
+
+        // Student name title
         resultCells.add(
             CellData(
                 1,
@@ -110,9 +113,12 @@ class ExportDayViewModel : ViewModel() {
                 endRow = 3
             )
         )
+
         val studentEntityList = withContext(Dispatchers.IO) {
             StorageDependencies.studentRepository.getStudents()
         }
+
+        // Student names
         resultCells.addAll(
             studentEntityList.mapIndexed { index, studentEntity ->
                 CellData(
@@ -123,6 +129,8 @@ class ExportDayViewModel : ViewModel() {
                 )
             }
         )
+
+        // Student numbers
         resultCells.addAll(
             List(studentEntityList.size) { index ->
                 CellData(
@@ -132,13 +140,6 @@ class ExportDayViewModel : ViewModel() {
                     alignment = HorizontalAlignment.RIGHT
                 )
             }
-        )
-        resultBorders.add(
-            BorderData(
-                0, 1,
-                1, 4 + studentEntityList.size - 1,
-                BorderStyle.THICK
-            )
         )
 
         val lessonListWithAttendance = withContext(Dispatchers.IO) {
@@ -153,6 +154,7 @@ class ExportDayViewModel : ViewModel() {
             }
         }
 
+        // Date title
         resultCells.add(
             CellData(
                 2, 1,
@@ -163,18 +165,11 @@ class ExportDayViewModel : ViewModel() {
                 endColumn = 2 + lessonListWithAttendance.size - 1
             )
         )
-        resultBorders.add(
-            BorderData(
-                2, 1,
-                2 + lessonListWithAttendance.size - 1,
-                1,
-                BorderStyle.THICK
-            )
-        )
 
         val studentsSumDisrespect = mutableMapOf<Int, Int>()
         val studentsSumRespect = mutableMapOf<Int, Int>()
 
+        // Lessons with attendance
         for ((lessonIndex, listPair) in lessonListWithAttendance.withIndex()) {
             val (lesson, students) = listPair
             resultCells.add(
@@ -232,15 +227,7 @@ class ExportDayViewModel : ViewModel() {
             }
         }
 
-        resultBorders.add(
-            BorderData(
-                2, 1,
-                2 + lessonListWithAttendance.size - 1,
-                3 + studentEntityList.size,
-                BorderStyle.THICK
-            )
-        )
-
+        // Skipped title
         resultCells.add(
             CellData(
                 2 + lessonListWithAttendance.size, 1,
@@ -250,6 +237,8 @@ class ExportDayViewModel : ViewModel() {
                 endColumn = 2 + lessonListWithAttendance.size + 1
             )
         )
+
+        // Skipped respectful title
         resultCells.add(
             CellData(
                 2 + lessonListWithAttendance.size, 2,
@@ -260,6 +249,8 @@ class ExportDayViewModel : ViewModel() {
                 rotation = 90
             )
         )
+
+        // Skipped disrespectful title
         resultCells.add(
             CellData(
                 2 + lessonListWithAttendance.size + 1, 2,
@@ -270,6 +261,8 @@ class ExportDayViewModel : ViewModel() {
                 rotation = 90
             )
         )
+
+        // Skipped hours
         resultCells.addAll(
             studentsSumDisrespect.map {
                 CellData(
@@ -288,6 +281,36 @@ class ExportDayViewModel : ViewModel() {
                 )
             }
         )
+
+        // Group name
+        resultCells.add(
+            CellData(
+                0, 0,
+                context.getString(R.string.exporter_group, group),
+                endColumn = 2 + lessonListWithAttendance.size + 1
+            )
+        )
+
+        // Student border
+        resultBorders.add(
+            BorderData(
+                0, 1,
+                1, 4 + studentEntityList.size - 1,
+                BorderStyle.THICK
+            )
+        )
+
+        // Only date border
+        resultBorders.add(
+            BorderData(
+                2, 1,
+                2 + lessonListWithAttendance.size - 1,
+                1,
+                BorderStyle.THICK
+            )
+        )
+
+        // Attendance border
         resultBorders.add(
             BorderData(
                 2 + lessonListWithAttendance.size, 1,
@@ -297,6 +320,7 @@ class ExportDayViewModel : ViewModel() {
             )
         )
 
+        // Header border
         resultBorders.add(
             BorderData(
                 0, 1,
@@ -305,6 +329,8 @@ class ExportDayViewModel : ViewModel() {
                 BorderStyle.THICK
             )
         )
+
+        // Group name border
         resultBorders.add(
             BorderData(
                 0, 0,
@@ -313,11 +339,14 @@ class ExportDayViewModel : ViewModel() {
                 BorderStyle.THICK
             )
         )
-        resultCells.add(
-            CellData(
-                0, 0,
-                context.getString(R.string.exporter_group, group),
-                endColumn = 2 + lessonListWithAttendance.size + 1
+
+        // Date lessons borders
+        resultBorders.add(
+            BorderData(
+                2, 1,
+                2 + lessonListWithAttendance.size - 1,
+                3 + studentEntityList.size,
+                BorderStyle.THICK
             )
         )
 
