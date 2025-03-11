@@ -84,7 +84,6 @@ dependencies {
     implementation(libs.flexbox)
     implementation(libs.poi)
     implementation(libs.poi.ooxml)
-    implementation(libs.pdfbox)
 }
 
 tasks.register("generateVersions") {
