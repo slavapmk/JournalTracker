@@ -303,6 +303,16 @@ class ExportDayViewModel : ViewModel() {
             }
         )
 
+        // Students
+        resultBorders.add(
+            BorderData(
+                0, 4,
+                1, 4 + studentEntityList.size - 1,
+                BorderStyle.THICK,
+                BorderStyle.THIN
+            )
+        )
+
         // Lesson types
         resultBorders.add(
             BorderData(
@@ -323,7 +333,7 @@ class ExportDayViewModel : ViewModel() {
             )
         )
 
-        // Student borders
+        // Hours skipped
         resultBorders.add(
             BorderData(
                 2 + lessonListWithAttendance.size, 1,
