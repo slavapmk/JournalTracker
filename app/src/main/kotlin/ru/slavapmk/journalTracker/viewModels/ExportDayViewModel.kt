@@ -9,16 +9,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.apache.poi.ss.usermodel.BorderStyle
-import org.apache.poi.ss.usermodel.Cell
 import org.apache.poi.ss.usermodel.HorizontalAlignment
-import org.apache.poi.ss.usermodel.Sheet
-import org.apache.poi.ss.usermodel.VerticalAlignment
-import org.apache.poi.ss.usermodel.Workbook
-import org.apache.poi.ss.util.CellRangeAddress
-import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import ru.slavapmk.journalTracker.R
 import ru.slavapmk.journalTracker.dataModels.StudentAttendanceLesson
 import ru.slavapmk.journalTracker.dataModels.toEdit
+import ru.slavapmk.journalTracker.excelExporter.BorderData
+import ru.slavapmk.journalTracker.excelExporter.CellData
+import ru.slavapmk.journalTracker.excelExporter.ExcelExporter
+import ru.slavapmk.journalTracker.excelExporter.RenderData
 import ru.slavapmk.journalTracker.storageModels.StorageDependencies
 import java.io.File
 import java.io.FileOutputStream
@@ -26,7 +24,6 @@ import java.io.IOException
 import java.util.Calendar
 import java.util.Date
 import java.util.GregorianCalendar
-import kotlin.math.roundToInt
 
 
 class ExportDayViewModel : ViewModel() {
@@ -54,8 +51,7 @@ class ExportDayViewModel : ViewModel() {
                         )
                     )
                     val outputStream = FileOutputStream(file)
-                    workbook.write(outputStream)
-                    workbook.close()
+                    workbook.export(outputStream)
                     outputStream.close()
                 } catch (e: IOException) {
                     e.printStackTrace()
@@ -67,26 +63,27 @@ class ExportDayViewModel : ViewModel() {
 
     private suspend fun parse(context: Context, date: SimpleDate, group: String) =
         withContext(Dispatchers.IO) {
-            val workbook = XSSFWorkbook()
-            val sheet: Sheet = workbook.createSheet("Лист1")
-            workbook.properties.coreProperties.creator = "Journal Exporter"
-            workbook.properties.coreProperties.title = "Attendance Journal"
-
-            val cellDataList = fillDay(context, date, group)
-            parseBook(
-                workbook,
-                sheet,
-                cellDataList
+            val sheetNames = listOf(
+                context.getString(
+                    R.string.exporter_date,
+                    date.day, date.month, date.year
+                )
+            )
+            val exporter = ExcelExporter(
+                sheetNames,
+                creator = "Journal Exporter",
+                title = "Attendance Journal"
             )
 
-            resizeColumn(
-                sheet
-            )
+            val dayData = generateDay(context, date, group)
 
-            return@withContext workbook
+            exporter.resizeWorkbook()
+            exporter.insertData(sheetNames[0], dayData)
+
+            return@withContext exporter
         }
 
-    private suspend fun fillDay(
+    private suspend fun generateDay(
         context: Context,
         date: SimpleDate,
         group: String
@@ -394,178 +391,7 @@ class ExportDayViewModel : ViewModel() {
 
         return RenderData(
             resultCells, resultBorders,
-//            1, 3
-            offsetColumn = 2,
-            offsetRow = 2
+            1, 3
         )
-    }
-
-    private fun parseBook(
-        workbook: Workbook,
-        sheet: Sheet,
-        renderData: RenderData
-    ) {
-        for (cellData in renderData.cells) {
-            val cellRow = cellData.row + renderData.offsetRow
-            val cellColumn = cellData.column + renderData.offsetColumn
-
-            val row = sheet.getRow(cellRow) ?: sheet.createRow(cellRow)
-            val cell = row.createCell(cellColumn)
-
-            when (cellData.value) {
-                is String -> cell.setCellValue(cellData.value)
-                is Int -> cell.setCellValue(cellData.value.toDouble())
-            }
-
-            val endRow = cellData.endRow + renderData.offsetRow
-            val endColumn = cellData.endColumn + renderData.offsetColumn
-            if (
-                (maxOf(cellRow, endRow) - minOf(cellRow, endRow) + 1) *
-                (maxOf(cellColumn, endColumn) - minOf(cellColumn, endColumn) + 1)
-                > 1
-            ) {
-                sheet.addMergedRegion(
-                    CellRangeAddress(
-                        minOf(cellRow, endRow),
-                        maxOf(cellRow, endRow),
-                        minOf(cellColumn, endColumn),
-                        maxOf(cellColumn, endColumn),
-                    )
-                )
-            }
-
-            val style = workbook.createCellStyle()
-            style.alignment = cellData.alignment
-            style.rotation = cellData.rotation
-            style.verticalAlignment = cellData.verticalAlignment
-            cell.cellStyle = style
-        }
-
-        for (border in renderData.borders) {
-            val startColumn = border.startColumn + renderData.offsetColumn
-            val endColumn = border.endColumn + renderData.offsetColumn
-            val startRow = border.startRow + renderData.offsetRow
-            val endRow = border.endRow + renderData.offsetRow
-            for (colIndex in startColumn..endColumn) {
-                for (rowIndex in startRow..endRow) {
-                    val row = sheet.getRow(rowIndex) ?: sheet.createRow(rowIndex)
-                    val cell = row.getCell(colIndex) ?: row.createCell(colIndex)
-                    val style = if (cell.cellStyle.index == 0.toShort()) {
-                        workbook.createCellStyle()
-                    } else {
-                        cell.cellStyle
-                    }.apply {
-                        val isTop = rowIndex == startRow
-                        val isBottom = rowIndex == endRow
-                        val isLeft = colIndex == startColumn
-                        val isRight = colIndex == endColumn
-
-                        (if (isTop) border.outer else border.inner)?.also { borderTop = it }
-                        (if (isBottom) border.outer else border.inner)?.also { borderBottom = it }
-                        (if (isLeft) border.outer else border.inner)?.also { borderLeft = it }
-                        (if (isRight) border.outer else border.inner)?.also { borderRight = it }
-                    }
-                    cell.cellStyle = style
-                }
-            }
-        }
-
-        sheet.createFreezePane(
-            if (renderData.freezeColumn == null) {
-                0
-            } else {
-                renderData.freezeColumn + renderData.offsetColumn + 1
-            },
-            if (renderData.freezeRow == null) {
-                0
-            } else {
-                renderData.freezeRow + renderData.offsetRow + 1
-            }
-        )
-    }
-
-    private fun findRegion(
-        regions: List<CellRangeAddress>,
-        column: Int,
-        row: Int
-    ): CellRangeAddress? {
-        for (region in regions) {
-            if (row in region.firstRow..region.lastRow && column in region.firstColumn..region.lastColumn) {
-                return region
-            }
-        }
-        return null
-    }
-
-    private fun resizeColumn(sheet: Sheet) {
-        val columnsToResize = mutableMapOf<Int, Double>()
-
-        for (rowIndex in 0..sheet.lastRowNum) {
-            val row = sheet.getRow(rowIndex) ?: continue
-            for (columnIndex in 0..row.physicalNumberOfCells) {
-                val cell: Cell? = row.getCell(columnIndex)
-                val cellValue = cell?.toString() ?: ""
-                val findRegion = findRegion(sheet.mergedRegions, columnIndex, rowIndex)
-                val mergeCell = findRegion?.let {
-                    sheet.getRow(it.firstRow).getCell(it.firstColumn)
-                }
-                val mergeWidthCols = findRegion?.let {
-                    maxOf(it.lastColumn, it.firstColumn) - minOf(it.firstColumn, it.lastColumn) + 1
-                }
-                val width: Double = if (cell?.cellStyle?.rotation == 90.toShort()) {
-                    5.0
-                } else {
-                    if (mergeWidthCols == null || mergeCell == null) {
-                        cellValue.length.toDouble()
-                    } else {
-                        if (mergeCell.cellStyle.rotation == 90.toShort()) {
-                            5.0
-                        } else {
-                            mergeCell.toString().length.toDouble() / mergeWidthCols
-                        }
-                    }
-                }
-                columnsToResize[columnIndex] = maxOf(
-                    columnsToResize.getOrDefault(columnIndex, 5.0),
-                    width
-                )
-            }
-        }
-
-        for ((column, maxLength) in columnsToResize) {
-            sheet.setColumnWidth(
-                column,
-                ((maxLength/* + 2*/) * 256).roundToInt()
-            ) // +2 для небольшого запаса
-        }
     }
 }
-
-data class RenderData(
-    val cells: List<CellData>,
-    val borders: List<BorderData>,
-    val freezeColumn: Int? = null,
-    val freezeRow: Int? = null,
-    val offsetColumn: Int = 0,
-    val offsetRow: Int = 0
-)
-
-data class CellData(
-    val column: Int,
-    val row: Int,
-    val value: Any,
-    val endColumn: Int = column,
-    val endRow: Int = row,
-    val alignment: HorizontalAlignment = HorizontalAlignment.CENTER,
-    val verticalAlignment: VerticalAlignment = VerticalAlignment.CENTER,
-    val rotation: Short = 0
-)
-
-data class BorderData(
-    val startColumn: Int,
-    val startRow: Int,
-    val endColumn: Int,
-    val endRow: Int,
-    val outer: BorderStyle,
-    val inner: BorderStyle? = null
-)
