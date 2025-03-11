@@ -384,7 +384,9 @@ class ExportDayViewModel : ViewModel() {
 
         return RenderData(
             resultCells, resultBorders,
-            1, 3
+//            1, 3
+            offsetColumn = 2,
+            offsetRow = 2
         )
     }
 
@@ -393,40 +395,49 @@ class ExportDayViewModel : ViewModel() {
         sheet: Sheet,
         renderData: RenderData
     ) {
-        for (data in renderData.cells) {
-            val row = sheet.getRow(data.row) ?: sheet.createRow(data.row)
-            val cell = row.createCell(data.column)
+        for (cellData in renderData.cells) {
+            val cellRow = cellData.row + renderData.offsetRow
+            val cellColumn = cellData.column + renderData.offsetColumn
 
-            when (data.value) {
-                is String -> cell.setCellValue(data.value)
-                is Int -> cell.setCellValue(data.value.toDouble())
+            val row = sheet.getRow(cellRow) ?: sheet.createRow(cellRow)
+            val cell = row.createCell(cellColumn)
+
+            when (cellData.value) {
+                is String -> cell.setCellValue(cellData.value)
+                is Int -> cell.setCellValue(cellData.value.toDouble())
             }
 
+            val endRow = cellData.endRow + renderData.offsetRow
+            val endColumn = cellData.endColumn + renderData.offsetColumn
             if (
-                (maxOf(data.row, data.endRow) - minOf(data.row, data.endRow) + 1) *
-                (maxOf(data.column, data.endColumn) - minOf(data.column, data.endColumn) + 1)
+                (maxOf(cellRow, endRow) - minOf(cellRow, endRow) + 1) *
+                (maxOf(cellColumn, endColumn) - minOf(cellColumn, endColumn) + 1)
                 > 1
             ) {
                 sheet.addMergedRegion(
                     CellRangeAddress(
-                        minOf(data.row, data.endRow),
-                        maxOf(data.row, data.endRow),
-                        minOf(data.column, data.endColumn),
-                        maxOf(data.column, data.endColumn),
+                        minOf(cellRow, endRow),
+                        maxOf(cellRow, endRow),
+                        minOf(cellColumn, endColumn),
+                        maxOf(cellColumn, endColumn),
                     )
                 )
             }
 
             val style = workbook.createCellStyle()
-            style.alignment = data.alignment
-            style.rotation = data.rotation
-            style.verticalAlignment = data.verticalAlignment
+            style.alignment = cellData.alignment
+            style.rotation = cellData.rotation
+            style.verticalAlignment = cellData.verticalAlignment
             cell.cellStyle = style
         }
 
         for (border in renderData.borders) {
-            for (colIndex in border.startColumn..border.endColumn) {
-                for (rowIndex in border.startRow..border.endRow) {
+            val startColumn = border.startColumn + renderData.offsetColumn
+            val endColumn = border.endColumn + renderData.offsetColumn
+            val startRow = border.startRow + renderData.offsetRow
+            val endRow = border.endRow + renderData.offsetRow
+            for (colIndex in startColumn..endColumn) {
+                for (rowIndex in startRow..endRow) {
                     val row = sheet.getRow(rowIndex) ?: sheet.createRow(rowIndex)
                     val cell = row.getCell(colIndex) ?: row.createCell(colIndex)
                     val style = if (cell.cellStyle.index == 0.toShort()) {
@@ -434,10 +445,10 @@ class ExportDayViewModel : ViewModel() {
                     } else {
                         cell.cellStyle
                     }.apply {
-                        val isTop = rowIndex == border.startRow
-                        val isBottom = rowIndex == border.endRow
-                        val isLeft = colIndex == border.startColumn
-                        val isRight = colIndex == border.endColumn
+                        val isTop = rowIndex == startRow
+                        val isBottom = rowIndex == endRow
+                        val isLeft = colIndex == startColumn
+                        val isRight = colIndex == endColumn
 
                         (if (isTop) border.outer else border.inner)?.also { borderTop = it }
                         (if (isBottom) border.outer else border.inner)?.also { borderBottom = it }
@@ -450,15 +461,15 @@ class ExportDayViewModel : ViewModel() {
         }
 
         sheet.createFreezePane(
-            if (renderData.freezeColumn == 0) {
+            if (renderData.freezeColumn == null) {
                 0
             } else {
-                renderData.freezeColumn + 1
+                renderData.freezeColumn + renderData.offsetColumn + 1
             },
-            if (renderData.freezeRow == 0) {
+            if (renderData.freezeRow == null) {
                 0
             } else {
-                renderData.freezeRow + 1
+                renderData.freezeRow + renderData.offsetRow + 1
             }
         )
     }
@@ -523,8 +534,10 @@ class ExportDayViewModel : ViewModel() {
 data class RenderData(
     val cells: List<CellData>,
     val borders: List<BorderData>,
-    val freezeColumn: Int = 0,
-    val freezeRow: Int = 0
+    val freezeColumn: Int? = null,
+    val freezeRow: Int? = null,
+    val offsetColumn: Int = 0,
+    val offsetRow: Int = 0
 )
 
 data class CellData(
