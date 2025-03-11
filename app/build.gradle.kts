@@ -52,6 +52,11 @@ android {
     buildFeatures {
         viewBinding = true
     }
+    packaging {
+        resources {
+            excludes += "META-INF/DEPENDENCIES"
+        }
+    }
 }
 
 dependencies {
@@ -79,6 +84,7 @@ dependencies {
     implementation(libs.flexbox)
     implementation(libs.poi)
     implementation(libs.poi.ooxml)
+    implementation(libs.pdfbox)
 }
 
 tasks.register("generateVersions") {
