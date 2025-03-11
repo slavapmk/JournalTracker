@@ -321,7 +321,10 @@ class ExportDayViewModel : ViewModel() {
             )
         )
 
-        return RenderData(resultCells, resultBorders)
+        return RenderData(
+            resultCells, resultBorders,
+            1, 3
+        )
     }
 
     private fun parseBook(
@@ -384,6 +387,19 @@ class ExportDayViewModel : ViewModel() {
                 }
             }
         }
+
+        sheet.createFreezePane(
+            if (renderData.freezeColumn == 0) {
+                0
+            } else {
+                renderData.freezeColumn + 1
+            },
+            if (renderData.freezeRow == 0) {
+                0
+            } else {
+                renderData.freezeRow + 1
+            }
+        )
     }
 
     private fun findRegion(
@@ -445,7 +461,9 @@ class ExportDayViewModel : ViewModel() {
 
 data class RenderData(
     val cells: List<CellData>,
-    val borders: List<BorderData>
+    val borders: List<BorderData>,
+    val freezeColumn: Int = 0,
+    val freezeRow: Int = 0
 )
 
 data class CellData(
