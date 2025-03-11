@@ -18,11 +18,18 @@ object StorageDependencies {
 
     const val DB_NAME = "database.db"
 
-    private val appDatabase: AppDatabase by lazy {
-        Room.databaseBuilder(
-            applicationContext, AppDatabase::class.java, DB_NAME
-        ).build()
-    }
+    private var _appDatabase: AppDatabase? = null
+    private val appDatabase: AppDatabase
+        get() {
+            if (_appDatabase == null || !_appDatabase!!.isOpen) {
+                _appDatabase = Room.databaseBuilder(
+                    applicationContext,
+                    AppDatabase::class.java,
+                    DB_NAME
+                ).build()
+            }
+            return _appDatabase!!
+        }
 
     val campusRepository: CampusRepository by lazy {
         CampusRepository(appDatabase.getCampusDao())
@@ -50,5 +57,6 @@ object StorageDependencies {
 
     fun closeDb() {
         appDatabase.close()
+        _appDatabase = null
     }
 }
