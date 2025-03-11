@@ -9,8 +9,8 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        versionCode = 15
-        versionName = "0.8.5"
+        versionCode = 16
+        versionName = "0.9.0"
         applicationId = "ru.slavapmk.journalTracker"
         minSdk = 29
         targetSdk = 35
@@ -52,6 +52,11 @@ android {
     buildFeatures {
         viewBinding = true
     }
+    packaging {
+        resources {
+            excludes += "META-INF/DEPENDENCIES"
+        }
+    }
 }
 
 dependencies {
@@ -77,6 +82,9 @@ dependencies {
     testImplementation(libs.androidx.room.testing)
     implementation(libs.androidx.room.paging)
     implementation(libs.flexbox)
+    implementation(libs.poi)
+    implementation(libs.poi.ooxml)
+    implementation(libs.pdfbox)
 }
 
 tasks.register("generateVersions") {

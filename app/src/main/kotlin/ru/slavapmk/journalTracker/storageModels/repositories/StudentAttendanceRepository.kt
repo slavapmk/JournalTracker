@@ -35,4 +35,10 @@ class StudentAttendanceRepository(
     ) = withContext(Dispatchers.IO) {
         studentsAttendanceDao.updateAttendance(studentAttendanceEntity)
     }
+
+    suspend fun getStudentAttendanceWithNames(
+        lessonId: Int
+    ) = withContext(Dispatchers.IO) {
+        studentsAttendanceDao.getStudentAttendanceWithNames(lessonId)
+    }
 }
