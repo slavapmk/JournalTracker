@@ -60,7 +60,6 @@ class ExportWeekViewModel : ViewModel() {
         result.add(
             renderSummary(
                 context,
-                students,
                 summedAttendance,
                 offset
             )
@@ -69,13 +68,70 @@ class ExportWeekViewModel : ViewModel() {
         return result
     }
 
-    private suspend fun renderSummary(
+    private fun renderSummary(
         context: Context,
-        students: List<StudentEntity>,
         summedAttendance: Map<Int, StudentAttendance>,
         offset: Int
     ): RenderData {
-        TODO("Not yet implemented")
+        val resultCells = mutableListOf<CellData>()
+        val resultBorders = mutableListOf<BorderData>()
+
+
+        // Skipped title
+        resultCells.add(
+            CellData(
+                0, 0,
+                context.getString(
+                    R.string.exporter_hour_skipped
+                ),
+                endColumn = 1 + 1
+            )
+        )
+
+        // Skipped respectful title
+        resultCells.add(
+            CellData(
+                0, 1,
+                context.getString(
+                    R.string.exporter_hour_skipped_respectful
+                ),
+                endRow = 2,
+                rotation = 90
+            )
+        )
+
+        // Skipped disrespectful title
+        resultCells.add(
+            CellData(
+                1, 1,
+                context.getString(
+                    R.string.exporter_hour_skipped_disrespectful
+                ),
+                endRow = 2,
+                rotation = 90
+            )
+        )
+
+        for ((index, entry) in summedAttendance.entries) {
+            resultCells.add(
+                CellData(
+                    0, index + 2,
+                    entry.respectful
+                )
+            )
+            resultCells.add(
+                CellData(
+                    1, index + 2,
+                    entry.disrespectful
+                )
+            )
+        }
+
+        return RenderData(
+            resultCells,
+            resultBorders,
+            offsetColumn = offset
+        )
     }
 
     private suspend fun renderLessons(
