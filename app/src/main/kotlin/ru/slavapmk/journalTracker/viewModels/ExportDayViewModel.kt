@@ -135,7 +135,8 @@ class ExportDayViewModel : ViewModel() {
                     workbook.export(outputStream)
                     outputStream.close()
 
-                    val uri = FileProvider.getUriForFile(context, "${context.packageName}.provider", file)
+                    val uri =
+                        FileProvider.getUriForFile(context, "${context.packageName}.provider", file)
                     val intent = Intent(Intent.ACTION_VIEW).apply {
                         setDataAndType(uri, "application/vnd.ms-excel")
                         addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
@@ -153,27 +154,28 @@ class ExportDayViewModel : ViewModel() {
         }
     }
 
-    private suspend fun parse(context: Context, date: SimpleDate, group: String) =
-        withContext(Dispatchers.IO) {
-            val sheetNames = listOf(
-                context.getString(
-                    R.string.exporter_date,
-                    date.day, date.month, date.year
-                )
+    private suspend fun parse(
+        context: Context, date: SimpleDate, group: String
+    ) = withContext(Dispatchers.IO) {
+        val sheetNames = listOf(
+            context.getString(
+                R.string.exporter_date,
+                date.day, date.month, date.year
             )
-            val exporter = ExcelExporter(
-                sheetNames,
-                creator = "Journal Exporter",
-                title = "Attendance Journal"
-            )
+        )
+        val exporter = ExcelExporter(
+            sheetNames,
+            creator = "Journal Exporter",
+            title = "Attendance Journal"
+        )
 
-            val dayData = generateDay(context, date, group)
+        val dayData = generateDay(context, date, group)
 
-            exporter.resizeWorkbook()
-            exporter.insertData(sheetNames[0], dayData)
+        exporter.insertData(sheetNames[0], dayData)
+        exporter.resizeWorkbook()
 
-            return@withContext exporter
-        }
+        return@withContext exporter
+    }
 
     private suspend fun generateDay(
         context: Context,
