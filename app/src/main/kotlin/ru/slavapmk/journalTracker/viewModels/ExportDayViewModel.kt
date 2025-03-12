@@ -23,12 +23,25 @@ import ru.slavapmk.journalTracker.storageModels.StorageDependencies
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.time.LocalDate
 import java.util.Calendar
 import java.util.Date
 import java.util.GregorianCalendar
 
 
 class ExportDayViewModel : ViewModel() {
+    private val weekdayNamesId: List<Int> by lazy {
+        listOf(
+            R.string.day_monday,
+            R.string.day_tuesday,
+            R.string.day_wednesday,
+            R.string.day_thurday,
+            R.string.day_friday,
+            R.string.day_saturday,
+            R.string.day_sunday
+        )
+    }
+
     val savedLiveStatus by lazy {
         MutableLiveData<Unit>()
     }
@@ -160,7 +173,12 @@ class ExportDayViewModel : ViewModel() {
         val sheetNames = listOf(
             context.getString(
                 R.string.exporter_date,
-                date.day, date.month, date.year
+                date.day, date.month, date.year,
+                context.getString(
+                    weekdayNamesId[
+                        LocalDate.of(date.year, date.month, date.day).dayOfWeek.value - 1
+                    ]
+                )
             )
         )
         val exporter = ExcelExporter(
@@ -251,7 +269,12 @@ class ExportDayViewModel : ViewModel() {
                 2, 1,
                 context.getString(
                     R.string.exporter_date,
-                    date.day, date.month, date.year
+                    date.day, date.month, date.year,
+                    context.getString(
+                        weekdayNamesId[
+                            LocalDate.of(date.year, date.month, date.day).dayOfWeek.value - 1
+                        ]
+                    )
                 ),
                 endColumn = 2 + lessonListWithAttendance.size - 1
             )

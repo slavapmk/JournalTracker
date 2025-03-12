@@ -28,6 +28,7 @@ import ru.slavapmk.journalTracker.utils.generateWeeks
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.time.LocalDate
 import java.util.Calendar
 import java.util.Date
 import java.util.GregorianCalendar
@@ -45,6 +46,18 @@ data class StudentAttendance(
 }
 
 class ExportWeekViewModel : ViewModel() {
+    private val weekdayNamesId: List<Int> by lazy {
+        listOf(
+            R.string.day_monday,
+            R.string.day_tuesday,
+            R.string.day_wednesday,
+            R.string.day_thurday,
+            R.string.day_friday,
+            R.string.day_saturday,
+            R.string.day_sunday
+        )
+    }
+
     val savedLiveStatus by lazy {
         MutableLiveData<Unit>()
     }
@@ -287,8 +300,8 @@ class ExportWeekViewModel : ViewModel() {
                         BorderStyle.THICK,
                     )
                 ),
-//                freezeRow = 3,
-//                freezeColumn = 1
+                freezeRow = 3,
+                freezeColumn = 1
             )
         )
 
@@ -358,6 +371,13 @@ class ExportWeekViewModel : ViewModel() {
         resultBorders.apply {
             add(
                 BorderData(
+                    0, 1,
+                    0, 2,
+                    BorderStyle.THIN
+                )
+            )
+            add(
+                BorderData(
                     0, 0,
                     1, 0,
                     BorderStyle.THICK
@@ -413,13 +433,19 @@ class ExportWeekViewModel : ViewModel() {
 
         val studentsSum = mutableMapOf<Int, StudentAttendance>()
 
+        val weekdayName = context.getString(
+            weekdayNamesId[
+                LocalDate.of(date.year, date.month, date.day).dayOfWeek.value - 1
+            ]
+        )
         resultCells.add(
             CellData(
                 0,
                 0,
                 context.getString(
                     R.string.exporter_date,
-                    date.day, date.month, date.year
+                    date.day, date.month, date.year,
+                    weekdayName
                 ),
                 endColumn = lessonListWithAttendance.size - 1
             )
@@ -598,6 +624,13 @@ class ExportWeekViewModel : ViewModel() {
                     0, 0,
                     1, 3,
                     BorderStyle.THICK
+                )
+            )
+            add(
+                BorderData(
+                    0, 0,
+                    0, 3,
+                    BorderStyle.THIN
                 )
             )
             add(
