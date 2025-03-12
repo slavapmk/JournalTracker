@@ -68,6 +68,9 @@ class ExportWeekViewModel : ViewModel() {
     val openLiveStatus by lazy {
         MutableLiveData<Intent?>()
     }
+    val statusCallback by lazy {
+        MutableLiveData<String?>()
+    }
 
     lateinit var shared: SharedPreferences
 
@@ -183,8 +186,8 @@ class ExportWeekViewModel : ViewModel() {
 
     fun saveExcel(context: Context) {
         viewModelScope.launch {
-            val workbook = parse(context)
             withContext(Dispatchers.IO) {
+                val workbook = parse(context)
                 val calendar: Calendar = GregorianCalendar.getInstance().apply { time = Date() }
 
                 try {
@@ -299,6 +302,11 @@ class ExportWeekViewModel : ViewModel() {
     private suspend fun parse(
         context: Context
     ) = withContext(Dispatchers.IO) {
+        statusCallback.postValue(
+            context.getString(
+                R.string.export_collecting_data
+            )
+        )
         val dates: Pair<SimpleDate, SimpleDate> = getWeek() ?: return@withContext ExcelExporter(
             listOf(),
             creator = "Journal Exporter",
@@ -327,6 +335,11 @@ class ExportWeekViewModel : ViewModel() {
 
         exporter.resizeWorkbook()
 
+        statusCallback.postValue(
+            context.getString(
+                R.string.export_processing_file
+            )
+        )
         return@withContext exporter
     }
 

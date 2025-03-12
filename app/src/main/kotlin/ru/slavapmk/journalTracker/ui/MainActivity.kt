@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -56,5 +57,11 @@ class MainActivity : AppCompatActivity() {
         } else {
             View.GONE
         }
+        binding.statusCallback.isVisible = loading
+        binding.statusCallback.text = ""
+    }
+
+    fun setStatus(text: String) {
+        binding.statusCallback.text = text
     }
 }
