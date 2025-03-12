@@ -37,7 +37,6 @@ import java.io.IOException
 import java.util.Calendar
 import java.util.Date
 import java.util.GregorianCalendar
-import kotlin.system.exitProcess
 
 class SettingsFragment : Fragment() {
     private lateinit var binding: FragmentSettingsBinding
@@ -85,7 +84,8 @@ class SettingsFragment : Fragment() {
         try {
             requireContext().contentResolver.openInputStream(uri)?.use { input ->
                 FileOutputStream(dbPath).use { output ->
-                    input.copyTo(output)
+                    val aa = input.copyTo(output)
+                    println(aa)
                 }
             }
             Toast.makeText(requireContext(), R.string.db_import_success, Toast.LENGTH_LONG).show()
@@ -99,17 +99,14 @@ class SettingsFragment : Fragment() {
     }
 
     private fun restartApplication() {
-        val context = requireContext()
-        val packageManager = context.packageManager
-        val intent = packageManager.getLaunchIntentForPackage(context.packageName)
-
+        val intent = requireContext().packageManager.getLaunchIntentForPackage(
+            requireContext().packageName
+        )
         if (intent != null) {
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-            startActivity(intent)
-            Runtime.getRuntime().exit(0)
-        } else {
-            Log.e("RestartApp", "Не удалось получить launch intent")
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            requireContext().startActivity(intent)
         }
+        Runtime.getRuntime().exit(0)
     }
 
 
