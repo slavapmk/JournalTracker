@@ -286,8 +286,8 @@ class ExportWeekViewModel : ViewModel() {
                         BorderStyle.THICK,
                     )
                 ),
-                freezeRow = 3,
-                freezeColumn = 1
+//                freezeRow = 3,
+//                freezeColumn = 1
             )
         )
 
@@ -349,6 +349,31 @@ class ExportWeekViewModel : ViewModel() {
                 CellData(
                     1, index + 3,
                     entry.disrespectful
+                )
+            )
+        }
+
+        resultBorders.apply {
+            add(
+                BorderData(
+                    0, 0,
+                    1, 0,
+                    BorderStyle.THICK
+                )
+            )
+            add(
+                BorderData(
+                    0, 1,
+                    1, 2,
+                    BorderStyle.THICK
+                )
+            )
+            add(
+                BorderData(
+                    0, 3,
+                    1, 2 + summedAttendance.size,
+                    BorderStyle.THICK,
+                    BorderStyle.THIN,
                 )
             )
         }
@@ -467,6 +492,40 @@ class ExportWeekViewModel : ViewModel() {
             }
         }
 
+        resultBorders.apply {
+            add(
+                BorderData(
+                    0, 0,
+                    lessonListWithAttendance.size - 1, 0,
+                    BorderStyle.THICK
+                )
+            )
+            add(
+                BorderData(
+                    0, 1,
+                    lessonListWithAttendance.size - 1, 1,
+                    BorderStyle.THICK,
+                    BorderStyle.THIN,
+                )
+            )
+            add(
+                BorderData(
+                    0, 2,
+                    lessonListWithAttendance.size - 1, 2,
+                    BorderStyle.THICK,
+                    BorderStyle.THIN,
+                )
+            )
+            add(
+                BorderData(
+                    0, 3,
+                    lessonListWithAttendance.size - 1, 2 + studentsSum.size,
+                    BorderStyle.THICK,
+                    BorderStyle.THIN,
+                )
+            )
+        }
+
         return Triple(
             lessonListWithAttendance.size,
             studentsSum,
@@ -530,6 +589,24 @@ class ExportWeekViewModel : ViewModel() {
                 )
             }
         )
+
+        resultBorders.apply {
+            add(
+                BorderData(
+                    0, 0,
+                    1, 2,
+                    BorderStyle.THICK
+                )
+            )
+            add(
+                BorderData(
+                    0, 3,
+                    1, 2 + studentEntityList.size,
+                    BorderStyle.THICK,
+                    BorderStyle.THIN,
+                )
+            )
+        }
 
         return RenderData(
             resultCells,
