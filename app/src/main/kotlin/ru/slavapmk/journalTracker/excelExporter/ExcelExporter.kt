@@ -130,14 +130,18 @@ class ExcelExporter(
                 (maxOf(cellColumn, endColumn) - minOf(cellColumn, endColumn) + 1)
                 > 1
             ) {
-                sheet.addMergedRegion(
-                    CellRangeAddress(
-                        minOf(cellRow, endRow),
-                        maxOf(cellRow, endRow),
-                        minOf(cellColumn, endColumn),
-                        maxOf(cellColumn, endColumn),
+                try {
+                    sheet.addMergedRegion(
+                        CellRangeAddress(
+                            minOf(cellRow, endRow),
+                            maxOf(cellRow, endRow),
+                            minOf(cellColumn, endColumn),
+                            maxOf(cellColumn, endColumn),
+                        )
                     )
-                )
+                } catch (ise: IllegalStateException) {
+                    throw IllegalStateException(cellData.toString(), ise)
+                }
             }
 
             val style = workbook.createCellStyle()

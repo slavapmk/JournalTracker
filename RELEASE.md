@@ -1,3 +1,3 @@
-# 0.9.1 (build 17)
+# 0.9.4 (build 20)
 
-Fixed database load
+Week sharing
