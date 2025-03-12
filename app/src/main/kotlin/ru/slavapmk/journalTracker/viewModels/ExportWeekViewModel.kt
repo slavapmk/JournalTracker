@@ -266,6 +266,7 @@ class ExportWeekViewModel : ViewModel() {
             renderSummary(
                 context,
                 summedAttendance,
+                students,
                 offset
             )
         )
@@ -297,6 +298,7 @@ class ExportWeekViewModel : ViewModel() {
     private fun renderSummary(
         context: Context,
         summedAttendance: Map<Int, StudentAttendance>,
+        students: List<StudentEntity>,
         offset: Int
     ): RenderData {
         val resultCells = mutableListOf<CellData>()
@@ -371,7 +373,7 @@ class ExportWeekViewModel : ViewModel() {
             add(
                 BorderData(
                     0, 3,
-                    1, 2 + summedAttendance.size,
+                    1, 2 + students.size,
                     BorderStyle.THICK,
                     BorderStyle.THIN,
                 )
@@ -519,7 +521,7 @@ class ExportWeekViewModel : ViewModel() {
             add(
                 BorderData(
                     0, 3,
-                    lessonListWithAttendance.size - 1, 2 + studentsSum.size,
+                    lessonListWithAttendance.size - 1, 2 + allStudents.size,
                     BorderStyle.THICK,
                     BorderStyle.THIN,
                 )
