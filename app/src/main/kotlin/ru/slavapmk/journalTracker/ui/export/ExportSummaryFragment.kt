@@ -43,6 +43,7 @@ class ExportSummaryFragment : Fragment() {
 
         viewModel.savedLiveStatus.observe(viewLifecycleOwner) {
             activity.setLoading(false)
+            setStatus(null)
             Toast.makeText(
                 requireContext(),
                 "Файл успешно создан",
@@ -52,6 +53,7 @@ class ExportSummaryFragment : Fragment() {
 
         binding.shareExcel.setOnClickListener {
             activity.setLoading(true)
+            setStatus(null)
             viewModel.shareExcel(
                 requireContext()
             )
@@ -66,6 +68,7 @@ class ExportSummaryFragment : Fragment() {
 
         binding.openExcel.setOnClickListener {
             activity.setLoading(true)
+            setStatus(null)
             viewModel.openExcel(
                 requireContext()
             )
@@ -78,6 +81,14 @@ class ExportSummaryFragment : Fragment() {
             }
         }
 
+        viewModel.statusCallback.observe(viewLifecycleOwner) {
+            setStatus(it)
+        }
+
         return binding.root
+    }
+
+    private fun setStatus(it: String?) {
+        activity.setStatus(it ?: "")
     }
 }

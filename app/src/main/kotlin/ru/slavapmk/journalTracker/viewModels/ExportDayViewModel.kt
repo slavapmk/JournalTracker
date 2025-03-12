@@ -51,6 +51,9 @@ class ExportDayViewModel : ViewModel() {
     val openLiveStatus by lazy {
         MutableLiveData<Intent?>()
     }
+    val statusCallback by lazy {
+        MutableLiveData<String?>()
+    }
 
     fun saveExcel(context: Context, date: SimpleDate, group: String) {
         viewModelScope.launch {
@@ -84,8 +87,8 @@ class ExportDayViewModel : ViewModel() {
 
     fun shareExcel(context: Context, date: SimpleDate, group: String) {
         viewModelScope.launch {
-            val workbook = parse(context, date, group)
             withContext(Dispatchers.IO) {
+                val workbook = parse(context, date, group)
                 val calendar: Calendar = GregorianCalendar.getInstance().apply { time = Date() }
 
                 try {
@@ -170,6 +173,11 @@ class ExportDayViewModel : ViewModel() {
     private suspend fun parse(
         context: Context, date: SimpleDate, group: String
     ) = withContext(Dispatchers.IO) {
+        statusCallback.postValue(
+            context.getString(
+                R.string.export_collecting_data
+            )
+        )
         val sheetNames = listOf(
             context.getString(
                 R.string.exporter_date,
@@ -192,6 +200,11 @@ class ExportDayViewModel : ViewModel() {
         exporter.insertData(sheetNames[0], dayData)
         exporter.resizeWorkbook()
 
+        statusCallback.postValue(
+            context.getString(
+                R.string.export_processing_file
+            )
+        )
         return@withContext exporter
     }
 

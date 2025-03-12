@@ -78,6 +78,14 @@ class ExportWeekFragment : Fragment() {
             }
         }
 
+        viewModel.statusCallback.observe(viewLifecycleOwner) {
+            setStatus(it)
+        }
+
         return binding.root
+    }
+
+    private fun setStatus(it: String?) {
+        activity.setStatus(it ?: "")
     }
 }

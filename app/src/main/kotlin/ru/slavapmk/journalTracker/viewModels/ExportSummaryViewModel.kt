@@ -57,6 +57,9 @@ class ExportSummaryViewModel : ViewModel() {
     val openLiveStatus by lazy {
         MutableLiveData<Intent?>()
     }
+    val statusCallback by lazy {
+        MutableLiveData<String?>()
+    }
 
     lateinit var shared: SharedPreferences
 
@@ -168,8 +171,8 @@ class ExportSummaryViewModel : ViewModel() {
 
     fun openExcel(context: Context) {
         viewModelScope.launch {
-            val workbook = parse(context)
             withContext(Dispatchers.IO) {
+                val workbook = parse(context)
                 val calendar: Calendar = GregorianCalendar.getInstance().apply { time = Date() }
 
                 try {
@@ -229,6 +232,12 @@ class ExportSummaryViewModel : ViewModel() {
         )
 
         for ((i, week) in weeks.withIndex()) {
+            statusCallback.postValue(
+                context.getString(
+                    R.string.export_collecting_week,
+                    i + 1
+                )
+            )
             val insertDataList = generateWeek(
                 context, genDates(
                     SimpleDate(week.startDay, week.startMonth, week.startYear),
@@ -243,6 +252,11 @@ class ExportSummaryViewModel : ViewModel() {
 
         exporter.resizeWorkbook()
 
+        statusCallback.postValue(
+            context.getString(
+                R.string.export_processing_file
+            )
+        )
         return@withContext exporter
     }
 
