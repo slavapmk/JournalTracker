@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.apache.poi.ss.usermodel.BorderStyle
 import org.apache.poi.ss.usermodel.HorizontalAlignment
 import ru.slavapmk.journalTracker.R
 import ru.slavapmk.journalTracker.dataModels.StudentAttendanceLesson
@@ -266,6 +267,27 @@ class ExportWeekViewModel : ViewModel() {
                 context,
                 summedAttendance,
                 offset
+            )
+        )
+
+        result.add(
+            RenderData(
+                listOf(
+                    CellData(
+                        0, 0,
+                        context.getString(R.string.exporter_group, group),
+                        endColumn = offset + 1
+                    )
+                ),
+                listOf(
+                    BorderData(
+                        0, 0,
+                        offset + 1, 0,
+                        BorderStyle.THICK,
+                    )
+                ),
+                freezeRow = 3,
+                freezeColumn = 1
             )
         )
 
