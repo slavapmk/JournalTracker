@@ -288,7 +288,7 @@ class ExportWeekViewModel : ViewModel() {
                 context.getString(
                     R.string.exporter_hour_skipped
                 ),
-                endColumn = 1 + 1
+                endColumn = 1
             )
         )
 
@@ -319,13 +319,13 @@ class ExportWeekViewModel : ViewModel() {
         for ((index, entry) in summedAttendance.entries) {
             resultCells.add(
                 CellData(
-                    0, index + 2,
+                    0, index + 3,
                     entry.respectful
                 )
             )
             resultCells.add(
                 CellData(
-                    1, index + 2,
+                    1, index + 3,
                     entry.disrespectful
                 )
             )
@@ -334,7 +334,8 @@ class ExportWeekViewModel : ViewModel() {
         return RenderData(
             resultCells,
             resultBorders,
-            offsetColumn = offset
+            offsetColumn = offset,
+            offsetRow = 1
         )
     }
 
@@ -357,7 +358,23 @@ class ExportWeekViewModel : ViewModel() {
             }
         }
 
+        if (lessonListWithAttendance.isEmpty()) {
+            return Triple(0, mapOf(), RenderData(resultCells, resultBorders))
+        }
+
         val studentsSum = mutableMapOf<Int, StudentAttendance>()
+
+        resultCells.add(
+            CellData(
+                0,
+                0,
+                context.getString(
+                    R.string.exporter_date,
+                    date.day, date.month, date.year
+                ),
+                endColumn = lessonListWithAttendance.size - 1
+            )
+        )
 
         // Lessons with attendance
         for ((lessonIndex, listPair) in lessonListWithAttendance.withIndex()) {
@@ -365,7 +382,7 @@ class ExportWeekViewModel : ViewModel() {
             resultCells.add(
                 CellData(
                     lessonIndex,
-                    0,
+                    1,
                     context.getString(
                         lesson.type.toEdit().shortNameRes
                     )
@@ -374,7 +391,7 @@ class ExportWeekViewModel : ViewModel() {
             resultCells.add(
                 CellData(
                     lessonIndex,
-                    1,
+                    2,
                     lesson.name,
                     rotation = 90
                 )
@@ -421,7 +438,7 @@ class ExportWeekViewModel : ViewModel() {
                 resultCells.add(
                     CellData(
                         lessonIndex,
-                        studentIndex + 2,
+                        studentIndex + 3,
                         skipped
                     )
                 )
@@ -434,7 +451,8 @@ class ExportWeekViewModel : ViewModel() {
             RenderData(
                 resultCells,
                 resultBorders,
-                offsetColumn = offset
+                offsetColumn = offset,
+                offsetRow = 1
             )
         )
     }
