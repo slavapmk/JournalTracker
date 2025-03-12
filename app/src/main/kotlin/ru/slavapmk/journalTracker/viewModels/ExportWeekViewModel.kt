@@ -145,9 +145,9 @@ class ExportWeekViewModel : ViewModel() {
                 it.startMonth,
                 it.startYear
             ) to SimpleDate(
-                it.startDay,
-                it.startMonth,
-                it.startYear
+                it.endDay,
+                it.endMonth,
+                it.endYear
             )
         }
     }
