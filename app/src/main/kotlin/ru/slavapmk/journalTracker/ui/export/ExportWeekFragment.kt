@@ -50,6 +50,34 @@ class ExportWeekFragment : Fragment() {
             ).show()
         }
 
+        binding.shareExcel.setOnClickListener {
+            activity.setLoading(true)
+            viewModel.shareExcel(
+                requireContext()
+            )
+        }
+
+        viewModel.sharedLiveStatus.observe(viewLifecycleOwner) {
+            activity.setLoading(false)
+            it?.let {
+                startActivity(it)
+            }
+        }
+
+        binding.openExcel.setOnClickListener {
+            activity.setLoading(true)
+            viewModel.openExcel(
+                requireContext()
+            )
+        }
+
+        viewModel.openLiveStatus.observe(viewLifecycleOwner) {
+            activity.setLoading(false)
+            it?.let {
+                startActivity(it)
+            }
+        }
+
         return binding.root
     }
 }

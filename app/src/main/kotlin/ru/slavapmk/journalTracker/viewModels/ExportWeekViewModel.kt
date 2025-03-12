@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Environment
+import androidx.core.content.FileProvider
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -207,6 +208,91 @@ class ExportWeekViewModel : ViewModel() {
                 }
             }
             savedLiveStatus.postValue(Unit)
+        }
+    }
+
+    fun shareExcel(context: Context) {
+        viewModelScope.launch {
+            val workbook = parse(context)
+            withContext(Dispatchers.IO) {
+                val calendar: Calendar = GregorianCalendar.getInstance().apply { time = Date() }
+
+                try {
+                    val file = File(
+                        context.cacheDir,
+                        context.getString(
+                            R.string.export_filename_excel,
+                            calendar[Calendar.YEAR],
+                            calendar[Calendar.MONTH] + 1,
+                            calendar[Calendar.DAY_OF_MONTH],
+                            calendar[Calendar.HOUR_OF_DAY],
+                            calendar[Calendar.MINUTE],
+                            calendar[Calendar.SECOND]
+                        )
+                    )
+                    val outputStream = FileOutputStream(file)
+                    workbook.export(outputStream)
+                    outputStream.close()
+
+                    val uri =
+                        FileProvider.getUriForFile(context, "${context.packageName}.provider", file)
+                    val intent = Intent(Intent.ACTION_SEND).apply {
+                        type = "application/vnd.ms-excel"
+                        putExtra(Intent.EXTRA_STREAM, uri)
+                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    }
+                    sharedLiveStatus.postValue(
+                        Intent.createChooser(
+                            intent, context.getString(R.string.share_via)
+                        )
+                    )
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                    sharedLiveStatus.postValue(null)
+                }
+            }
+        }
+    }
+
+    fun openExcel(context: Context) {
+        viewModelScope.launch {
+            val workbook = parse(context)
+            withContext(Dispatchers.IO) {
+                val calendar: Calendar = GregorianCalendar.getInstance().apply { time = Date() }
+
+                try {
+                    val file = File(
+                        context.cacheDir,
+                        context.getString(
+                            R.string.export_filename_excel,
+                            calendar[Calendar.YEAR],
+                            calendar[Calendar.MONTH] + 1,
+                            calendar[Calendar.DAY_OF_MONTH],
+                            calendar[Calendar.HOUR_OF_DAY],
+                            calendar[Calendar.MINUTE],
+                            calendar[Calendar.SECOND]
+                        )
+                    )
+                    val outputStream = FileOutputStream(file)
+                    workbook.export(outputStream)
+                    outputStream.close()
+
+                    val uri =
+                        FileProvider.getUriForFile(context, "${context.packageName}.provider", file)
+                    val intent = Intent(Intent.ACTION_VIEW).apply {
+                        setDataAndType(uri, "application/vnd.ms-excel")
+                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    }
+                    openLiveStatus.postValue(
+                        Intent.createChooser(
+                            intent, context.getString(R.string.share_via)
+                        )
+                    )
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                    openLiveStatus.postValue(null)
+                }
+            }
         }
     }
 
