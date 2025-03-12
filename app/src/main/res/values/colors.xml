@@ -6,7 +6,7 @@
     <color name="item_background">#2F2F2F</color>
     <color name="item_foreground">#767676</color>
     <color name="now_foreground">#393FAF</color>
-    <color name="now_background">#393FAF</color>
+    <color name="now_background">#367CF4</color>
     <color name="item_text">#BFBFBF</color>
     <color name="load_background_alpha">#7C000000</color>
     <color name="load_background">#878686</color>
