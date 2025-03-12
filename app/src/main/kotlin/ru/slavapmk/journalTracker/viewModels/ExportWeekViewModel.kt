@@ -1,9 +1,14 @@
 package ru.slavapmk.journalTracker.viewModels
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
+import android.os.Environment
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.apache.poi.ss.usermodel.HorizontalAlignment
 import ru.slavapmk.journalTracker.R
@@ -19,6 +24,9 @@ import ru.slavapmk.journalTracker.storageModels.entities.SemesterEntity
 import ru.slavapmk.journalTracker.storageModels.entities.StudentEntity
 import ru.slavapmk.journalTracker.ui.SharedKeys
 import ru.slavapmk.journalTracker.utils.generateWeeks
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 import java.util.Calendar
 import java.util.Date
 import java.util.GregorianCalendar
@@ -36,6 +44,16 @@ data class StudentAttendance(
 }
 
 class ExportWeekViewModel : ViewModel() {
+    val savedLiveStatus by lazy {
+        MutableLiveData<Unit>()
+    }
+    val sharedLiveStatus by lazy {
+        MutableLiveData<Intent?>()
+    }
+    val openLiveStatus by lazy {
+        MutableLiveData<Intent?>()
+    }
+
     lateinit var shared: SharedPreferences
 
     private var _date: SimpleDate?
@@ -148,8 +166,38 @@ class ExportWeekViewModel : ViewModel() {
         return result
     }
 
+    fun saveExcel(context: Context) {
+        viewModelScope.launch {
+            val workbook = parse(context)
+            withContext(Dispatchers.IO) {
+                val calendar: Calendar = GregorianCalendar.getInstance().apply { time = Date() }
+
+                try {
+                    val file = File(
+                        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
+                        context.getString(
+                            R.string.export_filename_excel,
+                            calendar[Calendar.YEAR],
+                            calendar[Calendar.MONTH] + 1,
+                            calendar[Calendar.DAY_OF_MONTH],
+                            calendar[Calendar.HOUR_OF_DAY],
+                            calendar[Calendar.MINUTE],
+                            calendar[Calendar.SECOND]
+                        )
+                    )
+                    val outputStream = FileOutputStream(file)
+                    workbook.export(outputStream)
+                    outputStream.close()
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+            }
+            savedLiveStatus.postValue(Unit)
+        }
+    }
+
     private suspend fun parse(
-        context: Context, group: String
+        context: Context
     ) = withContext(Dispatchers.IO) {
         val dates: Pair<SimpleDate, SimpleDate> = getWeek() ?: return@withContext ExcelExporter(
             listOf(),
@@ -169,7 +217,10 @@ class ExportWeekViewModel : ViewModel() {
             title = "Attendance Journal"
         )
 
-        val insertDataList = generateWeek(context, genDates(dates.first, dates.second), group)
+        val insertDataList = generateWeek(
+            context, genDates(dates.first, dates.second),
+            shared.getString(SharedKeys.GROUP_NAME_KEY, "") ?: ""
+        )
         for (insertData in insertDataList) {
             exporter.insertData(sheetNames[0], insertData)
         }
