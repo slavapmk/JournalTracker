@@ -594,14 +594,14 @@ class ExportWeekViewModel : ViewModel() {
             add(
                 BorderData(
                     0, 0,
-                    1, 2,
+                    1, 3,
                     BorderStyle.THICK
                 )
             )
             add(
                 BorderData(
-                    0, 3,
-                    1, 2 + studentEntityList.size,
+                    0, 4,
+                    1, 3 + studentEntityList.size,
                     BorderStyle.THICK,
                     BorderStyle.THIN,
                 )
