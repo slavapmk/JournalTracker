@@ -78,6 +78,7 @@
             android:layout_marginHorizontal="40dp"
             android:layout_marginTop="10dp"
             android:hint="@string/settings_attendance_format"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
 
             app:layout_constraintStart_toStartOf="parent"
@@ -104,8 +105,8 @@
             android:text="@string/settings_edit_timetable"
             app:icon="@drawable/baseline_access_time_24"
             app:iconGravity="textStart"
-            app:layout_constraintEnd_toEndOf="@id/studentFormatField"
-            app:layout_constraintStart_toStartOf="@id/studentFormatField"
+            app:layout_constraintEnd_toEndOf="@id/groupField"
+            app:layout_constraintStart_toStartOf="@id/groupField"
             app:layout_constraintTop_toBottomOf="@id/studentFormatField" />
 
         <com.google.android.material.button.MaterialButton
