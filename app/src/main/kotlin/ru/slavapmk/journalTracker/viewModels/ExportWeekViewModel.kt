@@ -1,19 +1,27 @@
 package ru.slavapmk.journalTracker.viewModels
 
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.apache.poi.ss.usermodel.HorizontalAlignment
 import ru.slavapmk.journalTracker.R
 import ru.slavapmk.journalTracker.dataModels.StudentAttendanceLesson
+import ru.slavapmk.journalTracker.dataModels.selectWeek.Semester
 import ru.slavapmk.journalTracker.dataModels.toEdit
 import ru.slavapmk.journalTracker.excelExporter.BorderData
 import ru.slavapmk.journalTracker.excelExporter.CellData
 import ru.slavapmk.journalTracker.excelExporter.ExcelExporter
 import ru.slavapmk.journalTracker.excelExporter.RenderData
 import ru.slavapmk.journalTracker.storageModels.StorageDependencies
+import ru.slavapmk.journalTracker.storageModels.entities.SemesterEntity
 import ru.slavapmk.journalTracker.storageModels.entities.StudentEntity
+import ru.slavapmk.journalTracker.ui.SharedKeys
+import ru.slavapmk.journalTracker.utils.generateWeeks
+import java.util.Calendar
+import java.util.Date
+import java.util.GregorianCalendar
 
 data class StudentAttendance(
     val respectful: Int = 0,
@@ -28,6 +36,103 @@ data class StudentAttendance(
 }
 
 class ExportWeekViewModel : ViewModel() {
+    lateinit var shared: SharedPreferences
+
+    private var _date: SimpleDate?
+        get() = if (
+            shared.contains(SharedKeys.SELECTED_DAY) &&
+            shared.contains(SharedKeys.SELECTED_MONTH) &&
+            shared.contains(SharedKeys.SELECTED_YEAR)
+        ) {
+            SimpleDate(
+                shared.getInt(SharedKeys.SELECTED_DAY, -1),
+                shared.getInt(SharedKeys.SELECTED_MONTH, -1),
+                shared.getInt(SharedKeys.SELECTED_YEAR, -1),
+            )
+        } else {
+            null
+        }
+        set(value) {
+            if (value == null) {
+                shared.edit()?.apply {
+                    remove(SharedKeys.SELECTED_DAY)
+                    remove(SharedKeys.SELECTED_MONTH)
+                    remove(SharedKeys.SELECTED_YEAR)
+                    apply()
+                }
+            } else {
+                shared.edit()?.apply {
+                    putInt(SharedKeys.SELECTED_DAY, value.day)
+                    putInt(SharedKeys.SELECTED_MONTH, value.month)
+                    putInt(SharedKeys.SELECTED_YEAR, value.year)
+                    apply()
+                }
+            }
+        }
+
+    val date: SimpleDate
+        get() =
+            if (_date == null) {
+                val now = nowDate()
+                _date = now
+                now
+            } else {
+                _date!!
+            }
+
+    private fun nowDate(): SimpleDate {
+        val calendar: Calendar = GregorianCalendar.getInstance().apply {
+            time = Date()
+        }
+        return SimpleDate(
+            calendar[Calendar.DAY_OF_MONTH],
+            calendar[Calendar.MONTH] + 1,
+            calendar[Calendar.YEAR]
+        )
+    }
+
+    private suspend fun getWeek(): Pair<SimpleDate, SimpleDate>? {
+        val semesters = StorageDependencies.semesterRepository.getSemesters()
+        if (semesters.isEmpty()) {
+            return null
+        }
+        val semesterId = shared.getInt(SharedKeys.SEMESTER_ID, -1)
+        val semester: SemesterEntity = semesters.find { it.id == semesterId } ?: return null
+        val weeks = generateWeeks(
+            Semester(
+                semester.startDay,
+                semester.startMonth,
+                semester.startYear,
+                semester.endDay,
+                semester.endMonth,
+                semester.endYear,
+            )
+        )
+        val week = weeks.find { week ->
+            val startDate = SimpleDate(
+                week.startDay,
+                week.startMonth,
+                week.startYear
+            )
+            val endDate = SimpleDate(
+                week.endDay,
+                week.endMonth,
+                week.endYear
+            )
+            return@find startDate <= date && date <= endDate
+        }
+        return week?.let {
+            SimpleDate(
+                it.startDay,
+                it.startMonth,
+                it.startYear
+            ) to SimpleDate(
+                it.startDay,
+                it.startMonth,
+                it.startYear
+            )
+        }
+    }
 
     private fun genDates(from: SimpleDate, to: SimpleDate): MutableList<SimpleDate> {
         val result: MutableList<SimpleDate> = mutableListOf()
@@ -44,8 +149,13 @@ class ExportWeekViewModel : ViewModel() {
     }
 
     private suspend fun parse(
-        context: Context, dates: Pair<SimpleDate, SimpleDate>, group: String
+        context: Context, group: String
     ) = withContext(Dispatchers.IO) {
+        val dates: Pair<SimpleDate, SimpleDate> = getWeek() ?: return@withContext ExcelExporter(
+            listOf(),
+            creator = "Journal Exporter",
+            title = "Attendance Journal"
+        )
         val sheetNames = listOf(
             context.getString(
                 R.string.exporter_week,
