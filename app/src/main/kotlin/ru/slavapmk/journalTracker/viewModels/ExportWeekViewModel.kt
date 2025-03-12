@@ -10,6 +10,7 @@ import ru.slavapmk.journalTracker.dataModels.StudentAttendanceLesson
 import ru.slavapmk.journalTracker.dataModels.toEdit
 import ru.slavapmk.journalTracker.excelExporter.BorderData
 import ru.slavapmk.journalTracker.excelExporter.CellData
+import ru.slavapmk.journalTracker.excelExporter.ExcelExporter
 import ru.slavapmk.journalTracker.excelExporter.RenderData
 import ru.slavapmk.journalTracker.storageModels.StorageDependencies
 import ru.slavapmk.journalTracker.storageModels.entities.StudentEntity
@@ -27,6 +28,48 @@ data class StudentAttendance(
 }
 
 class ExportWeekViewModel : ViewModel() {
+
+    private fun genDates(from: SimpleDate, to: SimpleDate): MutableList<SimpleDate> {
+        val result: MutableList<SimpleDate> = mutableListOf()
+        for (year in from.year..to.year) {
+            for (month in from.month..to.month) {
+                for (day in from.day..to.day) {
+                    result.add(
+                        SimpleDate(day, month, year)
+                    )
+                }
+            }
+        }
+        return result
+    }
+
+    private suspend fun parse(
+        context: Context, dates: Pair<SimpleDate, SimpleDate>, group: String
+    ) = withContext(Dispatchers.IO) {
+        val sheetNames = listOf(
+            context.getString(
+                R.string.exporter_week,
+                dates.first.day, dates.first.month, dates.first.year,
+                dates.second.day, dates.second.month, dates.second.year
+            )
+        )
+        val exporter = ExcelExporter(
+            sheetNames,
+            creator = "Journal Exporter",
+            title = "Attendance Journal"
+        )
+
+        val insertDataList = generateWeek(context, genDates(dates.first, dates.second), group)
+        for (insertData in insertDataList) {
+            exporter.insertData(sheetNames[0], insertData)
+        }
+
+        exporter.resizeWorkbook()
+
+        return@withContext exporter
+    }
+
+
     private suspend fun generateWeek(
         context: Context,
         dates: List<SimpleDate>,
