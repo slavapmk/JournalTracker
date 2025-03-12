@@ -118,6 +118,7 @@
     <string name="add_campus_requirement">Добавьте хотя бы 1 корпус</string>
     <string name="exporter_name">Студент</string>
     <string name="exporter_group">Группа %1$s</string>
+    <string name="exporter_week_id">%1$02d нед.</string>
     <string name="exporter_hour_skipped">Часов пропуска</string>
     <string name="exporter_hour_skipped_respectful">Уважительно</string>
     <string name="exporter_hour_skipped_disrespectful">Неуважительно</string>
