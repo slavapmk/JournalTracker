@@ -51,10 +51,9 @@ class MainActivity : AppCompatActivity() {
         )
 
         viewModel.checkLiveData.observe(this) {
-            Toast.makeText(
-                this, "Update contains: ${it.version}",
-                Toast.LENGTH_LONG
-            ).show()
+            UpdateAppDialog(
+                it
+            ).show(fmanager, "UPDATE_APP")
         }
     }
 

@@ -9,8 +9,8 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        versionCode = 23
-        versionName = "0.9.7"
+        versionCode = 24
+        versionName = "1.0.0"
         applicationId = "ru.slavapmk.journalTracker"
         minSdk = 29
         targetSdk = 35
@@ -85,6 +85,8 @@ dependencies {
     implementation(libs.flexbox)
     implementation(libs.poi)
     implementation(libs.poi.ooxml)
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
 }
 
 tasks.register("generateVersions") {
