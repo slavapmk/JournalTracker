@@ -84,15 +84,15 @@ class ExportSummaryViewModel : ViewModel() {
 
     private fun genDates(from: SimpleDate, to: SimpleDate): MutableList<SimpleDate> {
         val result: MutableList<SimpleDate> = mutableListOf()
-        for (year in from.year..to.year) {
-            for (month in from.month..to.month) {
-                for (day in from.day..to.day) {
-                    result.add(
-                        SimpleDate(day, month, year)
-                    )
-                }
-            }
+
+        var current = from.toLocalDate()
+        val end = to.toLocalDate()
+
+        while (!current.isAfter(end)) {
+            result.add(SimpleDate(current.dayOfMonth, current.monthValue, current.year))
+            current = current.plusDays(1)
         }
+
         return result
     }
 
@@ -230,8 +230,15 @@ class ExportSummaryViewModel : ViewModel() {
             creator = "Journal Exporter",
             title = "Attendance Journal"
         )
+        val genDays = weeks.map { week ->
+            genDates(
+                SimpleDate(week.startDay, week.startMonth, week.startYear),
+                SimpleDate(week.endDay, week.endMonth, week.endYear)
+            )
+        }
+        println(weeks)
 
-        for ((i, week) in weeks.withIndex()) {
+        for ((i, week) in genDays.withIndex()) {
             statusCallback.postValue(
                 context.getString(
                     R.string.export_collecting_week,
@@ -239,10 +246,7 @@ class ExportSummaryViewModel : ViewModel() {
                 )
             )
             val insertDataList = generateWeek(
-                context, genDates(
-                    SimpleDate(week.startDay, week.startMonth, week.startYear),
-                    SimpleDate(week.endDay, week.endMonth, week.endYear)
-                ),
+                context, week,
                 shared.getString(SharedKeys.GROUP_NAME_KEY, "") ?: ""
             )
             for (insertData in insertDataList) {
@@ -268,7 +272,7 @@ class ExportSummaryViewModel : ViewModel() {
     ): List<RenderData> {
         val result = mutableListOf<RenderData>()
 
-        val (renderStudents, students) = renderStudentNames(context)
+        val (renderStudents, students) = renderOrGetStudentNames(context)
         result.add(renderStudents)
 
         val attendances: MutableList<Map<Int, StudentAttendance>> = mutableListOf()
@@ -437,7 +441,7 @@ class ExportSummaryViewModel : ViewModel() {
                 date.month,
                 date.year
             ).map {
-                it to StorageDependencies.studentsAttendanceRepository.getStudentAttendanceWithNames(
+                it to StorageDependencies.studentsAttendanceRepository.getLessonAttendance(
                     it.id
                 )
             }
@@ -489,9 +493,9 @@ class ExportSummaryViewModel : ViewModel() {
             )
             for (student in students) {
                 val studentIndex = allStudents.indexOfFirst {
-                    it.id == student.student.id
+                    it.id == student.studentId
                 }
-                val toEdit = student.attendance.attendance.toEdit()
+                val toEdit = student.attendance.toEdit()
                 when (toEdit) {
                     StudentAttendanceLesson.NULL -> studentsSum.compute(studentIndex) { _, oldValue ->
                         oldValue ?: StudentAttendance()
@@ -580,6 +584,14 @@ class ExportSummaryViewModel : ViewModel() {
                 offsetRow = 1
             )
         )
+    }
+
+    private var renderedStudents: Pair<RenderData, List<StudentEntity>>? = null
+    private suspend fun renderOrGetStudentNames(context: Context): Pair<RenderData, List<StudentEntity>> {
+        if (renderedStudents == null) {
+            renderedStudents = renderStudentNames(context)
+        }
+        return renderedStudents!!
     }
 
     private suspend fun renderStudentNames(context: Context): Pair<RenderData, List<StudentEntity>> {

@@ -43,6 +43,8 @@ data class SimpleDate(
         val newDate = LocalDate.of(year, month, day).minusDays(days)
         return SimpleDate(newDate.dayOfMonth, newDate.monthValue, newDate.year)
     }
+
+    fun toLocalDate(): LocalDate = LocalDate.of(year, month, day)
 }
 
 data class SimpleTime(
