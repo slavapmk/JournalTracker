@@ -75,7 +75,7 @@
     <string name="notification_title_tools">Заголовок уведомления</string>
     <string name="notification_content_tools">Содержимое уведомления</string>
     <string name="dialog_update_reject">Не обновлять</string>
-    <string name="dialog_update_accept">Обновить все</string>
+    <string name="dialog_update_accept_all">Обновить все</string>
     <string name="dialog_update_title">Применить для последующих?</string>
     <string name="dialog_update_content">Все последующие пары в этот день и время будут обработаны также.\nПри возникновении конфликтов данные заменяться новыми</string>
     <string name="type_lecture_short">Л</string>
@@ -127,4 +127,8 @@
     <string name="export_collecting_week">Обработка недели %1$d</string>
     <string name="export_collecting_data">Сбор данных</string>
     <string name="export_processing_file">Создание файла</string>
+    <string name="dialog_update_app_cancel">Игнорировать</string>
+    <string name="dialog_update_app_accept">Открыть</string>
+    <string name="dialog_update_app_title">Доступна новая версия</string>
+    <string name="dialog_update_app_content">Доступна версия %1$s. Открыть страницу скачивания?</string>
 </resources>

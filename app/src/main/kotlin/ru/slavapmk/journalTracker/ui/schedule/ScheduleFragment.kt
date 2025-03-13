@@ -381,6 +381,7 @@ class ScheduleFragment : Fragment() {
         binding.dayBefore.isVisible = visibility
         binding.dayNext.isVisible = visibility
         binding.selectSemester.isVisible = visibility
+        binding.noLessonsText.isVisible = visibility
         binding.selectSemesterGone.isVisible = !visibility
     }
 

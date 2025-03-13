@@ -2,6 +2,7 @@ package ru.slavapmk.journalTracker.ui
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -20,7 +21,6 @@ import ru.slavapmk.journalTracker.viewModels.MainActivityViewModel
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-
 
     companion object {
         lateinit var fmanager: FragmentManager
@@ -49,6 +49,17 @@ class MainActivity : AppCompatActivity() {
                 R.id.fragment_container
             ) as NavHostFragment).navController
         )
+
+        viewModel.checkLiveData.observe(this) {
+            UpdateAppDialog(
+                it
+            ).show(fmanager, "UPDATE_APP")
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.performCheckUpdates(this)
     }
 
     fun setLoading(loading: Boolean) {

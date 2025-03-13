@@ -105,7 +105,7 @@
     <string name="notification_title" translatable="false">%1$s</string>
     <string name="notification_content" translatable="false">%1$s</string>
     <string name="dialog_update_reject">Do not update</string>
-    <string name="dialog_update_accept">Update all</string>
+    <string name="dialog_update_accept_all">Update all</string>
     <string name="dialog_update_content">All subsequent pairs on that day and time will be processed as well.\nIf there are conflicts, the data will be replaced with new ones.</string>
     <string name="dialog_update_title">Apply for subsequent ones?</string>
     <string name="type_lecture_short">L</string>
@@ -163,4 +163,8 @@
     <string name="export_collecting_week">Collecting week %1$d</string>
     <string name="export_collecting_data">Collecting data</string>
     <string name="export_processing_file">Processing file</string>
+    <string name="dialog_update_app_cancel">Ignore</string>
+    <string name="dialog_update_app_accept">Open</string>
+    <string name="dialog_update_app_title">New version available</string>
+    <string name="dialog_update_app_content">The %1$s version is available. Open the download page?</string>
 </resources>

@@ -1,7 +1,9 @@
-### 0.9.6 (build 22)
+### 1.0.0 (build 24)
 
-- Created application icon  
+- Update version check  
+- Bug fixes
 
 ---
 
-- Создана иконка приложения
+- Добавлена поддержка проверки версий
+- Исправлены ошибки
