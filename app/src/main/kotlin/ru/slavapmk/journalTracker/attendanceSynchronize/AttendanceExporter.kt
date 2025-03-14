@@ -133,12 +133,17 @@ class AttendanceExporter(
             creator = "Journal Exporter",
             title = "Attendance Journal"
         )
-        val sheetNames = List(weeks.size) { i ->
+        val sheetNames = MutableList(weeks.size) { i ->
             context.getString(
                 R.string.exporter_week_id,
                 i + 1
             )
         }
+        sheetNames.add(
+            context.getString(
+                R.string.exporter_overview
+            )
+        )
         val exporter = ExcelExporter(
             sheetNames,
             creator = "Journal Exporter",
@@ -151,6 +156,8 @@ class AttendanceExporter(
             )
         }
 
+        val allAttendances = mutableMapOf<Int, StudentAttendance>()
+
         for ((i, week) in genDays.withIndex()) {
             statusCallback.postValue(
                 context.getString(
@@ -158,13 +165,33 @@ class AttendanceExporter(
                     i + 1
                 )
             )
-            val insertDataList = renderDateList(
+            val (attendances, insertDataList) = renderDateList(
                 context, week,
                 groupName
             )
+            for ((key, value) in attendances.entries) {
+                allAttendances.compute(key) { _, oldValue ->
+                    if (oldValue == null) {
+                        value
+                    } else {
+                        oldValue + value
+                    }
+                }
+            }
             for (insertData in insertDataList) {
                 exporter.insertData(sheetNames[i], insertData)
             }
+        }
+
+        for (renderData in renderOverview(
+            context,
+            allAttendances,
+            groupName
+        )) {
+            exporter.insertData(
+                sheetNames.last(),
+                renderData
+            )
         }
 
         exporter.resizeWorkbook()
@@ -205,7 +232,7 @@ class AttendanceExporter(
             title = "Attendance Journal"
         )
 
-        val insertDataList = renderDateList(
+        val (_, insertDataList) = renderDateList(
             context,
             genDates(dates.first, dates.second),
             groupName
@@ -249,7 +276,7 @@ class AttendanceExporter(
             title = "Attendance Journal"
         )
 
-        val insertDataList = renderDateList(
+        val (_, insertDataList) = renderDateList(
             context,
             listOf(date),
             groupName
@@ -268,11 +295,58 @@ class AttendanceExporter(
         return@withContext exporter
     }
 
+    private suspend fun renderOverview(
+        context: Context,
+        attendances: Map<Int, StudentAttendance>,
+        group: String
+    ): List<RenderData> {
+        val result = mutableListOf<RenderData>()
+
+        val (renderStudents, students) = renderOrGetStudentNames(context)
+        result.add(renderStudents.apply {
+            offsetRow = 1
+        })
+
+        result.add(
+            renderSummary(
+                context,
+                attendances,
+                students
+            ).apply {
+                offsetColumn = 3
+                offsetRow = 1
+            }
+        )
+
+        result.add(
+            RenderData(
+                listOf(
+                    CellData(
+                        0, 0,
+                        context.getString(R.string.exporter_group, group),
+                        endColumn = 4
+                    )
+                ),
+                listOf(
+                    BorderData(
+                        0, 0,
+                        4, 0,
+                        BorderStyle.THICK,
+                    )
+                ),
+                freezeRow = 4,
+                freezeColumn = 2
+            )
+        )
+
+        return result
+    }
+
     private suspend fun renderDateList(
         context: Context,
         dates: List<SimpleDate>,
         group: String
-    ): List<RenderData> {
+    ): Pair<Map<Int, StudentAttendance>, List<RenderData>> {
         val result = mutableListOf<RenderData>()
 
         val (renderStudents, students) = renderOrGetStudentNames(context)
@@ -335,7 +409,7 @@ class AttendanceExporter(
             )
         )
 
-        return result
+        return summedAttendance to result
     }
 
     private var renderedStudents: Pair<RenderData, List<StudentEntity>>? = null
