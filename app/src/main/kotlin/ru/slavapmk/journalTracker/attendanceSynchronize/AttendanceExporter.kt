@@ -1,6 +1,9 @@
 package ru.slavapmk.journalTracker.attendanceSynchronize
 
 import android.content.Context
+import androidx.core.graphics.blue
+import androidx.core.graphics.green
+import androidx.core.graphics.red
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -637,11 +640,16 @@ class AttendanceExporter(
                     }
                 }
                 val skipped = toEdit?.displayNameRes?.let { context.getString(it) } ?: ""
+                val color = toEdit?.color?.let {
+                    val color = context.getColor(it)
+                    SimpleColor(color.red, color.green, color.blue)
+                }
                 resultCells.add(
                     CellData(
                         lessonIndex,
                         studentIndex + 4,
-                        skipped
+                        skipped,
+                        backgroundColor = color
                     )
                 )
             }

@@ -2,10 +2,12 @@ package ru.slavapmk.journalTracker.attendanceSynchronize
 
 import org.apache.poi.ss.usermodel.BorderStyle
 import org.apache.poi.ss.usermodel.Cell
+import org.apache.poi.ss.usermodel.FillPatternType
 import org.apache.poi.ss.usermodel.HorizontalAlignment
 import org.apache.poi.ss.usermodel.Sheet
 import org.apache.poi.ss.usermodel.VerticalAlignment
 import org.apache.poi.ss.util.CellRangeAddress
+import org.apache.poi.xssf.usermodel.XSSFColor
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import java.io.FileOutputStream
 import kotlin.math.roundToInt
@@ -142,6 +144,17 @@ class ExcelExporter(
             }
 
             val style = workbook.createCellStyle()
+            cellData.backgroundColor?.let {
+                style.setFillForegroundColor(
+                    XSSFColor(it.byteArray)
+                )
+                style.setFillPattern(FillPatternType.SOLID_FOREGROUND)
+            }
+            cellData.textColor?.let {
+                val createFont = workbook.createFont()
+                createFont.setColor(XSSFColor(it.byteArray))
+                style.setFont(createFont)
+            }
             style.alignment = cellData.alignment
             style.rotation = cellData.rotation
             style.verticalAlignment = cellData.verticalAlignment
@@ -197,6 +210,16 @@ class ExcelExporter(
     }
 }
 
+data class SimpleColor(
+    val red: Int,
+    val green: Int,
+    val blue: Int
+) {
+    val byteArray: ByteArray
+        get() = byteArrayOf(
+            red.toByte(), green.toByte(), blue.toByte()
+        )
+}
 
 data class RenderData(
     val cells: List<CellData>,
@@ -215,7 +238,9 @@ data class CellData(
     val endRow: Int = row,
     val alignment: HorizontalAlignment = HorizontalAlignment.CENTER,
     val verticalAlignment: VerticalAlignment = VerticalAlignment.CENTER,
-    val rotation: Short = 0
+    val rotation: Short = 0,
+    val textColor: SimpleColor? = null,
+    val backgroundColor: SimpleColor? = null
 )
 
 data class BorderData(
