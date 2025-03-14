@@ -14,7 +14,6 @@ import ru.slavapmk.journalTracker.dataModels.toEdit
 import ru.slavapmk.journalTracker.storageModels.StorageDependencies
 import ru.slavapmk.journalTracker.storageModels.entities.SemesterEntity
 import ru.slavapmk.journalTracker.storageModels.entities.StudentEntity
-import ru.slavapmk.journalTracker.ui.SharedKeys
 import ru.slavapmk.journalTracker.utils.generateWeeks
 import ru.slavapmk.journalTracker.viewModels.SimpleDate
 import ru.slavapmk.journalTracker.viewModels.StudentAttendance
@@ -148,7 +147,7 @@ class AttendanceExporter(
                     i + 1
                 )
             )
-            val insertDataList = renderWeek(
+            val insertDataList = renderDateList(
                 context, week,
                 groupName
             )
@@ -166,7 +165,6 @@ class AttendanceExporter(
         )
         return@withContext exporter
     }
-
 
     private suspend fun parseWeek(
         context: Context, semesterId: Int, date: SimpleDate, groupName: String
@@ -196,7 +194,7 @@ class AttendanceExporter(
             title = "Attendance Journal"
         )
 
-        val insertDataList = renderWeek(
+        val insertDataList = renderDateList(
             context,
             genDates(dates.first, dates.second),
             groupName
@@ -215,8 +213,51 @@ class AttendanceExporter(
         return@withContext exporter
     }
 
+    private suspend fun parseDate(
+        context: Context, semesterId: Int, date: SimpleDate, groupName: String
+    ) = withContext(Dispatchers.Default) {
+        statusCallback.postValue(
+            context.getString(
+                R.string.export_collecting_data
+            )
+        )
+        val weekdayName = context.getString(
+            weekdayNamesId[
+                LocalDate.of(date.year, date.month, date.day).dayOfWeek.value - 1
+            ]
+        )
+        val sheetNames = listOf(
+            context.getString(
+                R.string.exporter_date,
+                date.day, date.month, date.year, weekdayName
+            )
+        )
+        val exporter = ExcelExporter(
+            sheetNames,
+            creator = "Journal Exporter",
+            title = "Attendance Journal"
+        )
 
-    private suspend fun renderWeek(
+        val insertDataList = renderDateList(
+            context,
+            listOf(date),
+            groupName
+        )
+        for (insertData in insertDataList) {
+            exporter.insertData(sheetNames[0], insertData)
+        }
+
+        exporter.resizeWorkbook()
+
+        statusCallback.postValue(
+            context.getString(
+                R.string.export_processing_file
+            )
+        )
+        return@withContext exporter
+    }
+
+    private suspend fun renderDateList(
         context: Context,
         dates: List<SimpleDate>,
         group: String
@@ -224,7 +265,9 @@ class AttendanceExporter(
         val result = mutableListOf<RenderData>()
 
         val (renderStudents, students) = renderOrGetStudentNames(context)
-        result.add(renderStudents)
+        result.add(renderStudents.apply {
+            offsetRow = 1
+        })
 
         val attendances: MutableList<Map<Int, StudentAttendance>> = mutableListOf()
 
@@ -236,6 +279,7 @@ class AttendanceExporter(
             attendances.add(sumAttendances)
             result.add(renderLessons.apply {
                 offsetColumn = offset
+                offsetRow = 1
             })
             offset += count
         }
@@ -255,6 +299,7 @@ class AttendanceExporter(
                 students
             ).apply {
                 offsetColumn = offset
+                offsetRow = 1
             }
         )
 
