@@ -167,4 +167,6 @@
     <string name="dialog_update_app_accept">Open</string>
     <string name="dialog_update_app_title">New version available</string>
     <string name="dialog_update_app_content">The %1$s version is available. Open the download page?</string>
+    <string name="exporter_id">Database ID</string>
+    <string name="exporter_overview">Overview</string>
 </resources>

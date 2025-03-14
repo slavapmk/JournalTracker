@@ -1,9 +1,11 @@
-### 1.0.0 (build 24)
+### 1.0.1 (build 25)
 
-- Update version check  
-- Bug fixes
+- Database IDs in exported tables  
+- Summary attendances of exported semesters
+- Auto-initializing student attendance on export
 
 ---
 
-- Добавлена поддержка проверки версий
-- Исправлены ошибки
+- Идентификаторы БД в экспортированных таблицах
+- Суммарные пропуски в семестровых таблицах
+- Авто-инициализация посещения при экспорте

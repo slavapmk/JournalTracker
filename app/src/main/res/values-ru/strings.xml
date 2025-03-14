@@ -131,4 +131,6 @@
     <string name="dialog_update_app_accept">Открыть</string>
     <string name="dialog_update_app_title">Доступна новая версия</string>
     <string name="dialog_update_app_content">Доступна версия %1$s. Открыть страницу скачивания?</string>
+    <string name="exporter_id">ID в БД</string>
+    <string name="exporter_overview">Итог</string>
 </resources>
