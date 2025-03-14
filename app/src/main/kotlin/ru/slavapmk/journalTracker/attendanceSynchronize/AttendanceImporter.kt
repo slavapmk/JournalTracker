@@ -46,6 +46,7 @@ class AttendanceImporter(
                 )
             )
             for (readAttendance in processSheet(sheet)) {
+//                println(readAttendance)
                 StorageDependencies.studentsAttendanceRepository.insertOrUpdate(
                     readAttendance.user,
                     readAttendance.lesson,
@@ -83,19 +84,23 @@ class AttendanceImporter(
             }
         }.associate { it }
 
-        val attendances = sequence {
+        return sequence {
             for (col in 1..maxColumns) {
-                for (i in 0 until sheet.physicalNumberOfRows) {
-                    val row = sheet.getRow(i)
-                    yield(
-                        i to row.getCell(col, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK)
-                    )
+                val attendances = sequence {
+                    for (i in 0 until sheet.physicalNumberOfRows) {
+                        val row = sheet.getRow(i)
+                        yield(
+                            i to row.getCell(col, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK)
+                        )
+                    }
                 }
+                yieldAll(
+                    extractAttendance(
+                        studentsIds, attendances
+                    )
+                )
             }
         }
-        return extractAttendance(
-            studentsIds, attendances
-        )
     }
 
     private fun extractAttendance(
@@ -104,32 +109,33 @@ class AttendanceImporter(
         // [Row -> Cell]
         row: Sequence<Pair<Int, Cell>>
     ) = sequence {
-        val (attendances, another) = row.partition { (row, _) ->
+        val (attendances, another) = row.mapNotNull { (row, cell) ->
+            try {
+                row to cell.stringCellValue
+            } catch (e: RuntimeException) {
+                null
+            }
+        }.partition { (row, _) ->
             studentIndexes.contains(row)
         }
-        val lessonIdCell = another.find { (_, cell) ->
-            try {
-                val stringCellValue = cell.stringCellValue
-                stringCellValue.startsWith("#")
-            } catch (e: RuntimeException) {
-                false
-            }
+        val lessonIdCellPair = another.find { (_, cell) ->
+            cell.startsWith("#")
         }
-        if (lessonIdCell == null) {
+        if (lessonIdCellPair == null) {
             return@sequence
         }
-        val (lessonId, _) = lessonIdCell
+        val (_, lessonIdCell) = lessonIdCellPair
         for ((attendanceRow, attendanceCell) in attendances) {
             try {
                 val studentAttendanceLesson = attendanceLessonLookup[
-                    attendanceCell.stringCellValue.removePrefix("'")
+                    attendanceCell.removePrefix("'")
                 ]
                 studentAttendanceLesson?.let { attendance ->
                     studentIndexes[attendanceRow]?.let { studentId ->
                         yield(
                             ReadAttendance(
                                 studentId,
-                                lessonId,
+                                lessonIdCell.removePrefix("#").toInt(),
                                 attendance
                             )
                         )
