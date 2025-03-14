@@ -16,9 +16,20 @@ import ru.slavapmk.journalTracker.storageModels.entities.SemesterEntity
 import ru.slavapmk.journalTracker.storageModels.entities.StudentEntity
 import ru.slavapmk.journalTracker.utils.generateWeeks
 import ru.slavapmk.journalTracker.viewModels.SimpleDate
-import ru.slavapmk.journalTracker.viewModels.StudentAttendance
 import ru.slavapmk.journalTracker.viewModels.compareTo
 import java.time.LocalDate
+
+data class StudentAttendance(
+    val respectful: Int = 0,
+    val disrespectful: Int = 0
+) {
+    operator fun plus(other: StudentAttendance): StudentAttendance {
+        return StudentAttendance(
+            respectful + other.respectful,
+            disrespectful + other.disrespectful
+        )
+    }
+}
 
 class AttendanceExporter(
     private val statusCallback: MutableLiveData<String?>
