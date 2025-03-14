@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.slavapmk.journalTracker.backend.RetrofitInstance
-import java.net.UnknownHostException
+import java.io.IOException
 
 data class VersionInfo(
     val tag: Int,
@@ -60,16 +60,16 @@ class MainActivityViewModel : ViewModel() {
 
     private suspend fun getLatestVersion(): VersionInfo? {
         try {
-        val releases = RetrofitInstance.githubApi.getReleases(REPO_OWNER, REPO_NAME)
-        val firstOrNull = releases.firstOrNull()
-        return firstOrNull?.let {
-            VersionInfo(
-                it.tagName.toInt(),
-                it.name,
-                it.htmlUrl
-            )
-        }
-        } catch (e: UnknownHostException) {
+            val releases = RetrofitInstance.githubApi.getReleases(REPO_OWNER, REPO_NAME)
+            val firstOrNull = releases.firstOrNull()
+            return firstOrNull?.let {
+                VersionInfo(
+                    it.tagName.toInt(),
+                    it.name,
+                    it.htmlUrl
+                )
+            }
+        } catch (e: IOException) {
             return null
         }
     }
