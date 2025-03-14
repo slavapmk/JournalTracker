@@ -31,7 +31,7 @@ class ExcelExporter(
         }
     }
 
-    @Suppress("MemberVisibilityCanBePrivate")
+    @Suppress("MemberVisibilityCanBePrivate", "Unused")
     fun resizeSheet(sheet: String) {
         sheets[sheet]?.let { resizeSheet(it) }
     }
