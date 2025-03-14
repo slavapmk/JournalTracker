@@ -2,7 +2,9 @@ package ru.slavapmk.journalTracker.attendanceSynchronize
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.apache.poi.ss.usermodel.BorderStyle
 import org.apache.poi.ss.usermodel.HorizontalAlignment
@@ -12,7 +14,9 @@ import ru.slavapmk.journalTracker.dataModels.selectWeek.Semester
 import ru.slavapmk.journalTracker.dataModels.selectWeek.Week
 import ru.slavapmk.journalTracker.dataModels.toEdit
 import ru.slavapmk.journalTracker.storageModels.StorageDependencies
+import ru.slavapmk.journalTracker.storageModels.entities.LessonInfoEntity
 import ru.slavapmk.journalTracker.storageModels.entities.SemesterEntity
+import ru.slavapmk.journalTracker.storageModels.entities.StudentAttendanceEntity
 import ru.slavapmk.journalTracker.storageModels.entities.StudentEntity
 import ru.slavapmk.journalTracker.utils.generateWeeks
 import ru.slavapmk.journalTracker.viewModels.SimpleDate
@@ -538,9 +542,7 @@ class AttendanceExporter(
                 date.month,
                 date.year
             ).map {
-                it to StorageDependencies.studentsAttendanceRepository.getLessonAttendance(
-                    it.id
-                )
+                it to getFullAttendances(it, allStudents)
             }
         }
 
@@ -695,6 +697,38 @@ class AttendanceExporter(
                 resultBorders
             )
         )
+    }
+
+    private suspend fun getFullAttendances(
+        it: LessonInfoEntity, allStudents: List<StudentEntity>
+    ): MutableList<StudentAttendanceEntity> {
+        val lessonAttendance = StorageDependencies.studentsAttendanceRepository.getLessonAttendance(
+            it.id
+        ).associateBy { it.studentId }
+        val toInit = mutableListOf<StudentAttendanceEntity>()
+        val allAttendance = mutableListOf<StudentAttendanceEntity>()
+        for (allStudent in allStudents) {
+            val attendance = lessonAttendance[allStudent.id]
+            if (attendance == null) {
+                val element = StudentAttendanceEntity(
+                    0,
+                    allStudent.id,
+                    it.id,
+                    allStudent.default,
+                    null
+                )
+                toInit.add(element)
+                allAttendance.add(element)
+            } else {
+                allAttendance.add(attendance)
+            }
+        }
+
+        CoroutineScope(Dispatchers.IO).launch {
+            StorageDependencies.studentsAttendanceRepository.insertAttendances(toInit)
+        }
+
+        return allAttendance
     }
 
     private fun renderSummary(
