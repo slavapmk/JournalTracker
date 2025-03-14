@@ -2,6 +2,7 @@ package ru.slavapmk.journalTracker.storageModels.repositories
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import ru.slavapmk.journalTracker.storageModels.StudentEntityAttendance
 import ru.slavapmk.journalTracker.storageModels.dao.StudentsAttendanceDao
 import ru.slavapmk.journalTracker.storageModels.entities.StudentAttendanceEntity
 
@@ -40,5 +41,12 @@ class StudentAttendanceRepository(
         lessonId: Int
     ) = withContext(Dispatchers.IO) {
         studentsAttendanceDao.getStudentAttendanceWithNames(lessonId)
+    }
+
+    suspend fun insertOrUpdate(
+        studentId: Int, lessonId: Int, attendance: StudentEntityAttendance?
+    ) = withContext(Dispatchers.IO) {
+        studentsAttendanceDao.updateByStudentIdAndLessonId(studentId, lessonId, attendance)
+        studentsAttendanceDao.insertIfNotExist(studentId, lessonId, attendance)
     }
 }
