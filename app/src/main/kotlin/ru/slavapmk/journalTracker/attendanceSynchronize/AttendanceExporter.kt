@@ -21,7 +21,7 @@ import ru.slavapmk.journalTracker.viewModels.compareTo
 import java.time.LocalDate
 
 class AttendanceExporter(
-    private val statusCallback: MutableLiveData<String>
+    private val statusCallback: MutableLiveData<String?>
 ) {
     private val weekdayNamesId: List<Int> by lazy {
         listOf(
@@ -166,7 +166,7 @@ class AttendanceExporter(
         return@withContext exporter
     }
 
-    private suspend fun parseWeek(
+    suspend fun parseWeek(
         context: Context, semesterId: Int, date: SimpleDate, groupName: String
     ) = withContext(Dispatchers.Default) {
         statusCallback.postValue(
@@ -213,8 +213,8 @@ class AttendanceExporter(
         return@withContext exporter
     }
 
-    private suspend fun parseDate(
-        context: Context, semesterId: Int, date: SimpleDate, groupName: String
+    suspend fun parseDate(
+        context: Context, date: SimpleDate, groupName: String
     ) = withContext(Dispatchers.Default) {
         statusCallback.postValue(
             context.getString(

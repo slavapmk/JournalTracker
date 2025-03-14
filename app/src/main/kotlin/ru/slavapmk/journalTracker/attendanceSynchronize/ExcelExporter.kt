@@ -181,12 +181,12 @@ class ExcelExporter(
             if (renderData.freezeColumn == null) {
                 0
             } else {
-                renderData.freezeColumn + renderData.offsetColumn + 1
+                renderData.freezeColumn!! + renderData.offsetColumn + 1
             },
             if (renderData.freezeRow == null) {
                 0
             } else {
-                renderData.freezeRow + renderData.offsetRow + 1
+                renderData.freezeRow!! + renderData.offsetRow + 1
             }
         )
     }
