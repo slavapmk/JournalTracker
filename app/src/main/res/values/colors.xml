@@ -14,4 +14,8 @@
     <color name="color_lecture">#98F436</color>
     <color name="color_laboratory_work">#F4A836</color>
     <color name="color_exam">#F44336</color>
+    <color name="export_table_visit">#4CAF50</color>
+    <color name="export_table_skip">#C34A4A</color>
+    <color name="export_table_sick">#4C7CAF</color>
+    <color name="export_table_respect_pass">#DEBA4B</color>
 </resources>

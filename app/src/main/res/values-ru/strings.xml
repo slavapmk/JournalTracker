@@ -133,4 +133,6 @@
     <string name="dialog_update_app_content">Доступна версия %1$s. Открыть страницу скачивания?</string>
     <string name="exporter_id">ID в БД</string>
     <string name="exporter_overview">Итог</string>
+    <string name="importing_sheet">Загрузка листа %1$d / %2$d</string>
+    <string name="import_table">Импорт XLXS</string>
 </resources>

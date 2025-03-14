@@ -169,4 +169,6 @@
     <string name="dialog_update_app_content">The %1$s version is available. Open the download page?</string>
     <string name="exporter_id">Database ID</string>
     <string name="exporter_overview">Overview</string>
+    <string name="importing_sheet">Importing sheet %1$d / %2$d</string>
+    <string name="import_table">Import XLXS</string>
 </resources>

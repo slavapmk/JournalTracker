@@ -1,17 +1,37 @@
 package ru.slavapmk.journalTracker.dataModels
 
 import ru.slavapmk.journalTracker.R
+import ru.slavapmk.journalTracker.attendanceSynchronize.SimpleColor
 import ru.slavapmk.journalTracker.storageModels.StudentEntityAttendance
 
 enum class StudentAttendanceLesson(
-    val displayNameRes: Int
+    val displayNameRes: Int,
+    val color: Int?
 ) {
-    NULL(R.string.empty),
-    VISIT(R.string.attendance_visit),
-    NOT_VISIT(R.string.attendance_skip),
-    SICK(R.string.attendance_sick),
-    SICK_WITH_CERTIFICATE(R.string.attendance_sick_with_certificate),
-    RESPECTFUL_PASS(R.string.attendance_respectfull_pass)
+    NULL(
+        R.string.empty,
+        null
+    ),
+    VISIT(
+        R.string.attendance_visit,
+        R.color.export_table_visit
+    ),
+    NOT_VISIT(
+        R.string.attendance_skip,
+        R.color.export_table_skip
+    ),
+    SICK(
+        R.string.attendance_sick,
+        R.color.export_table_sick
+    ),
+    SICK_WITH_CERTIFICATE(
+        R.string.attendance_sick_with_certificate,
+        R.color.export_table_sick
+    ),
+    RESPECTFUL_PASS(
+        R.string.attendance_respectfull_pass,
+        R.color.export_table_respect_pass
+    )
 }
 
 fun StudentEntityAttendance?.toEdit(): StudentAttendanceLesson? = when (this) {

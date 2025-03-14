@@ -1,17 +1,26 @@
 package ru.slavapmk.journalTracker.viewModels
 
+import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
+import ru.slavapmk.journalTracker.attendanceSynchronize.AttendanceImporter
 import ru.slavapmk.journalTracker.dataModels.settings.AttendanceFormats
 import ru.slavapmk.journalTracker.dataModels.settings.WeeksFormats
 import ru.slavapmk.journalTracker.ui.SharedKeys
+import java.io.File
 
 class SettingsViewModel : ViewModel() {
     lateinit var sharedPreferences: SharedPreferences
 
     var weekFormat: WeeksFormats?
-        get() = when (sharedPreferences.getString(SharedKeys.WEEK_FORMAT_KEY, SharedKeys.EVEN_UNEVEN_VALUE_KEY)) {
+        get() = when (sharedPreferences.getString(
+            SharedKeys.WEEK_FORMAT_KEY,
+            SharedKeys.EVEN_UNEVEN_VALUE_KEY
+        )) {
             SharedKeys.EVEN_UNEVEN_VALUE_KEY -> WeeksFormats.EVEN_UNEVEN
             SharedKeys.UP_DOWN_VALUE_KEY -> WeeksFormats.UP_DOWN
             SharedKeys.DOWN_UP_VALUE_KEY -> WeeksFormats.DOWN_UP
@@ -36,7 +45,10 @@ class SettingsViewModel : ViewModel() {
 
     var attendanceFormat: AttendanceFormats?
         get() = when (
-            sharedPreferences.getString(SharedKeys.ATTENDANCE_FORMAT_KEY, SharedKeys.PLUS_MINUS_VALUE_KEY)
+            sharedPreferences.getString(
+                SharedKeys.ATTENDANCE_FORMAT_KEY,
+                SharedKeys.PLUS_MINUS_VALUE_KEY
+            )
         ) {
             SharedKeys.PLUS_MINUS_VALUE_KEY -> AttendanceFormats.PLUS_MINUS
             SharedKeys.SKIP_HOURS_VALUE_KEY -> AttendanceFormats.SKIP_HOURS
@@ -73,6 +85,15 @@ class SettingsViewModel : ViewModel() {
             }
         }
 
-    companion object {
+    val importStatusCallback by lazy { MutableLiveData<String>() }
+    val importDone by lazy { MutableLiveData<Unit>() }
+
+    fun importExcel(file: File, context: Context) {
+        viewModelScope.launch {
+            AttendanceImporter(
+                file, context, importStatusCallback
+            ).import()
+            importDone.postValue(Unit)
+        }
     }
 }

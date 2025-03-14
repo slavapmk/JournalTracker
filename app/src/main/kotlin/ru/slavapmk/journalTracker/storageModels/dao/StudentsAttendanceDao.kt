@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
+import ru.slavapmk.journalTracker.storageModels.StudentEntityAttendance
 import ru.slavapmk.journalTracker.storageModels.entities.StudentAttendanceEntity
 import ru.slavapmk.journalTracker.storageModels.entities.StudentWithAttendance
 
@@ -42,4 +43,21 @@ interface StudentsAttendanceDao {
         ORDER BY student_name
     """)
     fun getStudentAttendanceWithNames(lessonId: Int): List<StudentWithAttendance>
+
+    @Query("""
+        UPDATE student_attendance_table
+            SET attendance = :attendance, skip_description = NULL
+            WHERE student_id = :studentId AND lesson_id = :lessonId
+    """)
+    fun updateByStudentIdAndLessonId(studentId: Int, lessonId: Int, attendance: StudentEntityAttendance?)
+
+    @Query("""
+        INSERT INTO student_attendance_table (student_id, lesson_id, attendance, skip_description)
+        SELECT :studentId, :lessonId, :attendance, NULL
+        WHERE NOT EXISTS (
+            SELECT 1 FROM student_attendance_table WHERE
+                student_id = :studentId AND lesson_id = :lessonId
+        )
+    """)
+    fun insertIfNotExist(studentId: Int, lessonId: Int, attendance: StudentEntityAttendance?)
 }
