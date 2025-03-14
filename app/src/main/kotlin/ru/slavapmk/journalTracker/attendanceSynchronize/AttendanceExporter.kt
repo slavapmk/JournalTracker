@@ -330,8 +330,8 @@ class AttendanceExporter(
                         BorderStyle.THICK,
                     )
                 ),
-                freezeRow = 3,
-                freezeColumn = 1
+                freezeRow = 4,
+                freezeColumn = 2
             )
         )
 
@@ -350,11 +350,22 @@ class AttendanceExporter(
         val resultCells = mutableListOf<CellData>()
         val resultBorders = mutableListOf<BorderData>()
 
-        // Student number title
+        // Student DB id title
         resultCells.add(
             CellData(
                 0,
+                0,
+                context.getString(R.string.exporter_id),
+                endRow = 3,
+                rotation = 90
+            )
+        )
+
+        // Student number title
+        resultCells.add(
+            CellData(
                 1,
+                0,
                 context.getString(R.string.exporter_num),
                 endRow = 3
             )
@@ -363,8 +374,8 @@ class AttendanceExporter(
         // Student name title
         resultCells.add(
             CellData(
-                1,
-                1,
+                2,
+                0,
                 context.getString(R.string.exporter_name),
                 endRow = 3
             )
@@ -503,6 +514,14 @@ class AttendanceExporter(
                     rotation = 90
                 )
             )
+            resultCells.add(
+                CellData(
+                    lessonIndex,
+                    3,
+                    "#${lesson.id}",
+                    rotation = 90
+                )
+            )
             for (student in students) {
                 val studentIndex = allStudents.indexOfFirst {
                     it.id == student.studentId
@@ -545,7 +564,7 @@ class AttendanceExporter(
                 resultCells.add(
                     CellData(
                         lessonIndex,
-                        studentIndex + 3,
+                        studentIndex + 4,
                         skipped
                     )
                 )
@@ -579,7 +598,15 @@ class AttendanceExporter(
             add(
                 BorderData(
                     0, 3,
-                    lessonListWithAttendance.size - 1, 2 + allStudents.size,
+                    lessonListWithAttendance.size - 1, 3,
+                    BorderStyle.THICK,
+                    BorderStyle.THIN,
+                )
+            )
+            add(
+                BorderData(
+                    0, 4,
+                    lessonListWithAttendance.size - 1, 3 + allStudents.size,
                     BorderStyle.THICK,
                     BorderStyle.THIN,
                 )
@@ -623,7 +650,7 @@ class AttendanceExporter(
                 context.getString(
                     R.string.exporter_hour_skipped_respectful
                 ),
-                endRow = 2,
+                endRow = 3,
                 rotation = 90
             )
         )
@@ -635,7 +662,7 @@ class AttendanceExporter(
                 context.getString(
                     R.string.exporter_hour_skipped_disrespectful
                 ),
-                endRow = 2,
+                endRow = 3,
                 rotation = 90
             )
         )
@@ -643,13 +670,13 @@ class AttendanceExporter(
         for ((index, entry) in summedAttendance.entries) {
             resultCells.add(
                 CellData(
-                    0, index + 3,
+                    0, index + 4,
                     entry.respectful
                 )
             )
             resultCells.add(
                 CellData(
-                    1, index + 3,
+                    1, index + 4,
                     entry.disrespectful
                 )
             )
@@ -659,7 +686,7 @@ class AttendanceExporter(
             add(
                 BorderData(
                     0, 1,
-                    0, 2,
+                    0, 3,
                     BorderStyle.THIN
                 )
             )
@@ -673,14 +700,14 @@ class AttendanceExporter(
             add(
                 BorderData(
                     0, 1,
-                    1, 2,
+                    1, 3,
                     BorderStyle.THICK
                 )
             )
             add(
                 BorderData(
-                    0, 3,
-                    1, 2 + students.size,
+                    0, 4,
+                    1, 3 + students.size,
                     BorderStyle.THICK,
                     BorderStyle.THIN,
                 )
