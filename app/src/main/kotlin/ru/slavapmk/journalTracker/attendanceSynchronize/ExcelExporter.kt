@@ -7,6 +7,7 @@ import org.apache.poi.ss.usermodel.HorizontalAlignment
 import org.apache.poi.ss.usermodel.Sheet
 import org.apache.poi.ss.usermodel.VerticalAlignment
 import org.apache.poi.ss.util.CellRangeAddress
+import org.apache.poi.ss.util.CellRangeAddressList
 import org.apache.poi.xssf.usermodel.XSSFColor
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import java.io.FileOutputStream
@@ -202,6 +203,26 @@ class ExcelExporter(
                 renderData.freezeRow!! + renderData.offsetRow + 1
             }
         )
+
+        for (validation in renderData.validations) {
+            val validationHelper = sheet.dataValidationHelper
+            val constraint = validationHelper.createExplicitListConstraint(
+                validation.variants.toTypedArray()
+            )
+            val createdValidation = validationHelper.createValidation(
+                constraint,
+                CellRangeAddressList(
+                    renderData.offsetRow + validation.startRow,
+                    renderData.offsetRow + validation.endRow,
+                    renderData.offsetColumn + validation.startColumn,
+                    renderData.offsetColumn + validation.endColumn
+                )
+            )
+            createdValidation.showErrorBox = true
+            createdValidation.suppressDropDownArrow = true
+            createdValidation.emptyCellAllowed = true
+            sheet.addValidationData(createdValidation)
+        }
     }
 
     fun export(fileOutputStream: FileOutputStream) {
@@ -221,13 +242,22 @@ data class SimpleColor(
         )
 }
 
+data class RenderValidation(
+    val startColumn: Int,
+    val startRow: Int,
+    val endColumn: Int,
+    val endRow: Int,
+    val variants: List<String>
+)
+
 data class RenderData(
     val cells: List<CellData>,
     val borders: List<BorderData>,
     var freezeColumn: Int? = null,
     var freezeRow: Int? = null,
     var offsetColumn: Int = 0,
-    var offsetRow: Int = 0
+    var offsetRow: Int = 0,
+    val validations: List<RenderValidation> = listOf()
 )
 
 data class CellData(

@@ -702,9 +702,35 @@ class AttendanceExporter(
             studentsSum,
             RenderData(
                 resultCells,
-                resultBorders
+                resultBorders,
+                validations = listOf(
+                    RenderValidation(
+                        0, 4,
+                        lessonListWithAttendance.size - 1,
+                        3 + allStudents.size,
+                        getAttendanceVariance(context)
+                    )
+                )
             )
         )
+    }
+
+    private var _variants: List<String>? = null
+    private fun getAttendanceVariance(context: Context): List<String> {
+        if (_variants == null) {
+            _variants = StudentAttendanceLesson.entries.map {
+                var string = context.getString(it.displayNameRes)
+                if (
+                    string.startsWith("-") ||
+                    string.startsWith("=") ||
+                    string.isEmpty()
+                ) {
+                    string = "'$string"
+                }
+                string
+            }
+        }
+        return _variants!!
     }
 
     private suspend fun getFullAttendances(
