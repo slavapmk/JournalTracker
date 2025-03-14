@@ -57,6 +57,12 @@ class SettingsFragment : Fragment() {
         binding = FragmentSettingsBinding.inflate(layoutInflater)
 
         viewModel.sharedPreferences = shared
+        viewModel.importStatusCallback.observe(viewLifecycleOwner) {
+            activity.setStatus(it)
+        }
+        viewModel.importDone.observe(viewLifecycleOwner) {
+            activity.setLoading(false)
+        }
 
         return binding.root
     }
@@ -66,14 +72,25 @@ class SettingsFragment : Fragment() {
         init()
     }
 
-    private val filePickerLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                result.data?.data?.let { uri ->
-                    importDatabase(uri)
-                }
+    private val dbPickerLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            result.data?.data?.let { uri ->
+                importDatabase(uri)
             }
         }
+    }
+
+    private val excelPickerLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            result.data?.data?.let { uri ->
+                importExcel(uri)
+            }
+        }
+    }
 
     private fun importDatabase(uri: Uri) {
         val dbName = DB_NAME
@@ -95,6 +112,30 @@ class SettingsFragment : Fragment() {
         } catch (e: IOException) {
             Toast.makeText(requireContext(), R.string.db_import_error, Toast.LENGTH_LONG).show()
             Log.e("Import", "DB import error", e)
+        }
+    }
+
+    private fun importExcel(uri: Uri) {
+        copyExcelToTemp(uri)?.let { file ->
+            activity.setLoading(true)
+            viewModel.importExcel(file, requireContext())
+        }
+    }
+
+    private fun copyExcelToTemp(uri: Uri): File? {
+        val tempFile = File.createTempFile(
+            "imported_excel", ".xlsx", requireContext().cacheDir
+        )
+        return try {
+            requireContext().contentResolver.openInputStream(uri)?.use { inputStream ->
+                tempFile.outputStream().use { outputStream ->
+                    inputStream.copyTo(outputStream)
+                }
+            }
+            tempFile
+        } catch (e: IOException) {
+            e.printStackTrace()
+            null
         }
     }
 
@@ -156,7 +197,15 @@ class SettingsFragment : Fragment() {
                 addCategory(Intent.CATEGORY_OPENABLE)
                 type = "application/octet-stream"
             }
-            filePickerLauncher.launch(intent)
+            dbPickerLauncher.launch(intent)
+        }
+
+        binding.tableImport.setOnClickListener {
+            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                addCategory(Intent.CATEGORY_OPENABLE)
+                type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            }
+            excelPickerLauncher.launch(intent)
         }
 
         binding.lessonsButton.setOnClickListener {
