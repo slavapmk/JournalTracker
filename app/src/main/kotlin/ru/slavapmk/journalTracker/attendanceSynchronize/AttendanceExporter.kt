@@ -1,15 +1,8 @@
-package ru.slavapmk.journalTracker.viewModels
+package ru.slavapmk.journalTracker.attendanceSynchronize
 
 import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
-import android.os.Environment
-import androidx.core.content.FileProvider
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.apache.poi.ss.usermodel.BorderStyle
 import org.apache.poi.ss.usermodel.HorizontalAlignment
@@ -18,24 +11,19 @@ import ru.slavapmk.journalTracker.dataModels.StudentAttendanceLesson
 import ru.slavapmk.journalTracker.dataModels.selectWeek.Semester
 import ru.slavapmk.journalTracker.dataModels.selectWeek.Week
 import ru.slavapmk.journalTracker.dataModels.toEdit
-import ru.slavapmk.journalTracker.attendanceSynchronize.BorderData
-import ru.slavapmk.journalTracker.attendanceSynchronize.CellData
-import ru.slavapmk.journalTracker.attendanceSynchronize.ExcelExporter
-import ru.slavapmk.journalTracker.attendanceSynchronize.RenderData
 import ru.slavapmk.journalTracker.storageModels.StorageDependencies
 import ru.slavapmk.journalTracker.storageModels.entities.SemesterEntity
 import ru.slavapmk.journalTracker.storageModels.entities.StudentEntity
 import ru.slavapmk.journalTracker.ui.SharedKeys
 import ru.slavapmk.journalTracker.utils.generateWeeks
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
+import ru.slavapmk.journalTracker.viewModels.SimpleDate
+import ru.slavapmk.journalTracker.viewModels.StudentAttendance
+import ru.slavapmk.journalTracker.viewModels.compareTo
 import java.time.LocalDate
-import java.util.Calendar
-import java.util.Date
-import java.util.GregorianCalendar
 
-class ExportSummaryViewModel : ViewModel() {
+class AttendanceExporter(
+    private val statusCallback: MutableLiveData<String>
+) {
     private val weekdayNamesId: List<Int> by lazy {
         listOf(
             R.string.day_monday,
@@ -48,27 +36,14 @@ class ExportSummaryViewModel : ViewModel() {
         )
     }
 
-    val savedLiveStatus by lazy {
-        MutableLiveData<Unit>()
-    }
-    val sharedLiveStatus by lazy {
-        MutableLiveData<Intent?>()
-    }
-    val openLiveStatus by lazy {
-        MutableLiveData<Intent?>()
-    }
-    val statusCallback by lazy {
-        MutableLiveData<String?>()
-    }
 
-    lateinit var shared: SharedPreferences
-
-    private suspend fun getWeek(): List<Week>? {
-        val semesters = StorageDependencies.semesterRepository.getSemesters()
+    private suspend fun getWeeks(semesterId: Int): List<Week>? {
+        val semesters = withContext(Dispatchers.IO) {
+            StorageDependencies.semesterRepository.getSemesters()
+        }
         if (semesters.isEmpty()) {
             return null
         }
-        val semesterId = shared.getInt(SharedKeys.SEMESTER_ID, -1)
         val semester: SemesterEntity = semesters.find { it.id == semesterId } ?: return null
         return generateWeeks(
             Semester(
@@ -96,125 +71,54 @@ class ExportSummaryViewModel : ViewModel() {
         return result
     }
 
-    fun saveExcel(context: Context) {
-        viewModelScope.launch {
-            val workbook = parse(context)
-            withContext(Dispatchers.IO) {
-                val calendar: Calendar = GregorianCalendar.getInstance().apply { time = Date() }
-
-                try {
-                    val file = File(
-                        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
-                        context.getString(
-                            R.string.export_filename_excel,
-                            calendar[Calendar.YEAR],
-                            calendar[Calendar.MONTH] + 1,
-                            calendar[Calendar.DAY_OF_MONTH],
-                            calendar[Calendar.HOUR_OF_DAY],
-                            calendar[Calendar.MINUTE],
-                            calendar[Calendar.SECOND]
-                        )
-                    )
-                    val outputStream = FileOutputStream(file)
-                    workbook.export(outputStream)
-                    outputStream.close()
-                } catch (e: IOException) {
-                    e.printStackTrace()
-                }
-            }
-            savedLiveStatus.postValue(Unit)
+    private suspend fun getWeek(semesterId: Int, date: SimpleDate): Pair<SimpleDate, SimpleDate>? {
+        val semesters = withContext(Dispatchers.IO) {
+            StorageDependencies.semesterRepository.getSemesters()
+        }
+        if (semesters.isEmpty()) {
+            return null
+        }
+        val semester: SemesterEntity = semesters.find { it.id == semesterId } ?: return null
+        val weeks = generateWeeks(
+            Semester(
+                semester.startDay,
+                semester.startMonth,
+                semester.startYear,
+                semester.endDay,
+                semester.endMonth,
+                semester.endYear,
+            )
+        )
+        val week = weeks.find { week ->
+            val startDate = SimpleDate(
+                week.startDay,
+                week.startMonth,
+                week.startYear
+            )
+            val endDate = SimpleDate(
+                week.endDay,
+                week.endMonth,
+                week.endYear
+            )
+            return@find startDate <= date && date <= endDate
+        }
+        return week?.let {
+            SimpleDate(
+                it.startDay,
+                it.startMonth,
+                it.startYear
+            ) to SimpleDate(
+                it.endDay,
+                it.endMonth,
+                it.endYear
+            )
         }
     }
 
-    fun shareExcel(context: Context) {
-        viewModelScope.launch {
-            val workbook = parse(context)
-            withContext(Dispatchers.IO) {
-                val calendar: Calendar = GregorianCalendar.getInstance().apply { time = Date() }
-
-                try {
-                    val file = File(
-                        context.cacheDir,
-                        context.getString(
-                            R.string.export_filename_excel,
-                            calendar[Calendar.YEAR],
-                            calendar[Calendar.MONTH] + 1,
-                            calendar[Calendar.DAY_OF_MONTH],
-                            calendar[Calendar.HOUR_OF_DAY],
-                            calendar[Calendar.MINUTE],
-                            calendar[Calendar.SECOND]
-                        )
-                    )
-                    val outputStream = FileOutputStream(file)
-                    workbook.export(outputStream)
-                    outputStream.close()
-
-                    val uri =
-                        FileProvider.getUriForFile(context, "${context.packageName}.provider", file)
-                    val intent = Intent(Intent.ACTION_SEND).apply {
-                        type = "application/vnd.ms-excel"
-                        putExtra(Intent.EXTRA_STREAM, uri)
-                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                    }
-                    sharedLiveStatus.postValue(
-                        Intent.createChooser(
-                            intent, context.getString(R.string.share_via)
-                        )
-                    )
-                } catch (e: IOException) {
-                    e.printStackTrace()
-                    sharedLiveStatus.postValue(null)
-                }
-            }
-        }
-    }
-
-    fun openExcel(context: Context) {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                val workbook = parse(context)
-                val calendar: Calendar = GregorianCalendar.getInstance().apply { time = Date() }
-
-                try {
-                    val file = File(
-                        context.cacheDir,
-                        context.getString(
-                            R.string.export_filename_excel,
-                            calendar[Calendar.YEAR],
-                            calendar[Calendar.MONTH] + 1,
-                            calendar[Calendar.DAY_OF_MONTH],
-                            calendar[Calendar.HOUR_OF_DAY],
-                            calendar[Calendar.MINUTE],
-                            calendar[Calendar.SECOND]
-                        )
-                    )
-                    val outputStream = FileOutputStream(file)
-                    workbook.export(outputStream)
-                    outputStream.close()
-
-                    val uri =
-                        FileProvider.getUriForFile(context, "${context.packageName}.provider", file)
-                    val intent = Intent(Intent.ACTION_VIEW).apply {
-                        setDataAndType(uri, "application/vnd.ms-excel")
-                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                    }
-                    openLiveStatus.postValue(
-                        Intent.createChooser(
-                            intent, context.getString(R.string.share_via)
-                        )
-                    )
-                } catch (e: IOException) {
-                    e.printStackTrace()
-                    openLiveStatus.postValue(null)
-                }
-            }
-        }
-    }
-
-    private suspend fun parse(
-        context: Context
-    ) = withContext(Dispatchers.IO) {
-        val weeks: List<Week> = getWeek() ?: return@withContext ExcelExporter(
+    suspend fun parseSemester(
+        context: Context, semesterId: Int, groupName: String
+    ) = withContext(Dispatchers.Default) {
+        val weeks: List<Week> = getWeeks(semesterId) ?: return@withContext ExcelExporter(
             listOf(),
             creator = "Journal Exporter",
             title = "Attendance Journal"
@@ -244,9 +148,9 @@ class ExportSummaryViewModel : ViewModel() {
                     i + 1
                 )
             )
-            val insertDataList = generateWeek(
+            val insertDataList = renderWeek(
                 context, week,
-                shared.getString(SharedKeys.GROUP_NAME_KEY, "") ?: ""
+                groupName
             )
             for (insertData in insertDataList) {
                 exporter.insertData(sheetNames[i], insertData)
@@ -264,7 +168,55 @@ class ExportSummaryViewModel : ViewModel() {
     }
 
 
-    private suspend fun generateWeek(
+    private suspend fun parseWeek(
+        context: Context, semesterId: Int, date: SimpleDate, groupName: String
+    ) = withContext(Dispatchers.Default) {
+        statusCallback.postValue(
+            context.getString(
+                R.string.export_collecting_data
+            )
+        )
+        val dates: Pair<SimpleDate, SimpleDate> = getWeek(
+            semesterId, date
+        ) ?: return@withContext ExcelExporter(
+            listOf(),
+            creator = "Journal Exporter",
+            title = "Attendance Journal"
+        )
+        val sheetNames = listOf(
+            context.getString(
+                R.string.exporter_week,
+                dates.first.day, dates.first.month, dates.first.year,
+                dates.second.day, dates.second.month, dates.second.year
+            )
+        )
+        val exporter = ExcelExporter(
+            sheetNames,
+            creator = "Journal Exporter",
+            title = "Attendance Journal"
+        )
+
+        val insertDataList = renderWeek(
+            context,
+            genDates(dates.first, dates.second),
+            groupName
+        )
+        for (insertData in insertDataList) {
+            exporter.insertData(sheetNames[0], insertData)
+        }
+
+        exporter.resizeWorkbook()
+
+        statusCallback.postValue(
+            context.getString(
+                R.string.export_processing_file
+            )
+        )
+        return@withContext exporter
+    }
+
+
+    private suspend fun renderWeek(
         context: Context,
         dates: List<SimpleDate>,
         group: String
@@ -278,12 +230,14 @@ class ExportSummaryViewModel : ViewModel() {
 
         var offset = 3
         for (date in dates) {
-            val (count, sumAttendances, renderLessons) = renderLessons(
-                context, date, students, offset
+            val (count, sumAttendances, renderLessons) = renderDate(
+                context, date, students
             )
-            offset += count
             attendances.add(sumAttendances)
-            result.add(renderLessons)
+            result.add(renderLessons.apply {
+                offsetColumn = offset
+            })
+            offset += count
         }
 
         val summedAttendance: Map<Int, StudentAttendance> = attendances
@@ -298,9 +252,10 @@ class ExportSummaryViewModel : ViewModel() {
             renderSummary(
                 context,
                 summedAttendance,
-                students,
-                offset
-            )
+                students
+            ).apply {
+                offsetColumn = offset
+            }
         )
 
         result.add(
@@ -327,92 +282,97 @@ class ExportSummaryViewModel : ViewModel() {
         return result
     }
 
-    private fun renderSummary(
-        context: Context,
-        summedAttendance: Map<Int, StudentAttendance>,
-        students: List<StudentEntity>,
-        offset: Int
-    ): RenderData {
+    private var renderedStudents: Pair<RenderData, List<StudentEntity>>? = null
+    private suspend fun renderOrGetStudentNames(context: Context): Pair<RenderData, List<StudentEntity>> {
+        if (renderedStudents == null) {
+            renderedStudents = renderStudentNames(context)
+        }
+        return renderedStudents!!
+    }
+
+    private suspend fun renderStudentNames(context: Context): Pair<RenderData, List<StudentEntity>> {
         val resultCells = mutableListOf<CellData>()
         val resultBorders = mutableListOf<BorderData>()
 
-
-        // Skipped title
+        // Student number title
         resultCells.add(
             CellData(
-                0, 0,
-                context.getString(
-                    R.string.exporter_hour_skipped
-                ),
-                endColumn = 1
+                0,
+                1,
+                context.getString(R.string.exporter_num),
+                endRow = 3
             )
         )
 
-        // Skipped respectful title
+        // Student name title
         resultCells.add(
             CellData(
-                0, 1,
-                context.getString(
-                    R.string.exporter_hour_skipped_respectful
-                ),
-                endRow = 2,
-                rotation = 90
+                1,
+                1,
+                context.getString(R.string.exporter_name),
+                endRow = 3
             )
         )
 
-        // Skipped disrespectful title
-        resultCells.add(
-            CellData(
-                1, 1,
-                context.getString(
-                    R.string.exporter_hour_skipped_disrespectful
-                ),
-                endRow = 2,
-                rotation = 90
-            )
-        )
-
-        for ((index, entry) in summedAttendance.entries) {
-            resultCells.add(
-                CellData(
-                    0, index + 3,
-                    entry.respectful
-                )
-            )
-            resultCells.add(
-                CellData(
-                    1, index + 3,
-                    entry.disrespectful
-                )
-            )
+        val studentEntityList = withContext(Dispatchers.IO) {
+            StorageDependencies.studentRepository.getStudents()
         }
+
+        // Student names
+        resultCells.addAll(
+            studentEntityList.mapIndexed { index, studentEntity ->
+                CellData(
+                    2,
+                    4 + index,
+                    studentEntity.name,
+                    alignment = HorizontalAlignment.LEFT
+                )
+            }
+        )
+
+        // Student numbers
+        resultCells.addAll(
+            List(studentEntityList.size) { index ->
+                CellData(
+                    1,
+                    4 + index,
+                    index + 1,
+                    alignment = HorizontalAlignment.RIGHT
+                )
+            }
+        )
+
+        // Student numbers
+        resultCells.addAll(
+            studentEntityList.mapIndexed { index, studentEntity ->
+                CellData(
+                    0,
+                    4 + index,
+                    "#${studentEntity.id}",
+                    alignment = HorizontalAlignment.RIGHT
+                )
+            }
+        )
 
         resultBorders.apply {
             add(
                 BorderData(
-                    0, 1,
-                    0, 2,
+                    0, 0,
+                    2, 3,
+                    BorderStyle.THICK
+                )
+            )
+            add(
+                BorderData(
+                    1, 0,
+                    1, 3,
                     BorderStyle.THIN
                 )
             )
             add(
                 BorderData(
-                    0, 0,
-                    1, 0,
-                    BorderStyle.THICK
-                )
-            )
-            add(
-                BorderData(
-                    0, 1,
-                    1, 2,
-                    BorderStyle.THICK
-                )
-            )
-            add(
-                BorderData(
-                    0, 3,
-                    1, 2 + students.size,
+                    0, 4,
+                    2, 3 + studentEntityList.size,
                     BorderStyle.THICK,
                     BorderStyle.THIN,
                 )
@@ -421,15 +381,12 @@ class ExportSummaryViewModel : ViewModel() {
 
         return RenderData(
             resultCells,
-            resultBorders,
-            offsetColumn = offset,
-            offsetRow = 1
-        )
+            resultBorders
+        ) to studentEntityList
     }
 
-    private suspend fun renderLessons(
-        context: Context, date: SimpleDate, allStudents: List<StudentEntity>,
-        offset: Int
+    private suspend fun renderDate(
+        context: Context, date: SimpleDate, allStudents: List<StudentEntity>
     ): Triple<Int, Map<Int, StudentAttendance>, RenderData> {
         val resultCells = mutableListOf<CellData>()
         val resultBorders = mutableListOf<BorderData>()
@@ -578,104 +535,96 @@ class ExportSummaryViewModel : ViewModel() {
             studentsSum,
             RenderData(
                 resultCells,
-                resultBorders,
-                offsetColumn = offset,
-                offsetRow = 1
+                resultBorders
             )
         )
     }
 
-    private var renderedStudents: Pair<RenderData, List<StudentEntity>>? = null
-    private suspend fun renderOrGetStudentNames(context: Context): Pair<RenderData, List<StudentEntity>> {
-        if (renderedStudents == null) {
-            renderedStudents = renderStudentNames(context)
-        }
-        return renderedStudents!!
-    }
-
-    private suspend fun renderStudentNames(context: Context): Pair<RenderData, List<StudentEntity>> {
+    private fun renderSummary(
+        context: Context,
+        summedAttendance: Map<Int, StudentAttendance>,
+        students: List<StudentEntity>
+    ): RenderData {
         val resultCells = mutableListOf<CellData>()
         val resultBorders = mutableListOf<BorderData>()
 
-        // Student number title
+
+        // Skipped title
         resultCells.add(
             CellData(
-                0,
-                1,
-                context.getString(R.string.exporter_num),
-                endRow = 3
+                0, 0,
+                context.getString(
+                    R.string.exporter_hour_skipped
+                ),
+                endColumn = 1
             )
         )
 
-        // Student name title
+        // Skipped respectful title
         resultCells.add(
             CellData(
-                1,
-                1,
-                context.getString(R.string.exporter_name),
-                endRow = 3
+                0, 1,
+                context.getString(
+                    R.string.exporter_hour_skipped_respectful
+                ),
+                endRow = 2,
+                rotation = 90
             )
         )
 
-        val studentEntityList = withContext(Dispatchers.IO) {
-            StorageDependencies.studentRepository.getStudents()
+        // Skipped disrespectful title
+        resultCells.add(
+            CellData(
+                1, 1,
+                context.getString(
+                    R.string.exporter_hour_skipped_disrespectful
+                ),
+                endRow = 2,
+                rotation = 90
+            )
+        )
+
+        for ((index, entry) in summedAttendance.entries) {
+            resultCells.add(
+                CellData(
+                    0, index + 3,
+                    entry.respectful
+                )
+            )
+            resultCells.add(
+                CellData(
+                    1, index + 3,
+                    entry.disrespectful
+                )
+            )
         }
-
-        // Student names
-        resultCells.addAll(
-            studentEntityList.mapIndexed { index, studentEntity ->
-                CellData(
-                    2,
-                    4 + index,
-                    studentEntity.name,
-                    alignment = HorizontalAlignment.LEFT
-                )
-            }
-        )
-
-        // Student numbers
-        resultCells.addAll(
-            List(studentEntityList.size) { index ->
-                CellData(
-                    1,
-                    4 + index,
-                    index + 1,
-                    alignment = HorizontalAlignment.RIGHT
-                )
-            }
-        )
-
-        // Student numbers
-        resultCells.addAll(
-            studentEntityList.mapIndexed { index, studentEntity ->
-                CellData(
-                    0,
-                    4 + index,
-                    "#${studentEntity.id}",
-                    alignment = HorizontalAlignment.RIGHT
-                )
-            }
-        )
 
         resultBorders.apply {
             add(
                 BorderData(
-                    0, 0,
-                    2, 3,
-                    BorderStyle.THICK
-                )
-            )
-            add(
-                BorderData(
-                    1, 0,
-                    1, 3,
+                    0, 1,
+                    0, 2,
                     BorderStyle.THIN
                 )
             )
             add(
                 BorderData(
-                    0, 4,
-                    2, 3 + studentEntityList.size,
+                    0, 0,
+                    1, 0,
+                    BorderStyle.THICK
+                )
+            )
+            add(
+                BorderData(
+                    0, 1,
+                    1, 2,
+                    BorderStyle.THICK
+                )
+            )
+            add(
+                BorderData(
+                    0, 3,
+                    1, 2 + students.size,
                     BorderStyle.THICK,
                     BorderStyle.THIN,
                 )
@@ -685,6 +634,6 @@ class ExportSummaryViewModel : ViewModel() {
         return RenderData(
             resultCells,
             resultBorders
-        ) to studentEntityList
+        )
     }
 }

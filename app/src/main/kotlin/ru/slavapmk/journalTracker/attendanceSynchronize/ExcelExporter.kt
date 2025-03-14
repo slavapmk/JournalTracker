@@ -1,15 +1,12 @@
-package ru.slavapmk.journalTracker.excelExporter
+package ru.slavapmk.journalTracker.attendanceSynchronize
 
-import android.os.Environment
 import org.apache.poi.ss.usermodel.BorderStyle
 import org.apache.poi.ss.usermodel.Cell
 import org.apache.poi.ss.usermodel.HorizontalAlignment
 import org.apache.poi.ss.usermodel.Sheet
 import org.apache.poi.ss.usermodel.VerticalAlignment
-import org.apache.poi.ss.usermodel.Workbook
 import org.apache.poi.ss.util.CellRangeAddress
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
-import java.io.File
 import java.io.FileOutputStream
 import kotlin.math.roundToInt
 
@@ -204,10 +201,10 @@ class ExcelExporter(
 data class RenderData(
     val cells: List<CellData>,
     val borders: List<BorderData>,
-    val freezeColumn: Int? = null,
-    val freezeRow: Int? = null,
-    val offsetColumn: Int = 0,
-    val offsetRow: Int = 0
+    var freezeColumn: Int? = null,
+    var freezeRow: Int? = null,
+    var offsetColumn: Int = 0,
+    var offsetRow: Int = 0
 )
 
 data class CellData(

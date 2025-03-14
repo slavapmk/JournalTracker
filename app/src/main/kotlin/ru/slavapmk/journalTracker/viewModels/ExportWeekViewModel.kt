@@ -17,10 +17,10 @@ import ru.slavapmk.journalTracker.R
 import ru.slavapmk.journalTracker.dataModels.StudentAttendanceLesson
 import ru.slavapmk.journalTracker.dataModels.selectWeek.Semester
 import ru.slavapmk.journalTracker.dataModels.toEdit
-import ru.slavapmk.journalTracker.excelExporter.BorderData
-import ru.slavapmk.journalTracker.excelExporter.CellData
-import ru.slavapmk.journalTracker.excelExporter.ExcelExporter
-import ru.slavapmk.journalTracker.excelExporter.RenderData
+import ru.slavapmk.journalTracker.attendanceSynchronize.BorderData
+import ru.slavapmk.journalTracker.attendanceSynchronize.CellData
+import ru.slavapmk.journalTracker.attendanceSynchronize.ExcelExporter
+import ru.slavapmk.journalTracker.attendanceSynchronize.RenderData
 import ru.slavapmk.journalTracker.storageModels.StorageDependencies
 import ru.slavapmk.journalTracker.storageModels.entities.SemesterEntity
 import ru.slavapmk.journalTracker.storageModels.entities.StudentEntity
