@@ -233,11 +233,9 @@ class LessonEditActivity : AppCompatActivity() {
             )
         }
         binding.orderInput.setText(
-            if (viewModel.info.index != null) {
-                String.format("%s", viewModel.info.index!! + 1)
-            } else {
-                ""
-            }
+            viewModel.info.index?.let {
+                timeNames[it]
+            } ?: ""
         )
         val timesAdapter = ArrayAdapter(
             this, android.R.layout.simple_dropdown_item_1line, timeNames
