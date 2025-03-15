@@ -1,5 +1,7 @@
-- Importing data from Excel files
+- Upgraded import type variations
+- Lesson time ranges in lesson edit dialog
 
 ---
 
-- Импортирование данных из измененных таблиц Excel
+- Увеличен набор вариантов у импортируемых типов
+- Добюавлены временные границы занятия в окне редактирования

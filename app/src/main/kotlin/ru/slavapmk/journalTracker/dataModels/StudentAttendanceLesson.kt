@@ -6,19 +6,23 @@ import ru.slavapmk.journalTracker.storageModels.StudentEntityAttendance
 
 enum class StudentAttendanceLesson(
     val displayNameRes: Int,
-    val color: Int?
+    val color: Int?,
+    val additionalVariants: List<String> = listOf()
 ) {
     NULL(
         R.string.empty,
-        null
+        null,
+        listOf(" ", "null")
     ),
     VISIT(
         R.string.attendance_visit,
-        R.color.export_table_visit
+        R.color.export_table_visit,
+        listOf(".", "·", "•")
     ),
     NOT_VISIT(
         R.string.attendance_skip,
-        R.color.export_table_skip
+        R.color.export_table_skip,
+        listOf("-", "--", "2")
     ),
     SICK(
         R.string.attendance_sick,
@@ -26,11 +30,13 @@ enum class StudentAttendanceLesson(
     ),
     SICK_WITH_CERTIFICATE(
         R.string.attendance_sick_with_certificate,
-        R.color.export_table_sick
+        R.color.export_table_sick,
+        listOf("-/Б", "—/Б")
     ),
     RESPECTFUL_PASS(
         R.string.attendance_respectfull_pass,
-        R.color.export_table_respect_pass
+        R.color.export_table_respect_pass,
+        listOf("—/R")
     )
 }
 
