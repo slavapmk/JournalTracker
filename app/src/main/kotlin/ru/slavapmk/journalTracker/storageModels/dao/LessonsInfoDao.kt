@@ -37,10 +37,11 @@ interface LessonsInfoDao {
                 time_id = :timeId, teacher = :teacher, cabinet = :cabinet, 
                 campus_id = :campusId
             WHERE date_day = :dateDay AND date_month = :dateMonth AND
-                  date_year = :dateYear AND time_id = :timeId
+                  date_year = :dateYear AND time_id = :oldTime
         """
     )
     fun updateByDateTime(
+        oldTime: Int,
         dateDay: Int,
         dateMonth: Int,
         dateYear: Int,

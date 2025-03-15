@@ -41,6 +41,7 @@ class LessonInfoRepository(
     }
 
     suspend fun updateByDateTime(
+        oldTime: Int,
         dateDay: Int,
         dateMonth: Int,
         dateYear: Int,
@@ -53,6 +54,7 @@ class LessonInfoRepository(
         campusId: Int
     ) = withContext(Dispatchers.IO) {
         lessonsInfoDao.updateByDateTime(
+            oldTime,
             dateDay,
             dateMonth,
             dateYear,

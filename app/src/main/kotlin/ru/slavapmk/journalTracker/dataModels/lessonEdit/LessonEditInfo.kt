@@ -3,6 +3,7 @@ package ru.slavapmk.journalTracker.dataModels.lessonEdit
 import ru.slavapmk.journalTracker.dataModels.LessonTypeEdit
 
 data class LessonEditInfo(
+    val oldTime: Int?,
     val id: Int,
     var index: Int?,
     var name: String?,
