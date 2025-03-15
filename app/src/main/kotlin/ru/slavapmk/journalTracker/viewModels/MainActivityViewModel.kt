@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.slavapmk.journalTracker.backend.RetrofitInstance
+import java.io.IOException
 
 data class VersionInfo(
     val tag: Int,
@@ -68,7 +69,10 @@ class MainActivityViewModel : ViewModel() {
                     it.htmlUrl
                 )
             }
+        } catch (e: IOException) {
+            return null
         } catch (e: Exception) {
+            e.printStackTrace()
             return null
         }
     }
