@@ -177,10 +177,13 @@ class EditLessonViewModel : ViewModel() {
 
     fun updateLessons(updateNext: Boolean) {
         val resultDates = if (updateNext) {
-            val toDate = SimpleDate(semester!!.endDay, semester!!.endMonth, semester!!.endYear)
-            genDates(date!!, toDate, weekTypes)
+            genDates(
+                date!!,
+                SimpleDate(semester!!.endDay, semester!!.endMonth, semester!!.endYear),
+                weekTypes
+            )
         } else {
-            mutableListOf(date)
+            listOf(date)
         }
         val addLessons = resultDates.map {
             InsertLesson(
@@ -194,7 +197,7 @@ class EditLessonViewModel : ViewModel() {
                 info.teacher!!,
                 info.cabinet!!,
                 info.campusId!!
-            ) to info.oldTime!!
+            ) to times[info.oldTime!!].id
         }
         viewModelScope.launch {
             for ((addLesson, addOldTime) in addLessons) {
