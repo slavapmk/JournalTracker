@@ -171,4 +171,5 @@
     <string name="exporter_overview">Overview</string>
     <string name="importing_sheet">Importing sheet %1$d / %2$d</string>
     <string name="import_table">Import XLXS</string>
+    <string name="time_name" translatable="false">%1$d (%2$02d:%3$02d - %4$02d:%5$02d)</string>
 </resources>

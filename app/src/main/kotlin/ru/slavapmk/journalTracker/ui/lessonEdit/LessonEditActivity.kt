@@ -231,7 +231,13 @@ class LessonEditActivity : AppCompatActivity() {
             viewModel.loadCabinets(viewModel.info.campusId)
         }
 
-        val timeNames = List(viewModel.times.size) { index -> (index + 1).toString() }
+        val timeNames = viewModel.times.mapIndexed { i, time ->
+            getString(
+                R.string.time_name,
+                i + 1, time.startHour, time.startMinute,
+                time.endHour, time.endMinute
+            )
+        }
         binding.orderInput.setText(
             if (viewModel.info.index != null) {
                 String.format("%s", viewModel.info.index!! + 1)
