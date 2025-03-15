@@ -41,14 +41,6 @@ class LessonEditActivity : AppCompatActivity() {
         }
     }
 
-//    private val campusesAdapter by lazy {
-//        ArrayAdapter(
-//            this,
-//            android.R.layout.simple_dropdown_item_1line,
-//            viewModel.campusNames
-//        )
-//    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -114,9 +106,11 @@ class LessonEditActivity : AppCompatActivity() {
         }
         viewModel.lessonLiveData.observe(this) { lesson ->
             fillLessonInfo(lesson.let { entity ->
+                val time = viewModel.times.indexOfFirst { it.id == entity.timeId }
                 LessonEditInfo(
+                    time,
                     entity.id,
-                    viewModel.times.indexOfFirst { it.id == entity.timeId },
+                    time,
                     entity.name,
                     entity.type.toEdit(),
                     entity.teacher,
@@ -162,7 +156,7 @@ class LessonEditActivity : AppCompatActivity() {
             setLoading(false)
             fillLessonInfo(
                 LessonEditInfo(
-                    0, null, null, null, null, null, null
+                    null, 0, null, null, null, null, null, null
                 )
             )
             initInputs()
@@ -231,7 +225,13 @@ class LessonEditActivity : AppCompatActivity() {
             viewModel.loadCabinets(viewModel.info.campusId)
         }
 
-        val timeNames = List(viewModel.times.size) { index -> (index + 1).toString() }
+        val timeNames = viewModel.times.mapIndexed { i, time ->
+            getString(
+                R.string.time_name,
+                i + 1, time.startHour, time.startMinute,
+                time.endHour, time.endMinute
+            )
+        }
         binding.orderInput.setText(
             if (viewModel.info.index != null) {
                 String.format("%s", viewModel.info.index!! + 1)

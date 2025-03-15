@@ -194,11 +194,12 @@ class EditLessonViewModel : ViewModel() {
                 info.teacher!!,
                 info.cabinet!!,
                 info.campusId!!
-            )
+            ) to info.oldTime!!
         }
         viewModelScope.launch {
-            for (addLesson in addLessons) {
+            for ((addLesson, addOldTime) in addLessons) {
                 StorageDependencies.lessonInfoRepository.updateByDateTime(
+                    addOldTime,
                     addLesson.dateDay,
                     addLesson.dateMonth,
                     addLesson.dateYear,

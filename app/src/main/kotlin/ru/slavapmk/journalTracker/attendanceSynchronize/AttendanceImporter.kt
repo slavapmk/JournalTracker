@@ -28,6 +28,9 @@ class AttendanceImporter(
             for (allVariation in LocaleHelper.getAllVariations(context, entry.displayNameRes)) {
                 result[allVariation] = entry
             }
+            for (additionalVariant in entry.additionalVariants) {
+                result[additionalVariant] = entry
+            }
         }
         result
     }
