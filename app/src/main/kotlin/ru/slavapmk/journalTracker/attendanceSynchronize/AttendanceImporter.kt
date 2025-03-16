@@ -1,6 +1,7 @@
 package ru.slavapmk.journalTracker.attendanceSynchronize
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -49,12 +50,19 @@ class AttendanceImporter(
                 )
             )
             for (readAttendance in processSheet(sheet)) {
-//                println(readAttendance)
-                StorageDependencies.studentsAttendanceRepository.insertOrUpdate(
-                    readAttendance.user,
-                    readAttendance.lesson,
-                    readAttendance.type.toEntity()
-                )
+                try {
+                    StorageDependencies.studentsAttendanceRepository.insertOrUpdate(
+                        readAttendance.user,
+                        readAttendance.lesson,
+                        readAttendance.type.toEntity()
+                    )
+                } catch (e: android.database.sqlite.SQLiteConstraintException) {
+                    Log.w(
+                        "Importer",
+                        "Ignoring User ${readAttendance.user}, Lesson ${readAttendance.lesson}, Type ${readAttendance.type}"
+                    )
+                    continue
+                }
             }
         }
     }
