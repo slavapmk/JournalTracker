@@ -125,7 +125,6 @@ class LessonActivity : AppCompatActivity() {
             checkEmptyMessage()
         }
         viewModel.savedLiveData.observe(this) {
-            setLoading(false)
             finish()
         }
     }
