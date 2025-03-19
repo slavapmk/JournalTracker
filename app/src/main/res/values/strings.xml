@@ -140,9 +140,10 @@
     <string name="load_db">Load DB</string>
     <string name="export_filename">Journal_export_%1$02d_%2$02d_%3$02d_%4$02d_%5$02d.jt</string>
     <string name="db_saved">DB file saved</string>
-    <string name="db_save_error">Save error</string>
+    <string name="db_save_error">Save error %1$s</string>
     <string name="db_import_success">DB imported</string>
-    <string name="db_import_error">DB import error</string>
+    <string name="db_import_error">DB import error %1$s</string>
+    <string name="db_import_error_incorrect_type">Unknown file type</string>
     <string name="student_default_attendance">Default</string>
     <string name="add_semester_requirement">Add at least 1 semester</string>
     <string name="add_time_requirement">Add at least 1 time</string>

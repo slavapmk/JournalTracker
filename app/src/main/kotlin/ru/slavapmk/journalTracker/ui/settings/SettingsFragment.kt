@@ -8,7 +8,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +15,7 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
+import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import ru.slavapmk.journalTracker.R
@@ -29,9 +29,10 @@ import ru.slavapmk.journalTracker.ui.SharedKeys
 import ru.slavapmk.journalTracker.ui.campusEdit.CampusEditActivity
 import ru.slavapmk.journalTracker.ui.studentsedit.StudentsEditActivity
 import ru.slavapmk.journalTracker.ui.timeEdit.TimeEditActivity
+import ru.slavapmk.journalTracker.viewModels.ExportResult
+import ru.slavapmk.journalTracker.viewModels.ImportResult
 import ru.slavapmk.journalTracker.viewModels.SettingsViewModel
 import java.io.File
-import java.io.FileOutputStream
 import java.io.IOException
 import java.util.Calendar
 import java.util.Date
@@ -59,11 +60,47 @@ class SettingsFragment : Fragment() {
         viewModel.importStatusCallback.observe(viewLifecycleOwner) {
             activity.setStatus(it)
         }
+        viewModel.importExcelDone.value = null
         viewModel.importExcelDone.observe(viewLifecycleOwner) {
             activity.setLoading(false)
         }
-        viewModel.exportDone.observe(viewLifecycleOwner) {
+        viewModel.exportDone.value = null
+        viewModel.exportDone.observe(viewLifecycleOwner) { result ->
             activity.setLoading(false)
+            when (result) {
+                is ExportResult.ErrorResult -> Toast.makeText(
+                    requireContext(),
+                    getString(R.string.db_save_error, result.error.localizedMessage),
+                    Toast.LENGTH_LONG
+                ).show()
+
+                is ExportResult.SuccessResult -> Toast.makeText(
+                    requireContext(),
+                    getString(R.string.db_saved),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+
+        viewModel.restoreDone.value = null
+        viewModel.restoreDone.observe(viewLifecycleOwner) { result ->
+            activity.setLoading(false)
+            when (result) {
+                is ImportResult.ErrorResult -> Toast.makeText(
+                    requireContext(),
+                    getString(R.string.db_import_error, result.error.localizedMessage),
+                    Toast.LENGTH_LONG
+                ).show()
+
+                ImportResult.SuccessResult -> {
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.db_import_success),
+                        Toast.LENGTH_LONG
+                    ).show()
+                    restartApplication()
+                }
+            }
         }
 
         return binding.root
@@ -94,26 +131,44 @@ class SettingsFragment : Fragment() {
         }
     }
 
+    private fun getFileExtensionFromDocument(uri: Uri): String? {
+        return DocumentFile.fromSingleUri(
+            requireContext(), uri
+        )?.name?.substringAfterLast('.', "")
+    }
+
     private fun importDatabase(uri: Uri) {
-        val dbName = DB_NAME
-        val dbPath = requireContext().getDatabasePath(dbName)
-
-        StorageDependencies.closeDb()
-
-        try {
-            requireContext().contentResolver.openInputStream(uri)?.use { input ->
-                FileOutputStream(dbPath).use { output ->
-                    val aa = input.copyTo(output)
-                    println(aa)
-                }
+        when (getFileExtensionFromDocument(uri)) {
+            "jt" -> {
+                activity.setLoading(true)
+                StorageDependencies.closeDb()
+                viewModel.restoreBackup(
+                    requireContext().getDatabasePath(DB_NAME),
+                    activity.contentResolver.openInputStream(uri),
+                    shared,
+                    requireContext().cacheDir
+                )
             }
-            Toast.makeText(requireContext(), R.string.db_import_success, Toast.LENGTH_LONG).show()
-            Log.d("Import", "DB imported: ${dbPath.absolutePath}")
 
-            restartApplication()
-        } catch (e: IOException) {
-            Toast.makeText(requireContext(), R.string.db_import_error, Toast.LENGTH_LONG).show()
-            Log.e("Import", "DB import error", e)
+            "db" -> {
+                activity.setLoading(true)
+                StorageDependencies.closeDb()
+                viewModel.restoreDbBackup(
+                    requireContext().getDatabasePath(DB_NAME),
+                    activity.contentResolver.openInputStream(uri),
+                )
+            }
+
+            else -> {
+                Toast.makeText(
+                    requireContext(),
+                    getString(
+                        R.string.db_import_error,
+                        getString(R.string.db_import_error_incorrect_type)
+                    ),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
         }
     }
 

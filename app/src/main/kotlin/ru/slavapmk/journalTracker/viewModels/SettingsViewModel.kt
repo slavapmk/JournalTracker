@@ -16,10 +16,12 @@ import ru.slavapmk.journalTracker.attendanceSynchronize.AttendanceImporter
 import ru.slavapmk.journalTracker.dataModels.settings.AttendanceFormats
 import ru.slavapmk.journalTracker.dataModels.settings.WeeksFormats
 import ru.slavapmk.journalTracker.ui.SharedKeys
+import java.io.BufferedInputStream
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.IOException
+import java.io.InputStream
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 import java.util.zip.ZipOutputStream
@@ -121,20 +123,30 @@ class SettingsViewModel : ViewModel() {
                 )
 
                 val sharedPrefsFile = File(cacheDir, "shared.json")
+                Log.d(
+                    "Backup",
+                    "Creating SharedPreferences JSON dump at ${sharedPrefsFile.absolutePath}"
+                )
+
                 saveSharedPreferencesToJson(sharedPreferences, sharedPrefsFile)
 
                 try {
                     ZipOutputStream(FileOutputStream(backupPath)).use { zipOut ->
+                        Log.d("Backup", "Adding database file to archive: ${dbFile.absolutePath}")
                         addFileToZip(dbFile, zipOut, "database.db")
+
+                        Log.d(
+                            "Backup",
+                            "Adding SharedPreferences JSON dump to archive: ${sharedPrefsFile.absolutePath}"
+                        )
                         addFileToZip(sharedPrefsFile, zipOut, "shared.json")
                     }
-                    exportDone.postValue(
-                        ExportResult.SuccessResult(backupPath.absolutePath)
-                    )
+
+                    Log.d("Backup", "Backup successfully created: ${backupPath.absolutePath}")
+                    exportDone.postValue(ExportResult.SuccessResult(backupPath.absolutePath))
                 } catch (e: IOException) {
-                    exportDone.postValue(
-                        ExportResult.ErrorResult(e)
-                    )
+                    Log.e("Backup", "Error while creating backup", e)
+                    exportDone.postValue(ExportResult.ErrorResult(e))
                 }
             }
         }
@@ -170,8 +182,24 @@ class SettingsViewModel : ViewModel() {
 
     val restoreDone by lazy { MutableLiveData<ImportResult>() }
 
+    fun restoreDbBackup(dbFile: File, zipInputStream: InputStream?) {
+        viewModelScope.launch {
+            try {
+                withContext(Dispatchers.IO) {
+                    dbFile.outputStream().use { os ->
+                        zipInputStream?.copyTo(os)
+                    }
+                }
+                restoreDone.postValue(ImportResult.SuccessResult)
+            } catch (e: IOException) {
+                Log.e("Restore", "Error during restore only DB", e)
+                restoreDone.postValue(ImportResult.ErrorResult(e))
+            }
+        }
+    }
+
     fun restoreBackup(
-        dbFile: File, zipFile: File, sharedPreferences: SharedPreferences,
+        dbFile: File, zipInputStream: InputStream?, sharedPreferences: SharedPreferences,
         tempDir: File
     ) {
         viewModelScope.launch {
@@ -181,7 +209,7 @@ class SettingsViewModel : ViewModel() {
                     tempDir.mkdirs()
 
                     // Распаковываем ZIP
-                    unzipFile(zipFile, tempDir)
+                    unzipFile(zipInputStream, tempDir)
 
                     // Восстанавливаем базу данных
                     val tempDbFile = File(tempDir, "database.db")
@@ -211,16 +239,54 @@ class SettingsViewModel : ViewModel() {
         }
     }
 
-    private fun unzipFile(zipFile: File, outputDir: File) {
-        ZipInputStream(FileInputStream(zipFile)).use { zipIn ->
-            var entry: ZipEntry?
-            while (zipIn.nextEntry.also { entry = it } != null) {
-                entry?.let {
-                    val file = File(outputDir, it.name)
-                    FileOutputStream(file).use { fos -> zipIn.copyTo(fos) }
-                    zipIn.closeEntry()
+    private fun unzipFile(zipInputStream: InputStream?, outputDir: File) {
+        if (zipInputStream == null) {
+            Log.e("Unzip", "InputStream is null, cannot proceed with extraction")
+            return
+        }
+
+        Log.d("Unzip", "Starting extraction to ${outputDir.absolutePath}")
+
+        try {
+            val bufferedStream = BufferedInputStream(zipInputStream)
+            Log.d("Unzip", "Available bytes in stream: ${bufferedStream.available()}")
+
+            ZipInputStream(bufferedStream).use { zipIn ->
+                var entry: ZipEntry?
+
+                while (zipIn.nextEntry.also { entry = it } != null) {
+                    entry?.let {
+                        val outFile = File(outputDir, it.name)
+
+                        if (it.isDirectory) {
+                            Log.d("Unzip", "Creating directory: ${outFile.absolutePath}")
+                            outFile.mkdirs()
+                        } else {
+                            // Ensure parent directory exists
+                            outFile.parentFile?.mkdirs()
+
+                            Log.d(
+                                "Unzip",
+                                "Extracting file: ${outFile.absolutePath} (Size: ${it.size} bytes)"
+                            )
+                            try {
+                                FileOutputStream(outFile).use { fos ->
+                                    zipIn.copyTo(fos)
+                                }
+                                Log.d("Unzip", "Successfully extracted: ${outFile.name}")
+                            } catch (e: IOException) {
+                                Log.e("Unzip", "Error extracting file: ${outFile.name}", e)
+                            }
+                        }
+
+                        zipIn.closeEntry()
+                    }
                 }
             }
+
+            Log.d("Unzip", "Extraction completed successfully")
+        } catch (e: IOException) {
+            Log.e("Unzip", "Error during unzip operation", e)
         }
     }
 
