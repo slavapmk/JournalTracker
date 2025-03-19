@@ -139,7 +139,7 @@ class SettingsFragment : Fragment() {
 
     private fun importDatabase(uri: Uri) {
         when (getFileExtensionFromDocument(uri)) {
-            "jt" -> {
+            "jtdump" -> {
                 activity.setLoading(true)
                 StorageDependencies.closeDb()
                 viewModel.restoreBackup(
