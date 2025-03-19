@@ -3,6 +3,7 @@ package ru.slavapmk.journalTracker.viewModels
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Environment
+import android.util.Log
 import androidx.core.content.edit
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -20,6 +21,7 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.IOException
 import java.util.zip.ZipEntry
+import java.util.zip.ZipInputStream
 import java.util.zip.ZipOutputStream
 
 class SettingsViewModel : ViewModel() {
@@ -95,14 +97,14 @@ class SettingsViewModel : ViewModel() {
         }
 
     val importStatusCallback by lazy { MutableLiveData<String>() }
-    val importDone by lazy { MutableLiveData<Unit>() }
+    val importExcelDone by lazy { MutableLiveData<Unit>() }
 
     fun importExcel(file: File, context: Context) {
         viewModelScope.launch {
             AttendanceImporter(
                 file, context, importStatusCallback
             ).import()
-            importDone.postValue(Unit)
+            importExcelDone.postValue(Unit)
         }
     }
 
@@ -165,9 +167,87 @@ class SettingsViewModel : ViewModel() {
             zipOut.closeEntry()
         }
     }
+
+    val restoreDone by lazy { MutableLiveData<ImportResult>() }
+
+    fun restoreBackup(
+        dbFile: File, zipFile: File, sharedPreferences: SharedPreferences,
+        tempDir: File
+    ) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                try {
+//                    val tempDir = File(context.cacheDir, "backup_restore").apply { mkdirs() }
+                    tempDir.mkdirs()
+
+                    // Распаковываем ZIP
+                    unzipFile(zipFile, tempDir)
+
+                    // Восстанавливаем базу данных
+                    val tempDbFile = File(tempDir, "database.db")
+
+                    if (dbFile.exists()) {
+                        tempDbFile.copyTo(dbFile, overwrite = true)
+                        Log.d("Restore", "Database restored to ${dbFile.absolutePath}")
+                    } else {
+                        Log.e("Restore", "Database file not found in backup!")
+                    }
+
+                    // Восстанавливаем SharedPreferences
+                    val sharedPrefsFile = File(tempDir, "shared.json")
+                    if (sharedPrefsFile.exists()) {
+                        restoreSharedPreferences(sharedPreferences, sharedPrefsFile)
+                        Log.d("Restore", "SharedPreferences restored")
+                    } else {
+                        Log.e("Restore", "SharedPreferences file not found in backup!")
+                    }
+
+                    restoreDone.postValue(ImportResult.SuccessResult)
+                } catch (e: IOException) {
+                    Log.e("Restore", "Error during restore", e)
+                    restoreDone.postValue(ImportResult.ErrorResult(e))
+                }
+            }
+        }
+    }
+
+    private fun unzipFile(zipFile: File, outputDir: File) {
+        ZipInputStream(FileInputStream(zipFile)).use { zipIn ->
+            var entry: ZipEntry?
+            while (zipIn.nextEntry.also { entry = it } != null) {
+                entry?.let {
+                    val file = File(outputDir, it.name)
+                    FileOutputStream(file).use { fos -> zipIn.copyTo(fos) }
+                    zipIn.closeEntry()
+                }
+            }
+        }
+    }
+
+    private fun restoreSharedPreferences(sharedPreferences: SharedPreferences, jsonFile: File) {
+        val jsonString = jsonFile.readText()
+        val jsonObject = JSONObject(jsonString)
+        val editor = sharedPreferences.edit()
+
+        jsonObject.keys().forEach { key ->
+            when (val value = jsonObject.get(key)) {
+                is String -> editor.putString(key, value)
+                is Int -> editor.putInt(key, value)
+                is Boolean -> editor.putBoolean(key, value)
+                is Float -> editor.putFloat(key, value)
+                is Long -> editor.putLong(key, value)
+            }
+        }
+        editor.apply()
+    }
 }
 
 sealed interface ExportResult {
     data class SuccessResult(val path: String) : ExportResult
     data class ErrorResult(val error: IOException) : ExportResult
+}
+
+sealed interface ImportResult {
+    data object SuccessResult : ImportResult
+    data class ErrorResult(val error: IOException) : ImportResult
 }

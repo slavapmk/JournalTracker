@@ -59,7 +59,10 @@ class SettingsFragment : Fragment() {
         viewModel.importStatusCallback.observe(viewLifecycleOwner) {
             activity.setStatus(it)
         }
-        viewModel.importDone.observe(viewLifecycleOwner) {
+        viewModel.importExcelDone.observe(viewLifecycleOwner) {
+            activity.setLoading(false)
+        }
+        viewModel.exportDone.observe(viewLifecycleOwner) {
             activity.setLoading(false)
         }
 
@@ -154,7 +157,7 @@ class SettingsFragment : Fragment() {
         binding.dbExport.setOnClickListener {
             val dbPath = context?.getDatabasePath(DB_NAME)
             if (dbPath != null) {
-                // setLoading(true)
+                activity.setLoading(true)
                 viewModel.saveBackup(
                     requireContext().cacheDir,
                     dbPath,
