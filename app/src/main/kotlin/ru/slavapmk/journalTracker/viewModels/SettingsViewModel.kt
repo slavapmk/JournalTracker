@@ -2,16 +2,25 @@ package ru.slavapmk.journalTracker.viewModels
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.os.Environment
 import androidx.core.content.edit
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.json.JSONObject
 import ru.slavapmk.journalTracker.attendanceSynchronize.AttendanceImporter
 import ru.slavapmk.journalTracker.dataModels.settings.AttendanceFormats
 import ru.slavapmk.journalTracker.dataModels.settings.WeeksFormats
 import ru.slavapmk.journalTracker.ui.SharedKeys
 import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
+import java.io.IOException
+import java.util.zip.ZipEntry
+import java.util.zip.ZipOutputStream
 
 class SettingsViewModel : ViewModel() {
     lateinit var sharedPreferences: SharedPreferences
@@ -96,4 +105,69 @@ class SettingsViewModel : ViewModel() {
             importDone.postValue(Unit)
         }
     }
+
+    val exportDone by lazy { MutableLiveData<ExportResult>() }
+
+    fun saveBackup(
+        cacheDir: File, dbFile: File, outputFileName: String, sharedPreferences: SharedPreferences
+    ) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                val backupPath = File(
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
+                    outputFileName
+                )
+
+                val sharedPrefsFile = File(cacheDir, "shared.json")
+                saveSharedPreferencesToJson(sharedPreferences, sharedPrefsFile)
+
+                try {
+                    ZipOutputStream(FileOutputStream(backupPath)).use { zipOut ->
+                        addFileToZip(dbFile, zipOut, "database.db")
+                        addFileToZip(sharedPrefsFile, zipOut, "shared.json")
+                    }
+                    exportDone.postValue(
+                        ExportResult.SuccessResult(backupPath.absolutePath)
+                    )
+                } catch (e: IOException) {
+                    exportDone.postValue(
+                        ExportResult.ErrorResult(e)
+                    )
+                }
+            }
+        }
+    }
+
+    private fun saveSharedPreferencesToJson(
+        sharedPreferences: SharedPreferences,
+        outputFile: File
+    ) {
+        val json = JSONObject()
+
+        for (entry in sharedPreferences.all.entries) {
+            when (val value = entry.value) {
+                is String -> json.put(entry.key, value)
+                is Int -> json.put(entry.key, value)
+                is Boolean -> json.put(entry.key, value)
+                is Float -> json.put(entry.key, value)
+                is Long -> json.put(entry.key, value)
+                else -> {}
+            }
+        }
+
+        outputFile.writer().use { it.write(json.toString(4)) }
+    }
+
+    private fun addFileToZip(file: File, zipOut: ZipOutputStream, zipEntryName: String) {
+        FileInputStream(file).use { fis ->
+            zipOut.putNextEntry(ZipEntry(zipEntryName))
+            fis.copyTo(zipOut)
+            zipOut.closeEntry()
+        }
+    }
+}
+
+sealed interface ExportResult {
+    data class SuccessResult(val path: String) : ExportResult
+    data class ErrorResult(val error: IOException) : ExportResult
 }

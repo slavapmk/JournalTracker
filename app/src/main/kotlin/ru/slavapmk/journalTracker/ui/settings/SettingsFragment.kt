@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -153,42 +152,26 @@ class SettingsFragment : Fragment() {
 
     private fun init() {
         binding.dbExport.setOnClickListener {
-            val calendar: Calendar = GregorianCalendar.getInstance().apply {
-                time = Date()
-            }
             val dbPath = context?.getDatabasePath(DB_NAME)
-            val backupName = getString(
-                R.string.export_filename,
-                calendar[Calendar.YEAR],
-                calendar[Calendar.MONTH] + 1,
-                calendar[Calendar.DAY_OF_MONTH],
-                calendar[Calendar.HOUR_OF_DAY],
-                calendar[Calendar.MINUTE]
-            )
-            val backupPath = File(
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
-                backupName
-            )
-
-            try {
-                dbPath?.inputStream().use { input ->
-                    backupPath.outputStream().use { output ->
-                        input?.copyTo(output)
-                    }
-                }
-                Toast.makeText(
-                    requireContext(),
-                    R.string.db_saved,
-                    Toast.LENGTH_LONG
-                ).show()
-                Log.d("Backup", "Saved BD ${backupPath.absolutePath}")
-            } catch (e: IOException) {
-                Toast.makeText(
-                    requireContext(),
-                    R.string.db_save_error,
-                    Toast.LENGTH_LONG
-                ).show()
-                Log.e("Backup", "Error export BD", e)
+            if (dbPath != null) {
+                // setLoading(true)
+                viewModel.saveBackup(
+                    requireContext().cacheDir,
+                    dbPath,
+                    GregorianCalendar.getInstance().apply {
+                        time = Date()
+                    }.let {
+                        getString(
+                            R.string.export_filename,
+                            it[Calendar.YEAR],
+                            it[Calendar.MONTH] + 1,
+                            it[Calendar.DAY_OF_MONTH],
+                            it[Calendar.HOUR_OF_DAY],
+                            it[Calendar.MINUTE]
+                        )
+                    },
+                    shared
+                )
             }
         }
 
