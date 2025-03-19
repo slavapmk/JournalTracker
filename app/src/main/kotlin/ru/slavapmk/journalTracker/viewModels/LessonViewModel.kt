@@ -5,7 +5,9 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import ru.slavapmk.journalTracker.dataModels.lesson.LessonInfo
 import ru.slavapmk.journalTracker.dataModels.lesson.LessonStudentListItem
 import ru.slavapmk.journalTracker.dataModels.toEdit
@@ -25,7 +27,7 @@ class LessonViewModel : ViewModel() {
 
     var info: LessonInfo? = null
     var semester: SemesterEntity? = null
-    var allTimes: MutableList<TimeEntity> = mutableListOf()
+    private var allTimes: MutableList<TimeEntity> = mutableListOf()
     var studentAttendances: MutableList<LessonStudentListItem> = mutableListOf()
     var allStudents: MutableList<StudentEntity> = mutableListOf()
 
@@ -37,8 +39,9 @@ class LessonViewModel : ViewModel() {
     private val lessonLiveData: MutableLiveData<LessonInfoEntity> by lazy { MutableLiveData() }
     val reloadAttendanceLiveData by lazy { MutableLiveData<List<StudentAttendanceEntity>>() }
     val insertedLiveData by lazy { MutableLiveData<Unit>() }
+    val savedLiveData by lazy { MutableLiveData<Unit>() }
 
-    val weekTypes: Int by lazy {
+    private val weekTypes: Int by lazy {
         sharedPreferences!!.getInt(SharedKeys.WEEK_TYPES_KEY, 1)
     }
 
@@ -251,6 +254,25 @@ class LessonViewModel : ViewModel() {
         )
         viewModelScope.launch {
             StorageDependencies.studentsAttendanceRepository.updateAttendance(entity)
+        }
+    }
+
+    fun saveAll() {
+        viewModelScope.launch {
+            withContext(Dispatchers.Default) {
+                studentAttendances.map { attendance ->
+                    Triple(
+                        attendance.studentId,
+                        info!!.id,
+                        attendance.attendance.toEntity()
+                    )
+                }
+            }.forEach { (student, lesson, entity) ->
+                StorageDependencies.studentsAttendanceRepository.insertOrUpdate(
+                    student, lesson, entity
+                )
+            }
+            savedLiveData.postValue(Unit)
         }
     }
 }

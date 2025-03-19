@@ -75,6 +75,10 @@ class LessonActivity : AppCompatActivity() {
                 "delete_lessons_dialog"
             )
         }
+        binding.saveButton.setOnClickListener {
+            setLoading(true)
+            viewModel.saveAll()
+        }
         binding.students.layoutManager = LinearLayoutManager(this)
         binding.students.adapter = LessonStudentsAdapter(viewModel.studentAttendances) { updateStudent ->
             viewModel.updateStudent(updateStudent)
@@ -119,6 +123,10 @@ class LessonActivity : AppCompatActivity() {
             injectData()
             binding.students.adapter?.notifyItemRangeChanged(0, maxOf(oldSize, newSize))
             checkEmptyMessage()
+        }
+        viewModel.savedLiveData.observe(this) {
+            setLoading(false)
+            finish()
         }
     }
 
