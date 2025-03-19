@@ -71,6 +71,9 @@ class MainActivityViewModel : ViewModel() {
             }
         } catch (e: IOException) {
             return null
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return null
         }
     }
 }

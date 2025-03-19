@@ -9,8 +9,10 @@
     <View
         android:id="@+id/info_banner"
         android:layout_width="0dp"
-        android:layout_height="115dp"
+        android:layout_height="0dp"
         android:background="#353535"
+        android:minHeight="115dp"
+        app:layout_constraintBottom_toBottomOf="@id/lesson_teacher"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -25,46 +27,65 @@
 
     <TextView
         android:id="@+id/lesson_name"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="16dp"
-        android:maxLength="16"
+        android:layout_marginEnd="10dp"
+        android:autoSizeMaxTextSize="20sp"
+        android:autoSizeMinTextSize="18sp"
+        android:autoSizeStepGranularity="0.1sp"
+        android:autoSizeTextType="uniform"
         android:text="@string/students_lesson_name"
-        android:textSize="20sp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/lesson_date"
         app:layout_constraintStart_toStartOf="@id/info_banner"
-        app:layout_constraintTop_toTopOf="@id/info_banner" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/lesson_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginEnd="20dp"
+        android:maxLength="10"
         android:text="@string/students_lesson_date"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@id/lesson_name"
-        app:layout_constraintStart_toEndOf="@id/lesson_name" />
+        android:paddingBottom="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintBottom_toTopOf="@id/save_button"
+        app:layout_constraintTop_toTopOf="@id/lesson_name" />
 
     <TextView
         android:id="@+id/lesson_times"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:maxLength="13"
         android:text="@string/item_lesson_times"
         android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@id/edit_button"
         app:layout_constraintStart_toStartOf="@id/lesson_name"
         app:layout_constraintTop_toBottomOf="@id/lesson_name" />
 
+
     <TextView
         android:id="@+id/lesson_teacher"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
-        android:maxLength="30"
+        android:layout_marginEnd="10dp"
+        android:paddingBottom="10dp"
         android:text="@string/students_lesson_teacher"
-        android:textSize="16sp"
+        android:autoSizeTextType="uniform"
+        android:autoSizeMinTextSize="14sp"
+        android:autoSizeMaxTextSize="26sp"
+        android:autoSizeStepGranularity="0.1sp"
+        app:flow_verticalBias="0.0"
+        app:layout_constraintBottom_toBottomOf="@id/info_banner"
+        app:layout_constraintEnd_toStartOf="@id/edit_button"
         app:layout_constraintStart_toStartOf="@id/lesson_times"
         app:layout_constraintTop_toBottomOf="@id/lesson_times" />
 
@@ -73,7 +94,7 @@
         android:id="@+id/delete_button"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="10dp"
         android:insetLeft="0dp"
         android:insetTop="0dp"
         android:insetRight="0dp"
@@ -83,10 +104,31 @@
         app:iconGravity="textEnd"
         app:iconPadding="0dp"
         app:iconSize="20dp"
-        app:layout_constraintBottom_toBottomOf="@id/info_banner"
-        app:layout_constraintEnd_toEndOf="@id/info_banner"
-        app:layout_constraintTop_toTopOf="@id/info_banner" />
+        app:layout_constraintBottom_toBottomOf="@id/save_button"
+        app:layout_constraintEnd_toStartOf="@id/save_button"
+        app:layout_constraintTop_toTopOf="@id/save_button" />
 
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/save_button"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="10dp"
+        android:insetLeft="0dp"
+        android:insetTop="0dp"
+        android:insetRight="0dp"
+        android:insetBottom="0dp"
+        android:padding="0dp"
+        app:icon="@drawable/baseline_save_24"
+        app:iconGravity="textEnd"
+        app:iconPadding="0dp"
+        app:iconSize="20dp"
+        app:flow_verticalBias="1.0"
+        app:layout_constraintTop_toBottomOf="@id/lesson_date"
+        app:layout_constraintBottom_toBottomOf="@id/info_banner"
+        app:layout_constraintEnd_toEndOf="@id/info_banner" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/edit_button"
