@@ -133,13 +133,13 @@ class SettingsViewModel : ViewModel() {
                 try {
                     ZipOutputStream(FileOutputStream(backupPath)).use { zipOut ->
                         Log.d("Backup", "Adding database file to archive: ${dbFile.absolutePath}")
-                        addFileToZip(dbFile, zipOut, "database.db")
+                        addFileToZip(dbFile, zipOut, DB_NAME)
 
                         Log.d(
                             "Backup",
                             "Adding SharedPreferences JSON dump to archive: ${sharedPrefsFile.absolutePath}"
                         )
-                        addFileToZip(sharedPrefsFile, zipOut, "shared.json")
+                        addFileToZip(sharedPrefsFile, zipOut, SHARED_NAME)
                     }
 
                     Log.d("Backup", "Backup successfully created: ${backupPath.absolutePath}")
@@ -212,7 +212,7 @@ class SettingsViewModel : ViewModel() {
                     unzipFile(zipInputStream, tempDir)
 
                     // Восстанавливаем базу данных
-                    val tempDbFile = File(tempDir, "database.db")
+                    val tempDbFile = File(tempDir, DB_NAME)
 
                     if (dbFile.exists()) {
                         tempDbFile.copyTo(dbFile, overwrite = true)
@@ -222,7 +222,7 @@ class SettingsViewModel : ViewModel() {
                     }
 
                     // Восстанавливаем SharedPreferences
-                    val sharedPrefsFile = File(tempDir, "shared.json")
+                    val sharedPrefsFile = File(tempDir, SHARED_NAME)
                     if (sharedPrefsFile.exists()) {
                         restoreSharedPreferences(sharedPreferences, sharedPrefsFile)
                         Log.d("Restore", "SharedPreferences restored")
@@ -305,6 +305,11 @@ class SettingsViewModel : ViewModel() {
             }
         }
         editor.apply()
+    }
+
+    companion object {
+        const val DB_NAME = "database.db"
+        const val SHARED_NAME = "shared.json"
     }
 }
 
