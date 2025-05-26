@@ -39,7 +39,7 @@ class LessonViewModel : ViewModel() {
     private val lessonLiveData: MutableLiveData<LessonInfoEntity> by lazy { MutableLiveData() }
     val reloadAttendanceLiveData by lazy { MutableLiveData<List<StudentAttendanceEntity>>() }
     val insertedLiveData by lazy { MutableLiveData<Unit>() }
-    val savedLiveData by lazy { MutableLiveData<Unit>() }
+    val savedLiveData by lazy { MutableLiveData<Boolean>() }
 
     private val weekTypes: Int by lazy {
         sharedPreferences!!.getInt(SharedKeys.WEEK_TYPES_KEY, 1)
@@ -257,7 +257,7 @@ class LessonViewModel : ViewModel() {
         }
     }
 
-    fun saveAll() {
+    fun saveAll(finish: Boolean = true) {
         viewModelScope.launch {
             withContext(Dispatchers.Default) {
                 studentAttendances.map { attendance ->
@@ -272,7 +272,7 @@ class LessonViewModel : ViewModel() {
                     student, lesson, entity
                 )
             }
-            savedLiveData.postValue(Unit)
+            savedLiveData.postValue(finish)
         }
     }
 }

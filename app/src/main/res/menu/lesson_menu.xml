@@ -10,14 +10,17 @@
         android:icon="@drawable/baseline_deselect_24"
         android:title="@string/lesson_deselect_all" />
     <item
+        android:visible="false"
         android:id="@+id/create_shortest_list"
         android:icon="@drawable/baseline_format_list_bulleted_24"
         android:title="@string/lesson_shortest_list" />
     <item
+        android:visible="false"
         android:id="@+id/create_visited_list"
         android:icon="@drawable/baseline_format_list_bulleted_24"
         android:title="@string/lesson_visited_list" />
     <item
+        android:visible="false"
         android:id="@+id/create_unvisited_list"
         android:icon="@drawable/baseline_format_list_bulleted_24"
         android:title="@string/lesson_unvisited_list" />

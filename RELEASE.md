@@ -1,5 +1,5 @@
-- Тестовый билд проверки редизайна экрана занятия
+- Кнопки выбора всех и снятия выбора
 
 ---
 
-- Test build for check redesign lesson screen
+- Select and deselect all buttons

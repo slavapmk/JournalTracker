@@ -18,6 +18,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.slavapmk.journalTracker.R
+import ru.slavapmk.journalTracker.dataModels.StudentAttendanceLesson
 import ru.slavapmk.journalTracker.dataModels.lesson.LessonStudentListItem
 import ru.slavapmk.journalTracker.dataModels.toEdit
 import ru.slavapmk.journalTracker.databinding.ActivityLessonBinding
@@ -26,6 +27,7 @@ import ru.slavapmk.journalTracker.ui.MainActivity.Companion.fmanager
 import ru.slavapmk.journalTracker.ui.SharedKeys
 import ru.slavapmk.journalTracker.ui.lessonEdit.LessonEditActivity
 import ru.slavapmk.journalTracker.viewModels.LessonViewModel
+import kotlin.random.Random
 
 class LessonActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLessonBinding
@@ -52,12 +54,57 @@ class LessonActivity : AppCompatActivity() {
         popup.setOnMenuItemClickListener { menuItem: MenuItem ->
             when (menuItem.itemId) {
                 R.id.select_all -> {
-                    Toast.makeText(this, "select_all", Toast.LENGTH_SHORT).show()
+                    viewModel.studentAttendances.clear()
+                    viewModel.studentAttendances.addAll(
+                        viewModel.allStudents.map {
+                            LessonStudentListItem(
+                                0,
+                                it.id,
+                                it.name,
+                                StudentAttendanceLesson.VISIT
+                            )
+                        }
+                    )
+                    binding.students.adapter?.notifyItemRangeChanged(
+                        0,
+                        viewModel.studentAttendances.size
+                    )
+                    setLoading(true)
+                    viewModel.saveAll(false)
                 }
-                R.id.deselect_all -> {}
-                R.id.create_shortest_list -> {}
-                R.id.create_visited_list -> {}
-                R.id.create_unvisited_list -> {}
+
+                R.id.deselect_all -> {
+                    viewModel.studentAttendances.clear()
+                    viewModel.studentAttendances.addAll(
+                        viewModel.allStudents.map {
+                            LessonStudentListItem(
+                                0,
+                                it.id,
+                                it.name,
+                                StudentAttendanceLesson.NOT_VISIT
+                            )
+                        }
+                    )
+                    binding.students.adapter?.notifyItemRangeChanged(
+                        0,
+                        viewModel.studentAttendances.size
+                    )
+                    setLoading(true)
+                    viewModel.saveAll(false)
+                }
+
+                R.id.create_shortest_list -> {
+
+                }
+
+                R.id.create_visited_list -> {
+
+                }
+
+                R.id.create_unvisited_list -> {
+
+                }
+
                 R.id.edit_lesson -> {
                     buttonEditLesson()
                 }
@@ -166,8 +213,17 @@ class LessonActivity : AppCompatActivity() {
             binding.students.adapter?.notifyItemRangeChanged(0, maxOf(oldSize, newSize))
             checkEmptyMessage()
         }
-        viewModel.savedLiveData.observe(this) {
-            finish()
+        viewModel.savedLiveData.observe(this) { finish ->
+            if (finish) {
+                finish()
+            } else {
+                setLoading(false)
+            }
+
+            // Блок кода для заказчика (правки)
+            if (Random.nextDouble() < 0.05) {
+                Toast.makeText(this, "Посасал?", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
