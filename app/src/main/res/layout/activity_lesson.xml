@@ -66,7 +66,7 @@
         android:maxLength="13"
         android:text="@string/item_lesson_times"
         android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@id/edit_button"
+        app:layout_constraintEnd_toStartOf="@id/save_button"
         app:layout_constraintStart_toStartOf="@id/lesson_name"
         app:layout_constraintTop_toBottomOf="@id/lesson_name" />
 
@@ -85,28 +85,9 @@
         android:autoSizeStepGranularity="0.1sp"
         app:flow_verticalBias="0.0"
         app:layout_constraintBottom_toBottomOf="@id/info_banner"
-        app:layout_constraintEnd_toStartOf="@id/edit_button"
+        app:layout_constraintEnd_toStartOf="@id/save_button"
         app:layout_constraintStart_toStartOf="@id/lesson_times"
         app:layout_constraintTop_toBottomOf="@id/lesson_times" />
-
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/delete_button"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="10dp"
-        android:insetLeft="0dp"
-        android:insetTop="0dp"
-        android:insetRight="0dp"
-        android:insetBottom="0dp"
-        android:padding="0dp"
-        app:icon="@drawable/baseline_delete_24"
-        app:iconGravity="textEnd"
-        app:iconPadding="0dp"
-        app:iconSize="20dp"
-        app:layout_constraintBottom_toBottomOf="@id/save_button"
-        app:layout_constraintEnd_toStartOf="@id/save_button"
-        app:layout_constraintTop_toTopOf="@id/save_button" />
 
 
     <com.google.android.material.button.MaterialButton
@@ -114,7 +95,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:insetLeft="0dp"
         android:insetTop="0dp"
@@ -128,25 +109,28 @@
         app:flow_verticalBias="1.0"
         app:layout_constraintTop_toBottomOf="@id/lesson_date"
         app:layout_constraintBottom_toBottomOf="@id/info_banner"
-        app:layout_constraintEnd_toEndOf="@id/info_banner" />
+        app:layout_constraintEnd_toStartOf="@id/menu_button" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/edit_button"
+        android:id="@+id/menu_button"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="10dp"
         android:insetLeft="0dp"
         android:insetTop="0dp"
         android:insetRight="0dp"
         android:insetBottom="0dp"
         android:padding="0dp"
-        app:icon="@drawable/baseline_edit_24"
+        app:icon="@drawable/baseline_menu_24"
         app:iconGravity="textEnd"
         app:iconPadding="0dp"
         app:iconSize="20dp"
-        app:layout_constraintBottom_toBottomOf="@id/delete_button"
-        app:layout_constraintEnd_toStartOf="@id/delete_button"
-        app:layout_constraintTop_toTopOf="@id/delete_button" />
+        app:flow_verticalBias="1.0"
+        app:layout_constraintTop_toBottomOf="@id/lesson_date"
+        app:layout_constraintBottom_toBottomOf="@id/info_banner"
+        app:layout_constraintEnd_toEndOf="@id/info_banner" />
 
     <TextView
         android:id="@+id/add_requirement"

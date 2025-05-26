@@ -173,4 +173,11 @@
     <string name="importing_sheet">Importing sheet %1$d / %2$d</string>
     <string name="import_table">Import XLXS</string>
     <string name="time_name" translatable="false">%1$d (%2$02d:%3$02d - %4$02d:%5$02d)</string>
+    <string name="lesson_shortest_list">Shortest list</string>
+    <string name="lesson_visited_list">Visited list</string>
+    <string name="lesson_unvisited_list">Unvisited list</string>
+    <string name="lesson_edit">Edit lesson</string>
+    <string name="lesson_delete">Delete lesson</string>
+    <string name="lesson_select_all">Select all</string>
+    <string name="lesson_deselect_all">Deselect all</string>
 </resources>
