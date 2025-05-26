@@ -14,7 +14,6 @@ import ru.slavapmk.journalTracker.R
 import ru.slavapmk.journalTracker.dataModels.StudentAttendanceLesson
 import ru.slavapmk.journalTracker.dataModels.toEntity
 import ru.slavapmk.journalTracker.storageModels.StorageDependencies
-import ru.slavapmk.journalTracker.utils.LocaleHelper
 import java.io.File
 import java.io.FileInputStream
 
@@ -26,10 +25,7 @@ class AttendanceImporter(
     private val attendanceLessonLookup by lazy {
         val result = mutableMapOf<String, StudentAttendanceLesson>()
         for (entry in StudentAttendanceLesson.entries) {
-            for (allVariation in LocaleHelper.getAllVariations(context, entry.displayNameRes)) {
-                result[allVariation] = entry
-            }
-            for (additionalVariant in entry.additionalVariants) {
+            for (additionalVariant in entry.allVariants) {
                 result[additionalVariant] = entry
             }
         }

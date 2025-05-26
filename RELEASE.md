@@ -1,5 +1,5 @@
-- Fixed file type checking while import
+- Тестовый билд проверки редизайна экрана занятия
 
 ---
 
-- Исправлена проверка типа файла при импорте
+- Test build for check redesign lesson screen

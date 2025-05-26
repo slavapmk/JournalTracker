@@ -283,7 +283,7 @@ class SettingsFragment : Fragment() {
                 R.string.settings_weeks_types, viewModel.weekTypes
             )
         )
-        updateFormatVisiblity()
+        updateFormatVisibility()
         val weeksCountTypes = listOf("1", "2")
         val weeksCountAdapter = ArrayAdapter(
             requireContext(), android.R.layout.simple_dropdown_item_1line, weeksCountTypes
@@ -291,7 +291,7 @@ class SettingsFragment : Fragment() {
         binding.weeksInput.setAdapter(weeksCountAdapter)
         binding.weeksInput.setOnItemClickListener { _, _, position, _ ->
             viewModel.weekTypes = position + 1
-            updateFormatVisiblity()
+            updateFormatVisibility()
         }
 
         val weeksFormatTypes = listOf(
@@ -345,7 +345,7 @@ class SettingsFragment : Fragment() {
         }
     }
 
-    private fun updateFormatVisiblity() {
+    private fun updateFormatVisibility() {
         binding.weeksFormatField.isVisible = when (viewModel.weekTypes) {
             1 -> false
             2 -> true

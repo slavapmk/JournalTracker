@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/select_all"
+        android:icon="@drawable/baseline_select_all_24"
+        android:title="@string/lesson_select_all" />
+    <item
+        android:id="@+id/deselect_all"
+        android:icon="@drawable/baseline_deselect_24"
+        android:title="@string/lesson_deselect_all" />
+    <item
+        android:id="@+id/create_shortest_list"
+        android:icon="@drawable/baseline_format_list_bulleted_24"
+        android:title="@string/lesson_shortest_list" />
+    <item
+        android:id="@+id/create_visited_list"
+        android:icon="@drawable/baseline_format_list_bulleted_24"
+        android:title="@string/lesson_visited_list" />
+    <item
+        android:id="@+id/create_unvisited_list"
+        android:icon="@drawable/baseline_format_list_bulleted_24"
+        android:title="@string/lesson_unvisited_list" />
+    <item
+        android:id="@+id/edit_lesson"
+        android:icon="@drawable/baseline_edit_24"
+        android:title="@string/lesson_edit" />
+    <item
+        android:id="@+id/delete_lesson"
+        android:icon="@drawable/baseline_delete_24"
+        android:title="@string/lesson_delete" />
+</menu>

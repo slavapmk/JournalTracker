@@ -4,8 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.MenuItem
+import android.view.View
+import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.annotation.MenuRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
@@ -40,6 +45,38 @@ class LessonActivity : AppCompatActivity() {
         }
     }
 
+    private fun showMenu(v: View, @MenuRes menuRes: Int) {
+        val popup = PopupMenu(this, v)
+        popup.menuInflater.inflate(menuRes, popup.menu)
+
+        popup.setOnMenuItemClickListener { menuItem: MenuItem ->
+            when (menuItem.itemId) {
+                R.id.select_all -> {
+                    Toast.makeText(this, "select_all", Toast.LENGTH_SHORT).show()
+                }
+                R.id.deselect_all -> {}
+                R.id.create_shortest_list -> {}
+                R.id.create_visited_list -> {}
+                R.id.create_unvisited_list -> {}
+                R.id.edit_lesson -> {
+                    buttonEditLesson()
+                }
+
+                R.id.delete_lesson -> {
+                    buttonDeleteLesson()
+                }
+
+                else -> {
+                    Toast.makeText(this, "okak", Toast.LENGTH_SHORT).show()
+                }
+            }
+            return@setOnMenuItemClickListener true
+        }
+
+        popup.setOnDismissListener {}
+        popup.show()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -56,33 +93,38 @@ class LessonActivity : AppCompatActivity() {
 
         viewModel.sharedPreferences = shared
 
-        binding.editButton.setOnClickListener {
-            startActivity(
-                Intent(this, LessonEditActivity::class.java).apply {
-                    putExtra(SharedKeys.SELECTED_LESSON, lessonId)
-                }
-            )
+        binding.menuButton.setOnClickListener { button ->
+            showMenu(button, R.menu.lesson_menu)
         }
-        binding.deleteButton.setOnClickListener {
-            LessonUpdateDialog(
-                {
-                    deleteLessons(false)
-                }, {
-                    deleteLessons(true)
-                }
-            ).show(
-                supportFragmentManager.beginTransaction(),
-                "delete_lessons_dialog"
-            )
-        }
+
         binding.saveButton.setOnClickListener {
             setLoading(true)
             viewModel.saveAll()
         }
         binding.students.layoutManager = LinearLayoutManager(this)
-        binding.students.adapter = LessonStudentsAdapter(viewModel.studentAttendances) { updateStudent ->
-            viewModel.updateStudent(updateStudent)
+        binding.students.adapter =
+            LessonStudentsAdapter(viewModel.studentAttendances) { updateStudent ->
+                viewModel.updateStudent(updateStudent)
+            }
+    }
+
+    private fun buttonDeleteLesson() = LessonUpdateDialog(
+        {
+            deleteLessons(false)
+        }, {
+            deleteLessons(true)
         }
+    ).show(
+        supportFragmentManager.beginTransaction(),
+        "delete_lessons_dialog"
+    )
+
+    private fun buttonEditLesson() {
+        startActivity(
+            Intent(this, LessonEditActivity::class.java).apply {
+                putExtra(SharedKeys.SELECTED_LESSON, lessonId)
+            }
+        )
     }
 
     override fun onResume() {
