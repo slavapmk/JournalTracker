@@ -69,7 +69,7 @@ class LessonActivity : AppCompatActivity() {
                         0,
                         viewModel.studentAttendances.size
                     )
-                    setLoading(true)
+                    setLoading(false)
                     viewModel.saveAll(false)
                 }
 
@@ -89,7 +89,7 @@ class LessonActivity : AppCompatActivity() {
                         0,
                         viewModel.studentAttendances.size
                     )
-                    setLoading(true)
+                    setLoading(false)
                     viewModel.saveAll(false)
                 }
 
