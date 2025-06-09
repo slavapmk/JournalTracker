@@ -22,6 +22,8 @@ import java.util.Date
 import java.util.GregorianCalendar
 
 class ExportSummaryViewModel : ViewModel() {
+    var renderSingleSheet: Boolean = false
+
     val savedLiveStatus by lazy {
         MutableLiveData<Unit>()
     }
@@ -53,7 +55,7 @@ class ExportSummaryViewModel : ViewModel() {
                     )
                 )
             }
-            renderToFile(context, file)
+            renderToFile(context, file, renderSingleSheet)
             savedLiveStatus.postValue(Unit)
         }
     }
@@ -75,7 +77,7 @@ class ExportSummaryViewModel : ViewModel() {
                 )
             }
             if (
-                renderToFile(context, file)
+                renderToFile(context, file, renderSingleSheet)
             ) {
                 val uri = FileProvider.getUriForFile(
                     context, "${context.packageName}.provider", file
@@ -113,7 +115,7 @@ class ExportSummaryViewModel : ViewModel() {
                 )
             }
             if (
-                renderToFile(context, file)
+                renderToFile(context, file, renderSingleSheet)
             ) {
                 val uri = FileProvider.getUriForFile(
                     context, "${context.packageName}.provider", file
@@ -133,12 +135,13 @@ class ExportSummaryViewModel : ViewModel() {
         }
     }
 
-    private suspend fun renderToFile(context: Context, file: File): Boolean {
+    private suspend fun renderToFile(context: Context, file: File, singleSheet: Boolean): Boolean {
         val attendanceExporter = AttendanceExporter(statusCallback)
         val workbook = attendanceExporter.parseSemester(
             context,
             shared.getInt(SharedKeys.SEMESTER_ID, -1),
-            shared.getString(SharedKeys.GROUP_NAME_KEY, "") ?: ""
+            shared.getString(SharedKeys.GROUP_NAME_KEY, "") ?: "",
+            singleSheet
         )
         return withContext(Dispatchers.IO) {
             try {

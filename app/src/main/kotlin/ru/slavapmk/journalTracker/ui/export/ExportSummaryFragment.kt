@@ -32,6 +32,11 @@ class ExportSummaryFragment : Fragment() {
         super.onCreate(savedInstanceState)
         binding = FragmentExportSemesterBinding.inflate(layoutInflater)
 
+        binding.renderSingle.isChecked = viewModel.renderSingleSheet
+        binding.renderSingle.setOnCheckedChangeListener { _, checked ->
+            viewModel.renderSingleSheet = checked
+        }
+
         viewModel.shared = shared
 
         binding.saveExcel.setOnClickListener {

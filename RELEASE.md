@@ -1,5 +1,5 @@
-- Кнопки выбора всех и снятия выбора
+- Экспорт семестра в одном листе
 
 ---
 
-- Select and deselect all buttons
+- Single sheet semester export

@@ -28,7 +28,7 @@ import java.time.LocalDate
 
 data class StudentAttendance(
     val respectful: Int = 0,
-    val disrespectful: Int = 0
+    val disrespectful: Int = 0,
 ) {
     operator fun plus(other: StudentAttendance): StudentAttendance {
         return StudentAttendance(
@@ -39,7 +39,7 @@ data class StudentAttendance(
 }
 
 class AttendanceExporter(
-    private val statusCallback: MutableLiveData<String?>
+    private val statusCallback: MutableLiveData<String?>,
 ) {
     private val weekdayNamesId: List<Int> by lazy {
         listOf(
@@ -133,9 +133,21 @@ class AttendanceExporter(
     }
 
     suspend fun parseSemester(
-        context: Context, semesterId: Int, groupName: String
+        context: Context, semesterId: Int, groupName: String, singleSheet: Boolean,
     ) = withContext(Dispatchers.Default) {
-        val weeks: List<Week> = getWeeks(semesterId) ?: return@withContext ExcelExporter(
+        if (singleSheet) {
+            return@withContext exportMultiSheet(semesterId, context, groupName)
+        } else {
+            return@withContext exportSingleSheet(semesterId, context, groupName)
+        }
+    }
+
+    private suspend fun exportMultiSheet(
+        semesterId: Int,
+        context: Context,
+        groupName: String,
+    ): ExcelExporter {
+        val weeks: List<Week> = getWeeks(semesterId) ?: return ExcelExporter(
             listOf(),
             creator = "Journal Exporter",
             title = "Attendance Journal"
@@ -208,11 +220,108 @@ class AttendanceExporter(
                 R.string.export_processing_file
             )
         )
-        return@withContext exporter
+        return exporter
+    }
+
+    private suspend fun exportSingleSheet(
+        semesterId: Int,
+        context: Context,
+        groupName: String,
+    ): ExcelExporter {
+        val weeks: List<Week> = getWeeks(semesterId) ?: return ExcelExporter(
+            listOf(),
+            creator = "Journal Exporter",
+            title = "Attendance Journal"
+        )
+        val sheetNames = listOf(
+            context.getString(
+                R.string.exporter_sem_id,
+                semesterId + 1
+            )
+        )
+        val exporter = ExcelExporter(
+            sheetNames,
+            creator = "Journal Exporter",
+            title = "Attendance Journal"
+        )
+
+        // Генерируем все даты семестра
+        val allDates = weeks.flatMap { week ->
+            genDates(
+                SimpleDate(week.startDay, week.startMonth, week.startYear),
+                SimpleDate(week.endDay, week.endMonth, week.endYear)
+            )
+        }.sortedBy { it.toLocalDate() }
+
+        // Получаем данные студентов
+        val (renderStudents, students) = renderOrGetStudentNames(context)
+        exporter.insertData(sheetNames[0], renderStudents.apply {
+            offsetRow = 1
+        })
+
+        // Собираем данные по всем датам
+        var columnOffset = 3 // Смещение после колонок студента (ID, №, ФИО)
+        val allAttendances = mutableMapOf<Int, StudentAttendance>()
+
+        for (date in allDates) {
+            statusCallback.postValue(
+                context.getString(
+                    R.string.export_collecting_date,
+                    date.day, date.month, date.year
+                )
+            )
+
+            // Получаем данные за день
+            val (columnCount, dailyAttendances, renderData) = renderDate(context, date, students)
+
+            // Накопление итоговых данных
+            dailyAttendances.forEach { (studentIndex, attendance) ->
+                val current = allAttendances.getOrDefault(studentIndex, StudentAttendance())
+                allAttendances[studentIndex] = current + attendance
+            }
+
+            // Вставляем данные дня со смещением
+            exporter.insertData(sheetNames[0], renderData.apply {
+                offsetColumn = columnOffset
+                offsetRow = 1
+            })
+
+            columnOffset += columnCount
+        }
+
+        // Добавляем итоговую колонку
+        val summaryRender = renderSummary(context, allAttendances, students)
+        exporter.insertData(sheetNames[0], summaryRender.apply {
+            offsetColumn = columnOffset
+            offsetRow = 1
+        })
+
+        // Добавляем заголовок группы
+        exporter.insertData(sheetNames[0], RenderData(
+            listOf(
+                CellData(
+                    0, 0,
+                    context.getString(R.string.exporter_group, groupName),
+                    endColumn = columnOffset + 1 // +1 для учета итоговой колонки
+                )
+            ),
+            listOf(
+                BorderData(
+                    0, 0,
+                    columnOffset + 1, 0,
+                    BorderStyle.THICK,
+                )
+            ),
+            freezeRow = 4,
+            freezeColumn = 2
+        ))
+
+        exporter.resizeWorkbook()
+        return exporter
     }
 
     suspend fun parseWeek(
-        context: Context, semesterId: Int, date: SimpleDate, groupName: String
+        context: Context, semesterId: Int, date: SimpleDate, groupName: String,
     ) = withContext(Dispatchers.Default) {
         statusCallback.postValue(
             context.getString(
@@ -259,7 +368,7 @@ class AttendanceExporter(
     }
 
     suspend fun parseDate(
-        context: Context, date: SimpleDate, groupName: String
+        context: Context, date: SimpleDate, groupName: String,
     ) = withContext(Dispatchers.Default) {
         statusCallback.postValue(
             context.getString(
@@ -305,7 +414,7 @@ class AttendanceExporter(
     private suspend fun renderOverview(
         context: Context,
         attendances: Map<Int, StudentAttendance>,
-        group: String
+        group: String,
     ): List<RenderData> {
         val result = mutableListOf<RenderData>()
 
@@ -352,7 +461,7 @@ class AttendanceExporter(
     private suspend fun renderDateList(
         context: Context,
         dates: List<SimpleDate>,
-        group: String
+        group: String,
     ): Pair<Map<Int, StudentAttendance>, List<RenderData>> {
         val result = mutableListOf<RenderData>()
 
@@ -534,7 +643,7 @@ class AttendanceExporter(
     }
 
     private suspend fun renderDate(
-        context: Context, date: SimpleDate, allStudents: List<StudentEntity>
+        context: Context, date: SimpleDate, allStudents: List<StudentEntity>,
     ): Triple<Int, Map<Int, StudentAttendance>, RenderData> {
         val resultCells = mutableListOf<CellData>()
         val resultBorders = mutableListOf<BorderData>()
@@ -734,7 +843,7 @@ class AttendanceExporter(
     }
 
     private suspend fun getFullAttendances(
-        it: LessonInfoEntity, allStudents: List<StudentEntity>
+        it: LessonInfoEntity, allStudents: List<StudentEntity>,
     ): MutableList<StudentAttendanceEntity> {
         val lessonAttendance = StorageDependencies.studentsAttendanceRepository.getLessonAttendance(
             it.id
@@ -768,7 +877,7 @@ class AttendanceExporter(
     private fun renderSummary(
         context: Context,
         summedAttendance: Map<Int, StudentAttendance>,
-        students: List<StudentEntity>
+        students: List<StudentEntity>,
     ): RenderData {
         val resultCells = mutableListOf<CellData>()
         val resultBorders = mutableListOf<BorderData>()

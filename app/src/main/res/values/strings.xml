@@ -156,12 +156,14 @@
     <string name="exporter_date" translatable="false">%1$02d.%2$02d.%3$02d (%4$s)</string>
     <string name="exporter_week" translatable="false">%1$02d.%2$02d.%3$02d - %4$02d.%5$02d.%6$02d</string>
     <string name="exporter_week_id">%1$02d week</string>
+    <string name="exporter_sem_id">%1$02d semester</string>
     <string name="exporter_hour_skipped">Skipped Hours</string>
     <string name="exporter_hour_skipped_respectful">Respectful</string>
     <string name="exporter_hour_skipped_disrespectful">Disrespectful</string>
     <string name="export_filename_excel">Journal %1$02d-%2$02d-%3$02d %4$02d-%5$02d-%6$02d.xlsx</string>
     <string name="share_via">Share with</string>
     <string name="export_collecting_week">Collecting week %1$d</string>
+    <string name="export_collecting_date">Collecting date %1$02d.%2$02d.%3$02d</string>
     <string name="export_collecting_data">Collecting data</string>
     <string name="export_processing_file">Processing file</string>
     <string name="dialog_update_app_cancel">Ignore</string>
@@ -180,4 +182,5 @@
     <string name="lesson_delete">Delete lesson</string>
     <string name="lesson_select_all">Select all</string>
     <string name="lesson_deselect_all">Deselect all</string>
+    <string name="single_sheet">Single sheet</string>
 </resources>
